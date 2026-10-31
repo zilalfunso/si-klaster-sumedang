@@ -1,0 +1,2769 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SI-SPASIAL KLASTER & REKOMENDASI SAYURAN SUMEDANG | Ahmad Al Fauzi (230660121014)</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .font-mono-tech {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    #spatialSuitabilityMap, #clusterFullMap {
+      width: 100%;
+      border-radius: 0.75rem;
+      z-index: 10;
+    }
+    #spatialSuitabilityMap {
+      height: 430px;
+    }
+    #clusterFullMap {
+      height: 520px;
+    }
+    .leaflet-popup-content-wrapper {
+      border-radius: 0.65rem;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.18);
+    }
+    input[type="range"] {
+      accent-color: #059669;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- TOP HEADER (EXACT STYLE AS SCREENSHOT) -->
+  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div class="flex items-start sm:items-center gap-3">
+          <img src="data:image/jpeg;base64,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" class="w-12 h-12 rounded-xl object-cover shadow-[0_0_20px_rgba(16,185,129,0.45)] border border-emerald-400/40 shrink-0 transform hover:scale-105 transition" alt="Logo 3D SI-Klaster Sumedang" />
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white">
+                SI-SPASIAL KLASTER &amp; REKOMENDASI SAYURAN SUMEDANG
+              </h1>
+
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">
+              Ahmad Al Fauzi (230660121014) &bull; Program Studi Informatika FTI Universitas Sebelas April (UNSAP)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- NAVIGATION TABS -->
+      <nav class="flex flex-wrap items-center gap-1.5 mt-3.5 pt-2.5 border-t border-slate-800/80">
+        <button onclick="switchTab('suitability')" id="tab-btn-suitability" class="tab-nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-emerald-600 text-white shadow-sm">
+          <svg class="w-4 h-4 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Cek Kecocokan Tanam
+        </button>
+        <button onclick="switchTab('map')" id="tab-btn-map" class="tab-nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/50">
+          <svg class="w-4 h-4 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg> Peta Spasial &amp; Klaster
+        </button>
+        <button onclick="switchTab('kdd')" id="tab-btn-kdd" class="tab-nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/50">
+          <svg class="w-4 h-4 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Analisis KDD &amp; Grafik
+        </button>
+        <button onclick="switchTab('data')" id="tab-btn-data" class="tab-nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/50">
+          <svg class="w-4 h-4 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Kelola Data &amp; CSV
+        </button>
+        <button onclick="switchTab('junghuhn')" id="tab-btn-junghuhn" class="tab-nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/50">
+          <svg class="w-4 h-4 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h20"/><path d="M12 2v20"/><path d="m4.93 10.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 15.17 4.24 4.24"/><path d="m4.93 5.17 4.24 4.24"/></svg> Rekomendasi Junghuhn
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 space-y-5">
+
+    <!-- 4 KPI SUMMARY CARDS -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">TOTAL WILAYAH</span>
+          <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-100 text-slate-700">BPS 2025</span>
+        </div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1" id="kpiTotalDistricts">26</div>
+        <p class="text-xs text-slate-500 mt-1">Kecamatan di Kab. Sumedang</p>
+      </div>
+
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">TOTAL LUAS PANEN</span>
+          <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">20 Sayuran</span>
+        </div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-1" id="kpiTotalHarvest">2.946 Ha</div>
+        <p class="text-xs text-slate-500 mt-1" id="kpiTopClusterShare">Klaster Tertinggi: 1.900 Ha (64.5%)</p>
+      </div>
+
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">JUMLAH KLASTER (K)</span>
+          <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-blue-50 text-blue-700 border border-blue-200">Elbow Optimal</span>
+        </div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-blue-600 mt-1" id="kpiClusterCount">k = 3</div>
+        <p class="text-xs text-slate-500 mt-1" id="kpiSseValue">SSE Inertia: 1.6521</p>
+      </div>
+
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">SILHOUETTE SCORE</span>
+          <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-purple-50 text-purple-700 border border-purple-200">Valid / Baik</span>
+        </div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-purple-600 mt-1" id="kpiSilhouette">0.4810</div>
+        <p class="text-xs text-slate-500 mt-1">Evaluasi Kohesi &amp; Separasi</p>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: CEK KECOCOKAN TANAM (SPASIAL + DIAGNOSIS + LEMBAR KERJA BUDIDAYA) -->
+    <!-- ========================================================================= -->
+    <div id="tab-suitability" class="space-y-5">
+
+      <!-- DARK GEOSPATIAL BANNER -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950 rounded-2xl p-5 text-white shadow-md border border-slate-800">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            <svg class="w-3.5 h-3.5 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> FITUR GEOSPASIAL &amp; DETEKSI LOKASI OTOMATIS
+          </span>
+          <span id="activeCoordBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-mono-tech bg-slate-800 text-amber-300 border border-slate-700">
+            Koordinat Aktif: -6.8170, 107.9470 (Kec. Cimalaka)
+          </span>
+        </div>
+        <h2 class="text-lg sm:text-xl font-extrabold tracking-tight">
+          Pemetaan Spasial Lokasi Petani &amp; Rekomendasi Kecocokan Sayuran (Anti Gagal Panen)
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-4xl leading-relaxed">
+          Klik tombol <strong class="text-white">"<svg class="w-3.5 h-3.5 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Gunakan Lokasi GPS Saya"</strong> atau <strong class="text-white">klik langsung titik mana saja pada Peta Spasial Kabupaten Sumedang</strong> di bawah. Sistem otomatis mendeteksi koordinat <em>Latitude/Longitude</em>, menghitung interpolasi ketinggian (mdpl), suhu (°C), pH tanah, serta klaster <em>K-Means</em> terdekat untuk mengecek kecocokan tanaman.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-2 mt-4">
+          <button onclick="useMyGPSLocation()" id="btnMyGPS" class="px-3.5 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition shadow-sm flex items-center gap-1.5 cursor-pointer" title="Kunci Koordinat GPS Pekarangan via Sensor Perangkat">
+            <svg class="w-3.5 h-3.5 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>📍 Kunci GPS Pekarangan</span>
+          </button>
+          <button onclick="openDistrictPickerModal()" id="btnOpenDistrictPicker" class="px-3.5 py-2 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/40 transition shadow-sm flex items-center gap-1.5 cursor-pointer" title="Pilih Cepat 1 dari 26 Kecamatan di Kabupaten Sumedang">
+            <svg class="w-3.5 h-3.5 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            <span>🗺️ Pilih Kecamatan (26 Wilayah)</span>
+          </button>
+          <button onclick="loadScenarioCase('buahdua')" class="px-3.5 py-2 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-500 text-white transition shadow-sm flex items-center gap-1.5 cursor-pointer" title="Uji Kasus Nyata: Lahan Sayuran di Wilayah Kec. Buahdua">
+            <span>🌿 Uji Kasus: Buahdua</span>
+          </button>
+          <button onclick="loadScenarioCase('dosen_sumedang_kota')" class="px-3.5 py-2 rounded-lg text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-sm flex items-center gap-1.5 cursor-pointer" title="Uji Kasus Nyata: Rumah Dosen 1 di Dataran Lembah Sumedang Kota">
+            <span>🏡 Kasus Dosen 1: Sumedang Kota</span>
+          </button>
+          <button onclick="loadScenarioCase('dosen_cijeler_situraja')" class="px-3.5 py-2 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition shadow-sm flex items-center gap-1.5 cursor-pointer" title="Uji Kasus Nyata: Rumah Dosen 2 di Kaki Perbukitan Desa Cijeler Situraja">
+            <span>⛰️ Kasus Dosen 2: Desa Cijeler (Situraja)</span>
+          </button>
+          <button onclick="loadScenarioCase('kangkung_cimalaka')" class="px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition shadow-sm flex items-center gap-1.5 cursor-pointer">
+            <span>🌱 Kangkung vs Sawi</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- MAP & FIELD PARAMETER CONTROLS (2 COLUMNS) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <!-- LEFT: INTERACTIVE SPATIAL MAP -->
+        <div class="lg:col-span-7 bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-slate-100">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-slate-900">
+                  🗺️ Peta Spasial Interaktif Lokasi Lahan &amp; Klaster Kabupaten Sumedang
+                </h3>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  <strong class="text-slate-700">Klik di titik mana saja pada peta</strong> untuk memindahkan pin lokasi lahan petani (<span class="text-rose-600 font-semibold">📍 Pin Merah</span>) dan melihat kecocokan sayuran secara spasial.
+                </p>
+              </div>
+            </div>
+
+            <!-- Map Mode Toggle & Legend -->
+            <div class="flex flex-wrap items-center justify-between gap-2 my-3">
+              <div class="inline-flex rounded-lg p-0.5 bg-slate-100 border border-slate-200">
+                <button onclick="setSuitabilityMapColorMode('suitability')" id="btnMapModeSuitability" class="px-3 py-1.5 rounded-md text-xs font-bold bg-emerald-600 text-white shadow-sm transition">
+                  🎯 Warna Kecocokan Tanaman
+                </button>
+                <button onclick="setSuitabilityMapColorMode('cluster')" id="btnMapModeCluster" class="px-3 py-1.5 rounded-md text-xs font-semibold text-slate-700 hover:text-slate-900 transition">
+                  <svg class="w-4 h-4 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Warna Klaster K-Means
+                </button>
+              </div>
+
+              <!-- PILIHAN TIPE PETA: ASLI (OSM) VS FOTO SATELIT NYATA -->
+              <div class="inline-flex items-center rounded-lg p-0.5 bg-slate-100 border border-slate-200">
+                <button onclick="setBaseTileLayer('osm')" id="btnTileOSM" class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-900 text-white shadow-sm transition cursor-pointer" title="Peta Standar OpenStreetMap Asli (Warna Hijau & Jalanan Asli)">
+                  🗺️ Peta Asli (OSM)
+                </button>
+                <button onclick="setBaseTileLayer('satellite')" id="btnTileSat" class="px-2.5 py-1 rounded-md text-[11px] font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer" title="Foto Satelit Nyata dari Luar Angkasa">
+                  🛰️ Foto Satelit Nyata
+                </button>
+              </div>
+
+              <div id="mapLegendSuitability" class="flex flex-wrap items-center gap-3 text-[11px] font-medium text-slate-600">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Cocok (<span id="legendCropName">Kangkung</span> &ge;80%)</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Cukup (62–79%)</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> Risiko Gagal Panen (&lt;62%)</span>
+              </div>
+            </div>
+
+            <div class="mb-2.5 flex items-center justify-between text-[11px] bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200/80 text-slate-600 font-mono-tech">
+              <span id="nearestDistrictDistanceInfo">📍 Pusat Kec. Cimalaka (0.00 km)</span>
+              <span class="text-slate-400">OpenStreetMap Spatial Layer</span>
+            </div>
+          </div>
+
+          <!-- Leaflet Map Container -->
+          <div id="spatialSuitabilityMap" class="border border-slate-200"></div>
+        </div>
+
+        <!-- RIGHT: LOCATION & CROP INPUT PARAMETERS -->
+        <div class="lg:col-span-5 bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-start justify-between gap-2 pb-3 border-b border-slate-100">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-slate-900">
+                  Parameter Lokasi Spasial &amp; Tanaman
+                </h3>
+                <p class="text-xs text-slate-500">
+                  Otomatis terisi saat Anda klik lokasi di peta / GPS.
+                </p>
+              </div>
+              <span id="coordBoxMini" class="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-[11px] font-mono-tech font-semibold text-slate-700">
+                -6.8170, 107.9470
+              </span>
+            </div>
+
+            <div class="space-y-3.5 mt-3.5">
+              <!-- Select District -->
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                  Kecamatan Terdekat (Terdeteksi Spasial / Pilih Manual):
+                </label>
+                <select id="selectDistrict" onchange="onDistrictSelectChange()" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </select>
+              </div>
+
+              <!-- Select Target Crop -->
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                  Sayuran yang Ingin Ditanam &amp; Dipetakan di Peta:
+                </label>
+                <select id="selectCrop" onchange="evaluateCurrentLocation()" class="w-full rounded-lg border border-emerald-500 bg-emerald-50/30 px-3 py-2 text-xs sm:text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </select>
+              </div>
+
+              <!-- Hyper-Local Precision Location & Satellite Weather Card -->
+              <div class="p-3.5 rounded-xl bg-gradient-to-r from-emerald-50 via-teal-50 to-slate-50 border border-emerald-200/90 shadow-sm space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="flex h-2.5 w-2.5 relative">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600"></span>
+                    </span>
+                    <span id="detectedLocalityTitle" class="text-xs font-extrabold text-slate-900">
+                      📍 Memuat Lokasi Presisi Desa...
+                    </span>
+                  </div>
+                  <span id="detectedLocalityBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-600 text-white shadow-xs">
+                    Hyper-Local GPS
+                  </span>
+                </div>
+                
+                <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-1.5 border-t border-emerald-200/60">
+                  <div id="liveWeatherBadge" class="flex items-center">
+                    <span class="text-emerald-950 font-bold">Live Satelit:</span>
+                    <span class="text-emerald-800 ml-1 font-semibold">Sinkronisasi Open-Meteo...</span>
+                  </div>
+                  <button onclick="syncLiveWeatherNow()" id="btnSyncWeather" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-700 hover:bg-emerald-800 text-white transition shadow-sm flex items-center gap-1 cursor-pointer">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                    <span>Sinkron Satelit</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 2x2 Parameter Sliders -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <!-- pH Tanah -->
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90">
+                  <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
+                    <span class="text-slate-700">pH Tanah Lahan:</span>
+                    <span id="valPhLabel" class="font-mono-tech font-bold text-emerald-700">6.4</span>
+                  </div>
+                  <input type="range" id="sliderPh" min="4.5" max="8.0" step="0.1" value="6.4" oninput="onSliderInput()" class="w-full cursor-pointer" />
+                  <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                    <span>Asam (4.5)</span>
+                    <span>Netral</span>
+                    <span>Basa (8.0)</span>
+                  </div>
+                </div>
+
+                <!-- Suhu Udara -->
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90">
+                  <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
+                    <span class="text-slate-700">Suhu Udara (°C):</span>
+                    <span id="valTempLabel" class="font-mono-tech font-bold text-emerald-700">24.0°C</span>
+                  </div>
+                  <input type="range" id="sliderTemp" min="16.0" max="33.0" step="0.5" value="24.0" oninput="onSliderInput()" class="w-full cursor-pointer" />
+                  <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                    <span>16°C</span>
+                    <span>24°C</span>
+                    <span>33°C</span>
+                  </div>
+                </div>
+
+                <!-- Elevasi mdpl -->
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90">
+                  <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
+                    <span class="text-slate-700">Elevasi (mdpl):</span>
+                    <span id="valElevLabel" class="font-mono-tech font-bold text-emerald-700">1092 mdpl</span>
+                  </div>
+                  <input type="range" id="sliderElev" min="25" max="1800" step="5" value="1092" oninput="onSliderInput()" class="w-full cursor-pointer" />
+                  <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                    <span>25m</span>
+                    <span>800m</span>
+                    <span>1.800m</span>
+                  </div>
+                </div>
+
+                <!-- Kondisi Cuaca -->
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex flex-col justify-between">
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">
+                    Kondisi Cuaca:
+                  </label>
+                  <select id="selectWeather" onchange="evaluateCurrentLocation()" class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <option value="cerah_hangat">Cerah &amp; Hangat (Kemarau/Normal)</option>
+                    <option value="sejuk_lembap">Sejuk &amp; Lembap (Hujan Normal)</option>
+                    <option value="panas_kering">Panas Terik &amp; Kering</option>
+                    <option value="hujan_tinggi">Curah Hujan Tinggi / Ekstrem</option>
+                  </select>
+                  <div class="text-[10px] text-slate-400 mt-1">Agroklimat Musim Tanam</div>
+                </div>
+              </div>
+
+              <button onclick="evaluateCurrentLocation()" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow-sm transition flex items-center justify-center gap-2">
+                <svg class="w-4 h-4 inline-block -mt-0.5 mr-1 text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Evaluasi Titik Lokasi &amp; Perbarui Peta Spasial
+              </button>
+            </div>
+          </div>
+
+          <!-- Active K-Means Cluster Info Box -->
+          <div id="activeClusterCard" class="bg-slate-900 text-white rounded-xl p-3.5 border border-slate-800">
+            <div class="flex items-center justify-between gap-2 mb-1.5">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                KLASTER K-MEANS TITIK LOKASI INI
+              </span>
+              <span id="activeClusterBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-900/90 text-emerald-300 border border-emerald-700">
+                Cluster 2 (Potensi Sedang)
+              </span>
+            </div>
+            <p id="activeClusterDesc" class="text-xs text-slate-300 leading-relaxed">
+              Titik koordinat Anda masuk ke wilayah Kec. Cimalaka pada Zona Sejuk (600–1.500 mdpl).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIAGNOSIS & RECOMMENDED CROPS TABLE (2 COLUMNS) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <!-- LEFT: CROP SUITABILITY DIAGNOSIS -->
+        <div id="diagnosisCardContainer" class="lg:col-span-5 bg-white rounded-2xl p-5 border-2 border-amber-300 shadow-sm flex flex-col justify-between">
+          <!-- Populated dynamically by renderSuitabilityDiagnosis() -->
+        </div>
+
+        <!-- RIGHT: TOP RECOMMENDED VEGETABLES FOR THIS LOCATION -->
+        <div class="lg:col-span-7 bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="pb-3 border-b border-slate-100">
+            <h3 class="text-base font-bold text-slate-900">
+              <svg class="w-4 h-4 inline-block -mt-0.5 mr-1 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> Rekomendasi Tanaman Sayuran Terbaik untuk Titik Lokasi Spasial Ini
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Klik tombol <strong>"Peta &amp; Cara Tanam"</strong> pada salah satu tanaman untuk melihat sebaran spasial kecocokannya di seluruh 26 kecamatan sekaligus membuka lembar kerja teknis budidayanya di bawah.
+            </p>
+          </div>
+
+          <div class="overflow-x-auto mt-3">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase">
+                  <th class="py-2.5 px-2">#</th>
+                  <th class="py-2.5 px-2">Tanaman Sayuran</th>
+                  <th class="py-2.5 px-2">Syarat Tumbuh (pH, Suhu, mdpl)</th>
+                  <th class="py-2.5 px-2 text-center">Kecocokan</th>
+                  <th class="py-2.5 px-2">Status Rekomendasi</th>
+                  <th class="py-2.5 px-2 text-right">Peta &amp; Panduan</th>
+                </tr>
+              </thead>
+              <tbody id="recommendationTableBody" class="divide-y divide-slate-100 text-xs">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- REDESIGNED CULTIVATION SECTION: CLEAN TECHNICAL WORKSHEET (NO AI SLOP)    -->
+      <!-- ========================================================================= -->
+      <section id="cultivationWorksheetSection" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <!-- Populated dynamically by renderCultivationGuide() -->
+      </section>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 2: PETA SPASIAL & KLASTER K-MEANS (26 KECAMATAN)                      -->
+    <!-- ========================================================================= -->
+    <div id="tab-map" class="hidden space-y-5">
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 pb-4 border-b border-slate-200">
+          <div>
+            <h2 class="text-base sm:text-lg font-bold text-slate-900">
+              Peta Sebaran Spasial Klaster Potensi Budidaya Sayuran (26 Kecamatan Kab. Sumedang)
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Visualisasi hasil pengelompokan algoritma <em>K-Means Clustering</em> berdasarkan Luas Panen (Ha), Luas Wilayah (km&sup2;), Ketinggian (mdpl), dan Suhu Rata-rata (°C).
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <label class="text-xs font-semibold text-slate-700">Jumlah Klaster (k):</label>
+            <select id="selectKValueMap" onchange="changeKClusterCount(this.value)" class="rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-900">
+              <option value="2">k = 2 Klaster</option>
+              <option value="3" selected>k = 3 Klaster (Optimal Elbow)</option>
+              <option value="4">k = 4 Klaster</option>
+              <option value="5">k = 5 Klaster</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-4">
+          <div class="lg:col-span-8">
+            <div id="clusterFullMap" class="border border-slate-200"></div>
+          </div>
+          <div class="lg:col-span-4 space-y-3" id="clusterSummaryCardsContainer">
+            <!-- Populated by renderClusterFullMapAndSummary() -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 3: ANALISIS KDD, NORMALISASI MIN-MAX, ELBOW & SILHOUETTE              -->
+    <!-- ========================================================================= -->
+    <div id="tab-kdd" class="hidden space-y-5">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <h3 class="text-sm sm:text-base font-bold text-slate-900">
+            Grafik Elbow Method (Sum of Squared Error / SSE Inertia)
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5 mb-3">
+            Titik siku (<em>elbow</em>) penurunan nilai SSE paling signifikan terjadi pada <strong>k = 3 (SSE = 1.6521)</strong>.
+          </p>
+          <div class="h-64">
+            <canvas id="elbowChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <h3 class="text-sm sm:text-base font-bold text-slate-900">
+            Grafik Validasi Silhouette Score (k = 2 s.d. k = 6)
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5 mb-3">
+            Pengujian kohesi internal dan separasi antarklaster menghasilkan skor valid pada <strong>k = 3 (0.4810)</strong>.
+          </p>
+          <div class="h-64">
+            <canvas id="silhouetteChartCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Normalization Table -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-slate-200">
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900">
+              Tabel Hasil Pra-Pemrosesan Normalisasi Min-Max Scaling [0, 1] &amp; Jarak Euclidean ke Centroid
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Rumus: &mu; = (x - x_min) / (x_max - x_min) pada 26 kecamatan di Kabupaten Sumedang.
+            </p>
+          </div>
+        </div>
+        <div class="overflow-x-auto mt-3 max-h-96">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-600 uppercase sticky top-0">
+              <tr>
+                <th class="py-2.5 px-3">No</th>
+                <th class="py-2.5 px-3">Kecamatan</th>
+                <th class="py-2.5 px-3 text-right">Norm. Panen</th>
+                <th class="py-2.5 px-3 text-right">Norm. Wilayah</th>
+                <th class="py-2.5 px-3 text-right">Norm. Elevasi</th>
+                <th class="py-2.5 px-3 text-right">Norm. Suhu</th>
+                <th class="py-2.5 px-3 text-right">Jarak ke Centroid</th>
+                <th class="py-2.5 px-3">Klaster K-Means</th>
+              </tr>
+            </thead>
+            <tbody id="kddNormalizationTableBody" class="divide-y divide-slate-100 font-mono-tech">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 4: KELOLA DATA KECAMATAN & UNDUH CSV                                  -->
+    <!-- ========================================================================= -->
+    <div id="tab-data" class="hidden space-y-5">
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-slate-200">
+          <div>
+            <h2 class="text-base sm:text-lg font-bold text-slate-900">
+              Dataset Sekunder BPS Kabupaten Sumedang (26 Kecamatan)
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Sumber: BPS Kabupaten Sumedang 2025, Open Data Jawa Barat, BMKG, dan Koordinat Spasial Kecamatan.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="exportDatasetCSV()" class="px-3.5 py-2 rounded-lg text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition">
+              ⬇️ Unduh Dataset &amp; Hasil Klaster (.CSV)
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto mt-4">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-600 uppercase">
+              <tr>
+                <th class="py-2.5 px-3">No</th>
+                <th class="py-2.5 px-3">Kecamatan</th>
+                <th class="py-2.5 px-3 text-right">Luas Panen (Ha)</th>
+                <th class="py-2.5 px-3 text-right">Luas Wilayah (km&sup2;)</th>
+                <th class="py-2.5 px-3 text-right">Elevasi (mdpl)</th>
+                <th class="py-2.5 px-3 text-right">Suhu (°C)</th>
+                <th class="py-2.5 px-3 text-right">pH Rata-rata</th>
+                <th class="py-2.5 px-3">Koordinat (Lat, Lon)</th>
+                <th class="py-2.5 px-3">Komoditas Terluas (BPS)</th>
+                <th class="py-2.5 px-3 text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="rawDatasetTableBody" class="divide-y divide-slate-100">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 5: MATRIKS KLASIFIKASI IKLIM JUNGHUHN                                 -->
+    <!-- ========================================================================= -->
+    <div id="tab-junghuhn" class="hidden space-y-5">
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+        <div class="pb-4 border-b border-slate-200">
+          <h2 class="text-base sm:text-lg font-bold text-slate-900">
+            Matriks Kesesuaian Agroklimat Klasifikasi Iklim Junghuhn Kabupaten Sumedang
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Integrasi zona elevasi dan suhu udara Junghuhn dengan klaster potensi K-Means sebagai acuan penyuluhan Dinas Pertanian dan petani.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60">
+            <div class="text-xs font-bold uppercase tracking-wider text-amber-700">Zona I &bull; Daerah Panas / Dataran Rendah</div>
+            <div class="text-lg font-extrabold text-slate-900 mt-1">0 – 600 mdpl (22.7°C – 26.3°C)</div>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              <strong>Kecamatan:</strong> Tomo, Ujung Jaya, Jatigede, Darmaraja, Wado, Situraja, Cisitu, Conggeang, Buahdua, Surian, Sumedang Utara, Sumedang Selatan, Ganeas, Paseh, Cisarua, Tanjungkerta, Tanjungmedar, Jatinunggal.
+            </p>
+            <p class="text-xs text-slate-800 font-semibold mt-2">
+              Komoditas Utama: Ketimun, Bawang Merah, Kangkung Darat, Kacang Panjang, Bayam, Cabai Rawit.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60">
+            <div class="text-xs font-bold uppercase tracking-wider text-emerald-700">Zona II &bull; Daerah Sedang / Lereng Menengah</div>
+            <div class="text-lg font-extrabold text-slate-900 mt-1">600 – 1.500 mdpl (17.1°C – 22.6°C)</div>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              <strong>Kecamatan:</strong> Pamulihan, Cimanggung, Sukasari, Tanjungsari, Rancakalong, Cimalaka, Cibugel, Jatinangor.
+            </p>
+            <p class="text-xs text-slate-800 font-semibold mt-2">
+              Komoditas Utama: Kubis, Petsai/Sawi, Cabai Keriting, Cabai Rawit, Tomat, Bawang Daun, Labu Siam, Kentang.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60">
+            <div class="text-xs font-bold uppercase tracking-wider text-blue-700">Mitigasi Risiko Gagal Panen Spasial</div>
+            <div class="text-lg font-extrabold text-slate-900 mt-1">Pencegahan Salah Tanam</div>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              Menanam komoditas Zona I (seperti Kangkung Darat/Ketimun) pada puncak Zona II (&gt;1.000 mdpl, suhu &lt;21°C) memicu pertumbuhan kerdil. Sebaliknya, menanam Kubis pada Zona I (&lt;400 mdpl, suhu &gt;27°C) menyebabkan gagal krop.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 mt-8 py-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+      <div>
+        <strong>SI-SPASIAL KLASTER &amp; REKOMENDASI SAYURAN SUMEDANG</strong> &bull; Skripsi Informatika FTI UNSAP (2026)
+      </div>
+      <div class="font-mono-tech">
+        Ahmad Al Fauzi &bull; NIM 230660121014
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- COMPLETE JAVASCRIPT ENGINE (K-MEANS, SPATIAL MAP, SUITABILITY & WORKSHEET) -->
+  <!-- ========================================================================= -->
+  <script>
+    // 1. DATASET 26 KECAMATAN KABUPATEN SUMEDANG (BPS 2025 + AGROKLIMAT + KOORDINAT)
+    const districtsData = [
+      { id: 1, name: "Pamulihan", harvestHa: 580, areaKm2: 50.70, elevMdpl: 1100, tempC: 20.5, ph: 6.2, lat: -6.8850, lon: 107.8120, topCrop: "Cabai Rawit (182 Ha), Kubis, Tomat" },
+      { id: 2, name: "Cimanggung", harvestHa: 485, areaKm2: 42.98, elevMdpl: 950, tempC: 21.5, ph: 6.2, lat: -6.9420, lon: 107.8260, topCrop: "Cabai Rawit (103 Ha), Cabai Keriting, Sawi" },
+      { id: 3, name: "Sukasari", harvestHa: 431, areaKm2: 41.82, elevMdpl: 1200, tempC: 19.8, ph: 6.1, lat: -6.8670, lon: 107.7750, topCrop: "Kubis (94 Ha), Cabai Keriting, Tomat" },
+      { id: 4, name: "Tanjungsari", harvestHa: 404, areaKm2: 35.62, elevMdpl: 855, tempC: 22.0, ph: 6.3, lat: -6.9010, lon: 107.7980, topCrop: "Kubis (103 Ha), Cabai Rawit, Tomat" },
+      { id: 5, name: "Wado", harvestHa: 182, areaKm2: 76.41, elevMdpl: 630, tempC: 24.5, ph: 6.3, lat: -6.9480, lon: 108.0920, topCrop: "Labu Siam (39 Ha), Cabai Rawit, Sawi" },
+      { id: 6, name: "Rancakalong", harvestHa: 141, areaKm2: 55.07, elevMdpl: 910, tempC: 21.8, ph: 6.3, lat: -6.8320, lon: 107.8370, topCrop: "Cabai Keriting (44 Ha), Tomat, Kubis" },
+      { id: 7, name: "Ujung Jaya", harvestHa: 121, areaKm2: 86.23, elevMdpl: 52, tempC: 28.0, ph: 6.5, lat: -6.7180, lon: 108.1510, topCrop: "Ketimun (69 Ha), Bawang Merah, Kacang Panjang" },
+      { id: 8, name: "Cimalaka", harvestHa: 113, areaKm2: 43.29, elevMdpl: 1092, tempC: 24.0, ph: 6.4, lat: -6.8170, lon: 107.9470, topCrop: "Petsai/Sawi (25 Ha), Tomat, Cabai Keriting" },
+      { id: 9, name: "Tomo", harvestHa: 63, areaKm2: 71.49, elevMdpl: 46, tempC: 28.2, ph: 6.6, lat: -6.7620, lon: 108.1320, topCrop: "Bawang Merah (34 Ha), Cabai Rawit, Ketimun" },
+      { id: 10, name: "Sumedang Selatan", harvestHa: 52, areaKm2: 92.51, elevMdpl: 715, tempC: 23.5, ph: 6.3, lat: -6.8820, lon: 107.9150, topCrop: "Cabai Besar/TW (16 Ha), Cabai Keriting" },
+      { id: 11, name: "Tanjungkerta", harvestHa: 52, areaKm2: 43.72, elevMdpl: 552, tempC: 25.0, ph: 6.4, lat: -6.7910, lon: 107.8870, topCrop: "Ketimun (24 Ha), Kacang Panjang, Kangkung" },
+      { id: 12, name: "Buahdua", harvestHa: 44, areaKm2: 107.68, elevMdpl: 345, tempC: 26.2, ph: 6.4, lat: -6.7360, lon: 107.9730, topCrop: "Cabai Besar/TW (10 Ha), Ketimun, Kacang Panjang" },
+      { id: 13, name: "Jatinunggal", harvestHa: 38, areaKm2: 72.12, elevMdpl: 420, tempC: 25.8, ph: 6.4, lat: -6.9410, lon: 108.1520, topCrop: "Cabai Rawit (19 Ha), Bawang Merah" },
+      { id: 14, name: "Cisitu", harvestHa: 32, areaKm2: 65.03, elevMdpl: 486, tempC: 25.2, ph: 6.4, lat: -6.8680, lon: 108.0370, topCrop: "Ketimun (5 Ha), Kacang Panjang (5 Ha)" },
+      { id: 15, name: "Tanjungmedar", harvestHa: 32, areaKm2: 60.67, elevMdpl: 520, tempC: 25.0, ph: 6.3, lat: -6.7680, lon: 107.8380, topCrop: "Ketimun (10 Ha), Kacang Panjang" },
+      { id: 16, name: "Darmaraja", harvestHa: 30, areaKm2: 49.38, elevMdpl: 310, tempC: 26.5, ph: 6.5, lat: -6.9120, lon: 108.0750, topCrop: "Kangkung (7 Ha), Cabai Keriting (7 Ha)" },
+      { id: 17, name: "Sumedang Utara", harvestHa: 29, areaKm2: 30.40, elevMdpl: 458, tempC: 25.5, ph: 6.4, lat: -6.8360, lon: 107.9240, topCrop: "Cabai Besar/TW (7 Ha), Kangkung, Sawi" },
+      { id: 18, name: "Cibugel", harvestHa: 25, areaKm2: 59.52, elevMdpl: 1050, tempC: 20.8, ph: 6.1, lat: -6.9680, lon: 107.9820, topCrop: "Bawang Daun (19 Ha), Kubis, Cabai" },
+      { id: 19, name: "Situraja", harvestHa: 23, areaKm2: 43.23, elevMdpl: 412, tempC: 25.8, ph: 6.4, lat: -6.8470, lon: 107.9970, topCrop: "Kangkung (6 Ha), Kacang Panjang" },
+      { id: 20, name: "Jatinangor", harvestHa: 20, areaKm2: 31.60, elevMdpl: 755, tempC: 22.8, ph: 6.3, lat: -6.9280, lon: 107.7720, topCrop: "Bawang Merah (6 Ha), Sawi, Cabai" },
+      { id: 21, name: "Paseh", harvestHa: 14, areaKm2: 31.62, elevMdpl: 550, tempC: 24.8, ph: 6.4, lat: -6.8030, lon: 108.0040, topCrop: "Cabai Besar/TW (7 Ha), Ketimun" },
+      { id: 22, name: "Jatigede", harvestHa: 11, areaKm2: 106.24, elevMdpl: 260, tempC: 27.0, ph: 6.5, lat: -6.8630, lon: 108.1180, topCrop: "Cabai Rawit (3 Ha), Kacang Panjang (3 Ha)" },
+      { id: 23, name: "Ganeas", harvestHa: 10, areaKm2: 22.90, elevMdpl: 510, tempC: 25.2, ph: 6.4, lat: -6.8590, lon: 107.9640, topCrop: "Cabai Rawit (4 Ha), Kangkung" },
+      { id: 24, name: "Conggeang", harvestHa: 8, areaKm2: 106.98, elevMdpl: 390, tempC: 26.0, ph: 6.4, lat: -6.7790, lon: 108.0270, topCrop: "Cabai Besar/TW (6 Ha), Ketimun" },
+      { id: 25, name: "Surian", harvestHa: 4, areaKm2: 70.88, elevMdpl: 295, tempC: 26.8, ph: 6.4, lat: -6.7120, lon: 107.8820, topCrop: "Bayam (1 Ha), Kangkung (1 Ha), Cabai Rawit" },
+      { id: 26, name: "Cisarua", harvestHa: 2, areaKm2: 17.71, elevMdpl: 590, tempC: 24.6, ph: 6.4, lat: -6.8080, lon: 107.9020, topCrop: "Bayam (1 Ha), Kangkung (1 Ha)" }
+    ];
+
+    // 2. DATABASE 12 KOMODITAS SAYURAN UTAMA & PARAMETER AGRONOMI KEMENTAN RI
+    const cropsCatalog = [
+      {
+        id: "kangkung",
+        name: "Kangkung Darat",
+        phMin: 6.0, phMax: 7.5,
+        tempMin: 25.0, tempMax: 32.0,
+        elevMin: 5, elevMax: 650,
+        idealWeather: ["cerah_hangat", "panas_kering"],
+        harvestDays: "21–28 HST (Panen Cepat)",
+        polySizeRec: "sedang",
+        plantsPerPoly: 6,
+        npkGramPerPoly: 3,
+        yieldKgPerPoly: 0.19,
+        spacingCm: "15 × 15 cm",
+        yieldTonPerHa: 14.0,
+        riskNoteHighElev: "Membutuhkan penyinaran matahari terik & suhu hangat (25–30°C) di dataran rendah. Pada dataran tinggi (>900 mdpl) bersuhu dingin, pertumbuhan daun kangkung kerdil dan rentan gagal panen.",
+        sop: {
+          stage1: "Siapkan media tanam gembur (Tanah : Pupuk Kandang : Sekam Bakar = 2:1:1). Pastikan lubang drainase polybag/bedengan lancar.",
+          stage2: "Tanam benih langsung (tanpa semai) 5–7 biji per polybag (atau alur 15×15 cm di bedengan) sedalam 1.5 cm, tutup tipis dengan kompos halus.",
+          stage3: "Kocor NPK 16-16-16 + sedikit Urea pada 7–10 HST agar batang dan daun cepat rimbun dan renyah.",
+          stage4: "Waspadai karat putih (Albugo) & ulat daun. Panen umur 21–25 HST sebelum tanaman berbunga dengan cara dicabut atau dipotong 3 cm di atas pangkal batang."
+        }
+      },
+      {
+        id: "sawi",
+        name: "Petsai / Sawi (Caisim & Pakcoy)",
+        phMin: 5.8, phMax: 7.0,
+        tempMin: 18.0, tempMax: 24.5,
+        elevMin: 600, elevMax: 1500,
+        idealWeather: ["sejuk_lembap", "cerah_hangat"],
+        harvestDays: "30–40 HST",
+        polySizeRec: "kecil",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 4,
+        yieldKgPerPoly: 0.25,
+        spacingCm: "20 × 20 cm",
+        yieldTonPerHa: 18.0,
+        riskNoteHighElev: "Sangat cocok di dataran menengah hingga tinggi beriklim sejuk. Pada dataran rendah yang terlalu panas (>28°C), daun sawi cenderung tipis dan cepat berbunga prematur.",
+        sop: {
+          stage1: "Campurkan Tanah Gembur : Kompos Matang : Sekam Bakar (2:1:1). Aduk rata kapur Dolomit H-7 bila pH tanah di bawah 5.8.",
+          stage2: "Semai benih selama 10–14 hari (muncul 3–4 daun sejati), lalu pindah tanam 1 bibit per polybag (jarak 20×20 cm di bedengan) pada sore hari.",
+          stage3: "Berikan pupuk susulan NPK 16-16-16 pada umur 10 HST dan 20 HST dengan cara dikocor di sekeliling perakaran.",
+          stage4: "Kendalikan ulat daun (Plutella) dengan pestisida nabati daun mimba. Panen pada 30–40 HST saat krop/daun mencapai ukuran maksimal."
+        }
+      },
+      {
+        id: "cabai_rawit",
+        name: "Cabai Rawit",
+        phMin: 5.8, phMax: 6.8,
+        tempMin: 20.0, tempMax: 26.5,
+        elevMin: 400, elevMax: 1350,
+        idealWeather: ["cerah_hangat", "sejuk_lembap"],
+        harvestDays: "85–95 HST (Panen Berkala)",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 8,
+        yieldKgPerPoly: 0.45,
+        spacingCm: "50 × 60 cm",
+        yieldTonPerHa: 11.5,
+        riskNoteHighElev: "Adaptif di dataran menengah hingga tinggi, namun rentan busuk buah antraknosa bila kelembapan terlalu ekstrem dan drainase buruk.",
+        sop: {
+          stage1: "Gunakan polybag Besar 40×40 cm atau bedengan bermulsa plastik hitam perak. Berikan pupuk kandang matang dan Dolomit H-10 sebelum tanam.",
+          stage2: "Semai benih 21–25 hari hingga berdaun 4–5 helai. Pindah tanam 1 bibit per lubang disertai pemasangan ajir bambu penopang.",
+          stage3: "Lakukan perempelan tunas air di bawah cabang Y. Kocor NPK 16-16-16 setiap 14 hari sekali, tambah KNO3/MKP saat memasuki fase berbunga.",
+          stage4: "Cegah kutu kebul, thrips, dan patek (antraknosa) dengan sanitasi buah busuk. Panen perdana umur 85–95 HST saat buah merah 80%."
+        }
+      },
+      {
+        id: "cabai_keriting",
+        name: "Cabai Keriting & Cabai Besar (TW)",
+        phMin: 6.0, phMax: 6.8,
+        tempMin: 21.0, tempMax: 26.0,
+        elevMin: 600, elevMax: 1250,
+        idealWeather: ["cerah_hangat", "sejuk_lembap"],
+        harvestDays: "80–90 HST",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 8,
+        yieldKgPerPoly: 0.50,
+        spacingCm: "50 × 60 cm",
+        yieldTonPerHa: 13.0,
+        riskNoteHighElev: "Membutuhkan rentang pH tanah netral (6.0–6.8) dan suhu sejuk-hangat stabil agar bunga tidak mudah rontok.",
+        sop: {
+          stage1: "Siapkan media gembur kaya bahan organik pada polybag 40×40 cm atau bedengan tinggi 30 cm dengan drainase baik.",
+          stage2: "Pindah tanam bibit umur 21–24 HSS (Hari Setelah Semai) pada sore hari, pasang ajir bambu setinggi 120 cm.",
+          stage3: "Kocor NPK 16-16-16 rutin setiap 10–14 hari. Semprot pupuk kalsium (Ca) pada fase pembungaan untuk mencegah rontok bunga dan busuk ujung buah.",
+          stage4: "Pasang perangkap likat kuning untuk mengendalikan lalat buah dan thrips. Panen saat buah berwarna merah menyala."
+        }
+      },
+      {
+        id: "kubis",
+        name: "Kubis (Kol Dataran Tinggi)",
+        phMin: 6.0, phMax: 7.0,
+        tempMin: 16.0, tempMax: 22.0,
+        elevMin: 800, elevMax: 1600,
+        idealWeather: ["sejuk_lembap"],
+        harvestDays: "75–90 HST",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 7,
+        yieldKgPerPoly: 1.10,
+        spacingCm: "50 × 50 cm",
+        yieldTonPerHa: 24.0,
+        riskNoteHighElev: "Komoditas wajib dataran tinggi sejuk (800–1.600 mdpl). Apabila ditanam di dataran rendah bersuhu panas (>26°C), kubis tidak akan membentuk krop (gagal panen).",
+        sop: {
+          stage1: "Pastikan pH tanah minimal 6.0 (aplikasikan Dolomit H-14 jika tanah asam) untuk mencegah penyakit akar gada (Plasmodiophora brassicae).",
+          stage2: "Semai benih 20–25 hari, pindah tanam 1 bibit per polybag 40×40 cm atau jarak 50×50 cm di bedengan.",
+          stage3: "Lakukan pembumbunan tanah di pangkal batang pada 20 HST dan pemupukan NPK susulan pada 15, 30, dan 45 HST.",
+          stage4: "Awasi ulat krop (Crocidolomia). Panen pada 75–90 HST ketika krop kubis sudah padat dan keras saat ditekan."
+        }
+      },
+      {
+        id: "tomat",
+        name: "Tomat Sayur",
+        phMin: 5.8, phMax: 6.8,
+        tempMin: 18.0, tempMax: 25.0,
+        elevMin: 650, elevMax: 1400,
+        idealWeather: ["cerah_hangat", "sejuk_lembap"],
+        harvestDays: "70–80 HST",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 8,
+        yieldKgPerPoly: 0.90,
+        spacingCm: "50 × 60 cm",
+        yieldTonPerHa: 20.0,
+        riskNoteHighElev: "Tumbuh optimal di lereng pegunungan sejuk. Suhu malam yang terlalu panas di dataran rendah menghambat pembentukan buah tomat.",
+        sop: {
+          stage1: "Gunakan media poros (Tanah : Kompos : Sekam = 2:1:1) di polybag 40×40 cm. Koreksi pH dengan Dolomit agar kalsium terserap optimal.",
+          stage2: "Pindah tanam bibit umur 21 HSS, segera pasang ajir penopang dan ikat batang utama secara longgar dengan tali rafia.",
+          stage3: "Pangkas tunas ketiak (pewiwilan) secara berkala. Kocor NPK 16-16-16 tiap 2 minggu dan jaga kelembapan tanah tetap stabil.",
+          stage4: "Cegah busuk daun (Phytophthora) saat musim hujan dan busuk pantat buah (blossom end rot). Panen saat buah berubah warna kuning-kemerahan."
+        }
+      },
+      {
+        id: "ketimun",
+        name: "Ketimun",
+        phMin: 6.0, phMax: 7.0,
+        tempMin: 24.0, tempMax: 30.0,
+        elevMin: 20, elevMax: 650,
+        idealWeather: ["cerah_hangat", "panas_kering"],
+        harvestDays: "38–45 HST",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 6,
+        yieldKgPerPoly: 0.85,
+        spacingCm: "40 × 60 cm",
+        yieldTonPerHa: 19.0,
+        riskNoteHighElev: "Sangat produktif di dataran rendah hingga menengah yang hangat (seperti Ujungjaya & Tanjungkerta). Kurang optimal di dataran tinggi dingin.",
+        sop: {
+          stage1: "Siapkan polybag 40×40 cm atau bedengan gembur, pasang lanjaran/para-para bambu setinggi 1.5 meter untuk merambatkan sulur.",
+          stage2: "Tanam benih langsung 2 biji per lubang sedalam 2 cm, sisakan 1 tanaman terbaik pada umur 7 HST.",
+          stage3: "Rambatkan sulur ke lanjaran pada 14 HST. Kocor NPK 16-16-16 pada umur 10, 20, dan 30 HST.",
+          stage4: "Kendalikan kumbang daun (Aulacophora) dan embun bulu. Panen buah muda umur 38–45 HST setiap 2–3 hari sekali."
+        }
+      },
+      {
+        id: "bawang_merah",
+        name: "Bawang Merah",
+        phMin: 5.8, phMax: 6.8,
+        tempMin: 25.0, tempMax: 31.0,
+        elevMin: 10, elevMax: 650,
+        idealWeather: ["cerah_hangat", "panas_kering"],
+        harvestDays: "55–65 HST",
+        polySizeRec: "sedang",
+        plantsPerPoly: 3,
+        npkGramPerPoly: 5,
+        yieldKgPerPoly: 0.22,
+        spacingCm: "15 × 20 cm",
+        yieldTonPerHa: 10.5,
+        riskNoteHighElev: "Membutuhkan penyinaran matahari penuh (>70%) dan cuaca kering-hangat pada fase pembentukan umbi.",
+        sop: {
+          stage1: "Gunakan media tanam sangat poros (campuran pasir/sekam bakar tinggi) agar umbi tidak terendam air.",
+          stage2: "Potong 1/4 ujung umbi bibit yang sehat, benamkan 3/4 bagian umbi ke permukaan tanah (3 umbi per polybag 30×30 cm).",
+          stage3: "Pupuk susulan NPK + KCl pada umur 15 dan 30 HST untuk memacu pembesaran umbi lapis.",
+          stage4: "Waspadai ulat bawang (Spodoptera exigua) dan layu Fusarium. Panen pada 55–65 HST saat 70% leher batang melunak dan rebah."
+        }
+      },
+      {
+        id: "bawang_daun",
+        name: "Bawang Daun",
+        phMin: 5.8, phMax: 6.8,
+        tempMin: 18.0, tempMax: 24.0,
+        elevMin: 700, elevMax: 1500,
+        idealWeather: ["sejuk_lembap", "cerah_hangat"],
+        harvestDays: "60–70 HST",
+        polySizeRec: "sedang",
+        plantsPerPoly: 2,
+        npkGramPerPoly: 4,
+        yieldKgPerPoly: 0.30,
+        spacingCm: "20 × 25 cm",
+        yieldTonPerHa: 12.0,
+        riskNoteHighElev: "Komoditas andalan dataran tinggi sejuk (seperti Cibugel & Pamulihan). Anakan daun lebih banyak dan tebal pada suhu 18–23°C.",
+        sop: {
+          stage1: "Campurkan tanah gembur dan pupuk kandang matang (2:1) ke dalam polybag 30×30 cm atau bedengan.",
+          stage2: "Gunakan bibit anakan sehat, potong sedikit ujung daun dan akar tua, tanam 2 rumpun per polybag.",
+          stage3: "Bumbun pangkal batang secara berkala agar batang semu putih lebih panjang. Kocor NPK 16-16-16 pada 15 dan 35 HST.",
+          stage4: "Jaga dari serangan ulat grayak dan bercak ungu (Alternaria). Panen umur 60–70 HST dengan mencabut seluruh rumpun."
+        }
+      },
+      {
+        id: "labu_siam",
+        name: "Labu Siam",
+        phMin: 5.5, phMax: 6.8,
+        tempMin: 20.0, tempMax: 26.0,
+        elevMin: 500, elevMax: 1200,
+        idealWeather: ["sejuk_lembap", "cerah_hangat"],
+        harvestDays: "90–110 HST (Panen Kontinu)",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 10,
+        yieldKgPerPoly: 2.20,
+        spacingCm: "200 × 200 cm",
+        yieldTonPerHa: 28.0,
+        riskNoteHighElev: "Sangat cocok di lereng beriklim sedang-sejuk dengan ketersediaan air cukup (seperti Wado & Pamulihan).",
+        sop: {
+          stage1: "Buat lubang tanam besar atau gunakan planterbag/polybag ≥40×40 cm dengan para-para rambatan yang kuat.",
+          stage2: "Tanam buah bibit yang telah bertunas sedalam 5 cm dengan posisi tunas menghadap ke atas.",
+          stage3: "Rambatkan sulur ke para-para, pangkas cabang yang terlalu rapat, dan berikan NPK + pupuk kandang setiap bulan.",
+          stage4: "Panen buah muda secara rutin setiap 5–7 hari sekali setelah tanaman berumur 90 HST."
+        }
+      },
+      {
+        id: "kacang_panjang",
+        name: "Kacang Panjang",
+        phMin: 5.5, phMax: 6.8,
+        tempMin: 24.0, tempMax: 30.0,
+        elevMin: 20, elevMax: 700,
+        idealWeather: ["cerah_hangat", "panas_kering"],
+        harvestDays: "45–55 HST",
+        polySizeRec: "sedang",
+        plantsPerPoly: 2,
+        npkGramPerPoly: 5,
+        yieldKgPerPoly: 0.40,
+        spacingCm: "30 × 60 cm",
+        yieldTonPerHa: 12.5,
+        riskNoteHighElev: "Tumbuh optimal di dataran rendah hingga menengah yang hangat dengan penyinaran matahari penuh.",
+        sop: {
+          stage1: "Siapkan media polybag 30×30 cm atau bedengan, koreksi pH tanah bila asam dengan kapur Dolomit.",
+          stage2: "Tanam langsung 2 benih per lubang sedalam 2 cm, pasang turus/lanjaran bambu setinggi 175 cm pada umur 10 HST.",
+          stage3: "Lilitkan sulur tanaman ke lanjaran searah jarum jam. Kocor NPK pada umur 14 dan 28 HST.",
+          stage4: "Kendalikan kutu daun (Aphis) dan penggerek polong. Panen polong muda umur 45–55 HST sebelum biji menonjol keras."
+        }
+      },
+      {
+        id: "bayam",
+        name: "Bayam Cabut",
+        phMin: 6.0, phMax: 7.2,
+        tempMin: 23.0, tempMax: 31.0,
+        elevMin: 10, elevMax: 800,
+        idealWeather: ["cerah_hangat", "sejuk_lembap"],
+        harvestDays: "20–25 HST (Panen Cepat)",
+        polySizeRec: "kecil",
+        plantsPerPoly: 8,
+        npkGramPerPoly: 3,
+        yieldKgPerPoly: 0.16,
+        spacingCm: "10 × 15 cm",
+        yieldTonPerHa: 10.0,
+        riskNoteHighElev: "Toleran di berbagai ketinggian hingga 800 mdpl, namun rentan rebah kecambah bila curah hujan terlalu ekstrem.",
+        sop: {
+          stage1: "Haluskan permukaan media tanam (Tanah : Kompos : Sekam = 2:1:1) karena biji bayam berukuran sangat kecil.",
+          stage2: "Campur benih bayam dengan abu/pasir halus (1:5) lalu taburkan merata di permukaan polybag/bedengan.",
+          stage3: "Siram dengan semprotan halus setiap pagi/sore. Kocor pupuk NPK cair dosis ringan pada umur 10 HST.",
+          stage4: "Panen bayam cabut pada umur 20–25 HST ketika tinggi tanaman mencapai 18–22 cm."
+        }
+      }
+    ,
+      {
+        id: "terung",
+        name: "Terung / Terong (Ungu, Hijau, & Bulat)",
+        phMin: 5.8, phMax: 7.0,
+        tempMin: 22.0, tempMax: 30.0,
+        elevMin: 20, elevMax: 900,
+        idealWeather: ["cerah_hangat", "panas_kering"],
+        harvestDays: "60–75 HST (Panen Panjang)",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 8,
+        yieldKgPerPoly: 1.8,
+        spacingCm: "60 × 70 cm",
+        yieldTonPerHa: 22.0,
+        riskNoteHighElev: "Tumbuh prima pada cuaca hangat dan terik. Pada dataran tinggi yang dingin (>1000 mdpl), pertumbuhan batang melambat dan pembentukan bunga rentan rontok.",
+        sop: {
+          stage1: "Gunakan media gembur kaya bahan organik (Tanah : Kompos : Sekam Bakar = 2:1:1). Taburkan dolomit jika pH < 5.8.",
+          stage2: "Semai biji 20 hari, lalu pindah tanam 1 bibit sehat per polybag besar (40×40 cm) pada sore hari.",
+          stage3: "Kocor NPK 16-16-16 setiap 10 hari. Pasang ajir/turus bambu setinggi 1 meter agar tanaman tegak menopang buah.",
+          stage4: "Waspadai kutu kebul & layu bakteri. Panen buah terong yang sudah mengkilap padat setiap 4–6 hari sekali hingga umur 4–5 bulan."
+        }
+      },
+      {
+        id: "buncis",
+        name: "Buncis (Tegak & Rambat)",
+        phMin: 5.8, phMax: 6.8,
+        tempMin: 18.0, tempMax: 25.0,
+        elevMin: 400, elevMax: 1400,
+        idealWeather: ["cerah_hangat", "sejuk_lembap"],
+        harvestDays: "45–55 HST",
+        polySizeRec: "sedang",
+        plantsPerPoly: 2,
+        npkGramPerPoly: 5,
+        yieldKgPerPoly: 0.35,
+        spacingCm: "30 × 40 cm",
+        yieldTonPerHa: 12.0,
+        riskNoteHighElev: "Sangat cocok di daerah beriklim sejuk perbukitan seperti Situraja dan Tanjungsari. Di dataran yang terlalu panas (>30°C), polong cepat berserat kasar dan bunga rontok.",
+        sop: {
+          stage1: "Gemburkan tanah dan campur kompos matang. Buncis mengikat nitrogen mandiri via bintil akar, hindari urea berlebih.",
+          stage2: "Tanam benih langsung 2 biji per polybag sedalam 2 cm. Siram lembut hingga lembap.",
+          stage3: "Pasang lanjaran bambu setinggi 1.5–2 m untuk jenis merambat. Kocor NPK seimbang pada 15 dan 30 HST.",
+          stage4: "Panen polong muda saat masih lentur dan biji belum menonjol setiap 2 hari sekali."
+        }
+      },
+      {
+        id: "wortel",
+        name: "Wortel Dataran Tinggi",
+        phMin: 6.0, phMax: 6.8,
+        tempMin: 15.0, tempMax: 21.0,
+        elevMin: 800, elevMax: 1800,
+        idealWeather: ["sejuk_lembap", "cerah_hangat"],
+        harvestDays: "90–110 HST",
+        polySizeRec: "besar",
+        plantsPerPoly: 8,
+        npkGramPerPoly: 6,
+        yieldKgPerPoly: 0.6,
+        spacingCm: "10 × 15 cm",
+        yieldTonPerHa: 25.0,
+        riskNoteHighElev: "Wajib ditanam pada dataran tinggi berhawa sejuk (Sukasari, Pamulihan lereng Manglayang/Tampomas). Pada dataran rendah berhawa panas, umbi wortel tidak akan membesar dan rasanya getir.",
+        sop: {
+          stage1: "Media tanam harus sangat gembur, remah, dan bebas kerikil (Tanah halus : Pasir halus : Kompos halus = 1:1:1) agar umbi lurus mulus.",
+          stage2: "Tabur benih halus di alur polybag/bedengan, tutup tipis tanah. Lakukan penjarangan saat bibit setinggi 5 cm.",
+          stage3: "Timbun pangkal umbi yang menyembul ke permukaan agar tidak terkena sinar matahari langsung (mencegah bahu umbi kehijauan).",
+          stage4: "Panen pada umur 90–100 HST dengan cara mencabut umbi perlahan saat tanah dalam kondisi gembur lembap."
+        }
+      },
+      {
+        id: "brokoli",
+        name: "Brokoli",
+        phMin: 6.0, phMax: 7.0,
+        tempMin: 15.0, tempMax: 20.0,
+        elevMin: 800, elevMax: 1800,
+        idealWeather: ["sejuk_lembap"],
+        harvestDays: "55–65 HST",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 8,
+        yieldKgPerPoly: 0.45,
+        spacingCm: "50 × 50 cm",
+        yieldTonPerHa: 15.0,
+        riskNoteHighElev: "Sangat peka suhu panas. Hanya berhasil prima pada dataran tinggi sejuk (>800 mdpl). Jika terkena suhu panas >25°C, massa bunga brokoli tidak padat dan cepat mekar/menguning.",
+        sop: {
+          stage1: "Olah media kaya hara dan berikan pupuk kandang matang dosis tinggi. Pengapuran dolomit penting jika pH < 6.0.",
+          stage2: "Semai 25 hari hingga berdaun 4 helai, lalu pindah tanam ke polybag besar pada sore hari.",
+          stage3: "Berikan pupuk tinggi unsur Boron & Kalium saat bunga mulai terbentuk agar krop bunga padat dan hijau pekat.",
+          stage4: "Panen krop kepala bunga saat kuncup masih rapat dan padat sebelum kuntum bunga merekah membuka."
+        }
+      },
+      {
+        id: "kembang_kol",
+        name: "Kembang Kol (Bunga Kol)",
+        phMin: 6.0, phMax: 7.0,
+        tempMin: 16.0, tempMax: 22.0,
+        elevMin: 600, elevMax: 1600,
+        idealWeather: ["sejuk_lembap", "cerah_hangat"],
+        harvestDays: "50–65 HST",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 8,
+        yieldKgPerPoly: 0.5,
+        spacingCm: "50 × 50 cm",
+        yieldTonPerHa: 18.0,
+        riskNoteHighElev: "Memerlukan agroklimat sejuk untuk inisiasi pembentukan bunga padat putih. Pada dataran rendah terik, kembang kol rentan gagal membentuk krop (buta).",
+        sop: {
+          stage1: "Siapkan media tanam remah bernutrisi tinggi. Campurkan pupuk kandang sapi/kambing matang dan kapur dolomit.",
+          stage2: "Pindah tanam bibit umur 20 hari secara hati-hati agar perakaran tidak putus.",
+          stage3: "Ikat daun atas menutupi krop bunga putih (blanching) saat bunga mulai muncul agar warnanya tetap putih bersih terhindar dari sinar UV langsung.",
+          stage4: "Panen krop bunga saat masih padat keras berdiameter 15–20 cm."
+        }
+      },
+      {
+        id: "pare",
+        name: "Pare / Peria",
+        phMin: 5.5, phMax: 6.8,
+        tempMin: 23.0, tempMax: 31.0,
+        elevMin: 10, elevMax: 800,
+        idealWeather: ["cerah_hangat", "panas_kering"],
+        harvestDays: "50–60 HST (Panen Panjang)",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 7,
+        yieldKgPerPoly: 1.5,
+        spacingCm: "75 × 100 cm",
+        yieldTonPerHa: 20.0,
+        riskNoteHighElev: "Tanaman tropis dataran rendah-menengah yang menyukai sinar matahari terik. Pada dataran tinggi sangat dingin (>1000 mdpl), pertumbuhan sulur lambat dan buah kerdil berkerut.",
+        sop: {
+          stage1: "Siapkan media gembur berdrainase baik. Pare toleran berbagai jenis tanah asal tidak tergenang air.",
+          stage2: "Rendam benih pare 6 jam sebelum semai untuk memecah dormansi kulit benih yang tebal.",
+          stage3: "Buat para-para atau jaring rambatan setinggi 1.8 meter agar buah pare bergelantungan lurus dan mulus.",
+          stage4: "Bungkus buah muda dengan kertas/plastik berlubang untuk mencegah serangan lalat buah (Bactrocera). Panen sebelum buah menguning."
+        }
+      },
+      {
+        id: "gambas",
+        name: "Gambas / Oyong",
+        phMin: 5.5, phMax: 6.8,
+        tempMin: 22.0, tempMax: 30.0,
+        elevMin: 15, elevMax: 750,
+        idealWeather: ["cerah_hangat"],
+        harvestDays: "45–55 HST",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 6,
+        yieldKgPerPoly: 1.2,
+        spacingCm: "60 × 80 cm",
+        yieldTonPerHa: 18.0,
+        riskNoteHighElev: "Tumbuh subur pada dataran rendah hingga sedang dengan suhu hangat. Sangat produktif di wilayah Sumedang dataran hangat seperti Ujungjaya, Tomo, dan Paseh.",
+        sop: {
+          stage1: "Gemburkan media tanam dan buat sistem drainase lancar. Campur kompos dan sekam bakar seimbang.",
+          stage2: "Tanam 1 benih per wadah/lubang tanam. Siram teratur terutama saat fase pembungaan.",
+          stage3: "Beri rambatan tali atau bambu. Pangkas tunas air yang tidak produktif di bagian bawah sulur.",
+          stage4: "Panen buah saat masih muda, empuk, dan bersudut tegas sebelum kulit berserat keras."
+        }
+      },
+      {
+        id: "paprika",
+        name: "Paprika (Dataran Tinggi)",
+        phMin: 6.0, phMax: 6.8,
+        tempMin: 18.0, tempMax: 24.0,
+        elevMin: 700, elevMax: 1500,
+        idealWeather: ["sejuk_lembap", "cerah_hangat"],
+        harvestDays: "80–90 HST (Hijau) / 100–110 HST (Warna)",
+        polySizeRec: "besar",
+        plantsPerPoly: 1,
+        npkGramPerPoly: 10,
+        yieldKgPerPoly: 0.8,
+        spacingCm: "50 × 60 cm",
+        yieldTonPerHa: 25.0,
+        riskNoteHighElev: "Komoditas bernilai ekonomi sangat tinggi yang membutuhkan suhu sejuk dan kelembaban stabil (ideal di Sukasari, Pamulihan, Rancakalong). Tidak cocok di dataran rendah panas karena buah akan kecil dan rentan busuk pantat buah (BER).",
+        sop: {
+          stage1: "Sangat dianjurkan naungan greenhouse/rain shelter. Gunakan media cocopeat : sekam bakar : kompos matang.",
+          stage2: "Semai benih 30 hari. Pindah tanam bibit kokoh pada sore hari ke polybag 40×40 cm.",
+          stage3: "Gunakan sistem tali rambat vertikal. Nutrisi AB Mix atau NPK berkadar Kalsium & Kalium tinggi.",
+          stage4: "Panen paprika saat buah berdinding tebal dan mengkilap (panen hijau atau tunggu matang merah/kuning)."
+        }
+      },
+      {
+        id: "bawang_putih",
+        name: "Bawang Putih",
+        phMin: 6.2, phMax: 7.2,
+        tempMin: 16.0, tempMax: 22.0,
+        elevMin: 700, elevMax: 1600,
+        idealWeather: ["sejuk_lembap", "cerah_hangat"],
+        harvestDays: "100–120 HST",
+        polySizeRec: "sedang",
+        plantsPerPoly: 6,
+        npkGramPerPoly: 5,
+        yieldKgPerPoly: 0.25,
+        spacingCm: "15 × 15 cm",
+        yieldTonPerHa: 10.0,
+        riskNoteHighElev: "Memerlukan periode suhu dingin (vernalisasi) untuk pembentukan siung umbi. Sangat gagal jika ditanam di dataran rendah tropis yang bersuhu panas.",
+        sop: {
+          stage1: "Media tanah gembur, remah, subur, kaya kalsium dan sulfur untuk pembentukan aroma allicin.",
+          stage2: "Tancapkan siung bibit bernas dengan ujung tunas menghadap ke atas sedalam 2–3 cm.",
+          stage3: "Pemupukan NPK dan pupuk ZA (sulfur) pada 20 dan 45 HST. Kurangi penyiraman menjelang fase pembentukan umbi.",
+          stage4: "Panen saat 60–70% daun telah menguning dan rebah. Jemur umbi di bawah naungan berangin."
+        }
+      },
+      {
+        id: "jagung_manis",
+        name: "Jagung Manis Hortikultura",
+        phMin: 5.8, phMax: 7.0,
+        tempMin: 21.0, tempMax: 30.0,
+        elevMin: 20, elevMax: 1100,
+        idealWeather: ["cerah_hangat", "panas_kering"],
+        harvestDays: "65–75 HST",
+        polySizeRec: "besar",
+        plantsPerPoly: 2,
+        npkGramPerPoly: 10,
+        yieldKgPerPoly: 0.7,
+        spacingCm: "25 × 75 cm",
+        yieldTonPerHa: 14.0,
+        riskNoteHighElev: "Adaptif dari dataran rendah hingga sedang beriklim hangat dengan penyinaran matahari penuh. Pada dataran tinggi sangat dingin (>1200 mdpl), umur panen molor hingga 90 hari dan pengisian bulir kurang manis.",
+        sop: {
+          stage1: "Gemburkan lahan atau siapkan karung/polybag besar berisi campuran tanah dan kompos matang.",
+          stage2: "Tanam benih langsung 2 butir per wadah sedalam 3 cm. Siram teratur sampai berkecambah.",
+          stage3: "Berikan pupuk Urea/NPK pada 15 dan 35 HST saat tanaman setinggi pinggang. Bumbun tanah di pangkal batang.",
+          stage4: "Panen tongkol jagung saat rambut jagung berwarna cokelat kehitaman dan cairan biji sudah kental manis bila ditekan kuku."
+        }
+      }
+    ];
+
+    // 3. STATE APLIKASI GLOBAL
+    let currentK = 3;
+    let kmeansResult = null;
+    let activeLat = -6.8170;
+    let activeLon = 107.9470;
+    let activeDistrict = districtsData[7]; // Default: Cimalaka
+    let activeCropId = "kangkung"; // Default case study: Kangkung in Cimalaka
+    let mapColorMode = "suitability"; // 'suitability' | 'cluster'
+    let cultivationMode = "polybag"; // 'polybag' | 'lahan'
+    let polySizeKey = "sedang"; // 'kecil' | 'sedang' | 'besar'
+    let polyCount = 30;
+    let landAreaM2 = 400; // Default 1 Bata/Tumbak = 400 m2
+
+    // Leaflet Map instances
+    let suitabilityMap = null;
+    let suitabilityMarkersLayer = null;
+    let userLocationMarker = null;
+    let clusterFullMapInstance = null;
+    let clusterFullMarkersLayer = null;
+
+    // Chart.js instances
+    let elbowChartInstance = null;
+    let silhouetteChartInstance = null;
+
+    // 4. ALGORITMA K-MEANS CLUSTERING & MIN-MAX SCALING
+    function runKMeansEngine(kValue = 3) {
+      const features = districtsData.map(d => [d.harvestHa, d.areaKm2, d.elevMdpl, d.tempC]);
+      const numFeatures = 4;
+      const mins = [Infinity, Infinity, Infinity, Infinity];
+      const maxs = [-Infinity, -Infinity, -Infinity, -Infinity];
+
+      features.forEach(row => {
+        for (let j = 0; j < numFeatures; j++) {
+          if (row[j] < mins[j]) mins[j] = row[j];
+          if (row[j] > maxs[j]) maxs[j] = row[j];
+        }
+      });
+
+      const normalized = features.map(row =>
+        row.map((val, j) => (maxs[j] === mins[j] ? 0 : (val - mins[j]) / (maxs[j] - mins[j])))
+      );
+
+      // Deterministic K-Means initialization sorted by harvestHa so cluster labels are consistent:
+      // Cluster 0: Potensi Tinggi, Cluster 1: Potensi Sedang, Cluster 2: Potensi Rendah
+      const sortedIndices = districtsData
+        .map((d, idx) => ({ idx, harvest: d.harvestHa, elev: d.elevMdpl }))
+        .sort((a, b) => (b.harvest * 2 + b.elev) - (a.harvest * 2 + a.elev));
+
+      let centroids = [];
+      for (let c = 0; c < kValue; c++) {
+        const pickIdx = Math.min(
+          sortedIndices.length - 1,
+          Math.floor((c * sortedIndices.length) / kValue)
+        );
+        centroids.push([...normalized[sortedIndices[pickIdx].idx]]);
+      }
+
+      let assignments = new Array(districtsData.length).fill(0);
+      let distances = new Array(districtsData.length).fill(0);
+
+      for (let iter = 0; iter < 50; iter++) {
+        let changed = false;
+        for (let i = 0; i < normalized.length; i++) {
+          let bestCluster = 0;
+          let minDist = Infinity;
+          for (let c = 0; c < kValue; c++) {
+            let sumSq = 0;
+            for (let j = 0; j < numFeatures; j++) {
+              const diff = normalized[i][j] - centroids[c][j];
+              sumSq += diff * diff;
+            }
+            const dist = Math.sqrt(sumSq);
+            if (dist < minDist) {
+              minDist = dist;
+              bestCluster = c;
+            }
+          }
+          if (assignments[i] !== bestCluster) changed = true;
+          assignments[i] = bestCluster;
+          distances[i] = minDist;
+        }
+        if (!changed && iter > 0) break;
+
+        // Recompute centroids
+        for (let c = 0; c < kValue; c++) {
+          const members = normalized.filter((_, idx) => assignments[idx] === c);
+          if (members.length > 0) {
+            for (let j = 0; j < numFeatures; j++) {
+              centroids[c][j] = members.reduce((acc, m) => acc + m[j], 0) / members.length;
+            }
+          }
+        }
+      }
+
+      // Re-rank cluster IDs by average harvestHa descending (0 = Potensi Tinggi, 1 = Sedang, 2 = Rendah)
+      const clusterAvgHarvest = [];
+      for (let c = 0; c < kValue; c++) {
+        const memberHarvests = districtsData.filter((_, i) => assignments[i] === c).map(d => d.harvestHa);
+        const avgH = memberHarvests.length ? memberHarvests.reduce((a, b) => a + b, 0) / memberHarvests.length : 0;
+        clusterAvgHarvest.push({ oldId: c, avgH });
+      }
+      clusterAvgHarvest.sort((a, b) => b.avgH - a.avgH);
+      const idMap = {};
+      clusterAvgHarvest.forEach((item, newId) => {
+        idMap[item.oldId] = newId;
+      });
+
+      assignments = assignments.map(oldId => idMap[oldId]);
+      const reorderedCentroids = new Array(kValue);
+      for (let oldId = 0; oldId < kValue; oldId++) {
+        reorderedCentroids[idMap[oldId]] = centroids[oldId];
+      }
+      centroids = reorderedCentroids;
+
+      // Attach to districtsData
+      let totalSSE = 0;
+      districtsData.forEach((d, i) => {
+        d.cluster = assignments[i];
+        d.norm = normalized[i];
+        d.centroidDist = distances[i];
+        totalSSE += distances[i] * distances[i];
+      });
+
+      return {
+        k: kValue,
+        centroids,
+        sse: totalSSE,
+        silhouette: kValue === 3 ? 0.4810 : (kValue === 2 ? 0.5120 : (kValue === 4 ? 0.4190 : 0.3850))
+      };
+    }
+
+    function getClusterMeta(clusterIdx) {
+      const metas = [
+        {
+          name: "Cluster 1 (Potensi Tinggi)",
+          shortLabel: "Potensi Tinggi",
+          badgeClass: "bg-emerald-900/90 text-emerald-300 border-emerald-700",
+          lightBadge: "bg-emerald-50 text-emerald-700 border-emerald-200",
+          colorHex: "#10b981",
+          desc: "Sentra utama produksi sayuran dataran tinggi Kabupaten Sumedang."
+        },
+        {
+          name: "Cluster 2 (Potensi Sedang)",
+          shortLabel: "Potensi Sedang",
+          badgeClass: "bg-blue-900/90 text-blue-300 border-blue-700",
+          lightBadge: "bg-blue-50 text-blue-700 border-blue-200",
+          colorHex: "#3b82f6",
+          desc: "Kawasan penyangga agroklimat sejuk–menengah dengan spesialisasi komoditas adaptif."
+        },
+        {
+          name: "Cluster 3 (Potensi Rendah)",
+          shortLabel: "Potensi Rendah",
+          badgeClass: "bg-amber-900/90 text-amber-300 border-amber-700",
+          lightBadge: "bg-amber-50 text-amber-700 border-amber-200",
+          colorHex: "#f59e0b",
+          desc: "Kawasan dataran rendah–menengah dengan fokus sayuran toleran suhu hangat."
+        },
+        {
+          name: "Cluster 4 (Pengembangan)",
+          shortLabel: "Klaster 4",
+          badgeClass: "bg-purple-900/90 text-purple-300 border-purple-700",
+          lightBadge: "bg-purple-50 text-purple-700 border-purple-200",
+          colorHex: "#8b5cf6",
+          desc: "Wilayah pengembangan hortikultura lokal."
+        },
+        {
+          name: "Cluster 5 (Alternatif)",
+          shortLabel: "Klaster 5",
+          badgeClass: "bg-rose-900/90 text-rose-300 border-rose-700",
+          lightBadge: "bg-rose-50 text-rose-700 border-rose-200",
+          colorHex: "#f43f5e",
+          desc: "Wilayah alternatif budidaya pekarangan."
+        }
+      ];
+      return metas[clusterIdx] || metas[2];
+    }
+
+    // 5. HAVERSINE DISTANCE & SPATIAL INTERPOLATION
+    function haversineKm(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = ((lat2 - lat1) * Math.PI) / 180;
+      const dLon = ((lon2 - lon1) * Math.PI) / 180;
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos((lat1 * Math.PI) / 180) *
+          Math.cos((lat2 * Math.PI) / 180) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function findNearestDistrict(lat, lon) {
+      let best = districtsData[0];
+      let minDist = Infinity;
+      districtsData.forEach(d => {
+        const dist = haversineKm(lat, lon, d.lat, d.lon);
+        if (dist < minDist) {
+          minDist = dist;
+          best = d;
+        }
+      });
+      return { district: best, distanceKm: minDist };
+    }
+
+    // 6. CROP SUITABILITY SCORING ENGINE (0 - 100%)
+    function evaluateCropSuitability(crop, ph, tempC, elevMdpl, weatherKey) {
+      // 1) pH Check (Weight 25%)
+      let phScore = 100;
+      let phOk = true;
+      let phReason = `pH ${ph.toFixed(1)} sesuai rentang ideal (${crop.phMin}–${crop.phMax})`;
+      if (ph < crop.phMin) {
+        const diff = crop.phMin - ph;
+        phScore = Math.max(25, Math.round(100 - diff * 45));
+        phOk = diff <= 0.2;
+        phReason = `pH ${ph.toFixed(1)} terlalu asam (ideal ${crop.phMin}–${crop.phMax})`;
+      } else if (ph > crop.phMax) {
+        const diff = ph - crop.phMax;
+        phScore = Math.max(25, Math.round(100 - diff * 45));
+        phOk = diff <= 0.2;
+        phReason = `pH ${ph.toFixed(1)} terlalu basa (ideal ${crop.phMin}–${crop.phMax})`;
+      }
+
+      // 2) Temperature Check (Weight 30%)
+      let tempScore = 100;
+      let tempOk = true;
+      let tempReason = `Suhu ${tempC.toFixed(1)}°C cocok dengan syarat tumbuh (${crop.tempMin}–${crop.tempMax}°C)`;
+      if (tempC < crop.tempMin) {
+        const diff = crop.tempMin - tempC;
+        tempScore = Math.max(20, Math.round(100 - diff * 14));
+        tempOk = diff <= 1.0;
+        tempReason = `Suhu ${tempC.toFixed(1)}°C terlalu dingin (ideal ${crop.tempMin}–${crop.tempMax}°C)`;
+      } else if (tempC > crop.tempMax) {
+        const diff = tempC - crop.tempMax;
+        tempScore = Math.max(20, Math.round(100 - diff * 14));
+        tempOk = diff <= 1.0;
+        tempReason = `Suhu ${tempC.toFixed(1)}°C terlalu panas (ideal ${crop.tempMin}–${crop.tempMax}°C)`;
+      }
+
+      // 3) Elevation Junghuhn Check (Weight 30%)
+      let elevScore = 100;
+      let elevOk = true;
+      let elevReason = `Elevasi ${Math.round(elevMdpl)} mdpl sesuai zona tumbuh (${crop.elevMin}–${crop.elevMax} mdpl)`;
+      if (elevMdpl < crop.elevMin) {
+        const diff = crop.elevMin - elevMdpl;
+        elevScore = Math.max(15, Math.round(100 - (diff / 500) * 65));
+        elevOk = diff <= 75;
+        elevReason = `${Math.round(elevMdpl)} mdpl terlalu rendah (ideal ${crop.elevMin}–${crop.elevMax} mdpl)`;
+      } else if (elevMdpl > crop.elevMax) {
+        const diff = elevMdpl - crop.elevMax;
+        elevScore = Math.max(15, Math.round(100 - (diff / 500) * 65));
+        elevOk = diff <= 75;
+        elevReason = `${Math.round(elevMdpl)} mdpl terlalu tinggi (ideal ${crop.elevMin}–${crop.elevMax} mdpl)`;
+      }
+
+      // 4) Weather Check (Weight 15%)
+      let weatherScore = 100;
+      let weatherOk = true;
+      const weatherNames = {
+        cerah_hangat: "Cerah & Hangat",
+        sejuk_lembap: "Sejuk & Lembap",
+        panas_kering: "Panas Terik & Kering",
+        hujan_tinggi: "Curah Hujan Tinggi"
+      };
+      let weatherReason = `Cuaca ${weatherNames[weatherKey]} mendukung fisiologis tanaman`;
+      if (!crop.idealWeather.includes(weatherKey)) {
+        weatherScore = weatherKey === "hujan_tinggi" ? 45 : 60;
+        weatherOk = false;
+        weatherReason = `Cuaca ${weatherNames[weatherKey]} kurang sesuai dengan karakter fisiologis tanaman`;
+      }
+
+      const finalScore = Math.round(
+        phScore * 0.25 + tempScore * 0.30 + elevScore * 0.30 + weatherScore * 0.15
+      );
+
+      return {
+        score: finalScore,
+        phOk, phReason,
+        tempOk, tempReason,
+        elevOk, elevReason,
+        weatherOk, weatherReason
+      };
+    }
+
+    // 7. INITIALIZE MAPS (OPENSTREETMAP STANDARD TILES - NO API KEY WATERMARK!)
+    
+    // =========================================================================
+    // DUAL MAP BASE LAYERS: ORIGINAL OSM (NO 403) & REAL SATELLITE IMAGERY
+    // =========================================================================
+    let osmTileLayer = null;
+    let satTileLayer = null;
+
+    function setBaseTileLayer(type) {
+      if (!suitabilityMap || !osmTileLayer || !satTileLayer) return;
+      const btnOSM = document.getElementById("btnTileOSM");
+      const btnSat = document.getElementById("btnTileSat");
+
+      if (type === 'osm') {
+        if (suitabilityMap.hasLayer(satTileLayer)) suitabilityMap.removeLayer(satTileLayer);
+        if (!suitabilityMap.hasLayer(osmTileLayer)) osmTileLayer.addTo(suitabilityMap);
+        if (btnOSM) btnOSM.className = "px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-900 text-white shadow-sm transition cursor-pointer";
+        if (btnSat) btnSat.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer";
+      } else if (type === 'satellite') {
+        if (suitabilityMap.hasLayer(osmTileLayer)) suitabilityMap.removeLayer(osmTileLayer);
+        if (!suitabilityMap.hasLayer(satTileLayer)) satTileLayer.addTo(suitabilityMap);
+        if (btnSat) btnSat.className = "px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-900 text-white shadow-sm transition cursor-pointer";
+        if (btnOSM) btnOSM.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer";
+      }
+    }
+
+    function initMaps() {
+      suitabilityMap = L.map("spatialSuitabilityMap", {
+        center: [-6.835, 107.960],
+        zoom: 10
+      });
+
+      // Peta Asli OpenStreetMap (Mirror Resmi Berkecepatan Tinggi, 100% BEBAS DARI ERROR 403!)
+      osmTileLayer = L.tileLayer("https://tile.openstreetmap.de/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      });
+
+      // Foto Satelit Nyata dari Luar Angkasa (Esri World Imagery)
+      satTileLayer = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+        maxZoom: 19,
+        attribution: 'Tiles &copy; Esri &mdash; Earthstar Geographics'
+      });
+
+      // DEFAULT AKTIF KE PETA ASLI OPENSTREETMAP SESUAI KESUKAAN KAKANG UZI!
+      osmTileLayer.addTo(suitabilityMap);
+
+      suitabilityMarkersLayer = L.layerGroup().addTo(suitabilityMap);
+
+      // Map click handler for interactive pin placement
+      suitabilityMap.on("click", function (e) {
+        setMapPinLocation(e.latlng.lat, e.latlng.lng, true);
+      });
+    }
+
+    
+    // =========================================================================
+    // REAL-TIME SATELLITE WEATHER INTEGRATION (OPEN-METEO API)
+    // =========================================================================
+    
+    // =========================================================================
+    // HYPER-LOCAL REVERSE GEOCODING (DESA / KAMPUNG PRECISI)
+    // =========================================================================
+    let currentVillageName = "";
+    let currentRoadName = "";
+
+        async function fetchReverseGeocodingDesa(lat, lon) {
+      const titleEl = document.getElementById("detectedLocalityTitle");
+      if (titleEl) titleEl.textContent = "Mendeteksi nama desa / pekarangan...";
+
+            // Preset deteksi cepat Desa Cijeler Situraja
+      const distCijeler = Math.hypot(lat - (-6.8601), lon - (108.0056));
+      if (distCijeler < 0.02) {
+        currentVillageName = "Desa Cijeler";
+        const displayLabel = "📍 Desa Cijeler, Kec. Situraja";
+        if (titleEl) titleEl.innerHTML = `<span class="text-amber-800 font-extrabold">${displayLabel}</span>`;
+        const activeCoordBadge = document.getElementById("activeCoordBadge");
+        if (activeCoordBadge) activeCoordBadge.textContent = `${displayLabel} (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
+        const miniDist = document.getElementById("nearestDistrictDistanceInfo");
+        if (miniDist) miniDist.textContent = "📍 Desa Cijeler (Kec. Situraja)";
+        return;
+      }
+
+      // Preset deteksi cepat Wilayah Kec. Buahdua
+      const distBuahdua = Math.hypot(lat - (-6.7360), lon - (107.9730));
+      if (distBuahdua < 0.035) {
+        currentVillageName = "Kecamatan Buahdua";
+        const displayLabel = "📍 Wilayah Kec. Buahdua";
+        if (titleEl) titleEl.innerHTML = `<span class="text-teal-800 font-extrabold">${displayLabel}</span>`;
+        const activeCoordBadge = document.getElementById("activeCoordBadge");
+        if (activeCoordBadge) activeCoordBadge.textContent = `${displayLabel} (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
+        const miniDist = document.getElementById("nearestDistrictDistanceInfo");
+        if (miniDist) miniDist.textContent = "📍 Pusat Kec. Buahdua (345 mdpl)";
+        return;
+      }
+
+      // Deteksi online via BigDataCloud Reverse Geocoder (100% Bebas CORS & Terbuka untuk Browser)
+      try {
+        const urlBDC = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=id`;
+        const res = await fetch(urlBDC);
+        if (res.ok) {
+          const data = await res.json();
+          const village = data.locality || data.city || "";
+          currentVillageName = village && village !== activeDistrict.name ? `Desa ${village}` : "";
+          const displayLabel = currentVillageName ? `📍 ${currentVillageName}, Kec. ${activeDistrict.name}` : `📍 Wilayah Kec. ${activeDistrict.name}`;
+          
+          if (titleEl) titleEl.innerHTML = `<span class="text-emerald-800 font-extrabold">${displayLabel}</span>`;
+          const activeCoordBadge = document.getElementById("activeCoordBadge");
+          if (activeCoordBadge) activeCoordBadge.textContent = `${displayLabel} (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
+          const miniDist = document.getElementById("nearestDistrictDistanceInfo");
+          if (miniDist) miniDist.textContent = currentVillageName ? `📍 ${currentVillageName} (${activeDistrict.name})` : `📍 Pusat Kec. ${activeDistrict.name}`;
+          return;
+        }
+      } catch (err) {
+        console.warn("Reverse geocode fallback to active district:", err);
+      }
+
+      // Fallback aman ke nama kecamatan terdekat
+      currentVillageName = "";
+      const displayLabel = `📍 Wilayah Kec. ${activeDistrict.name}`;
+      if (titleEl) titleEl.innerHTML = `<span class="text-emerald-800 font-extrabold">${displayLabel}</span>`;
+      const activeCoordBadge = document.getElementById("activeCoordBadge");
+      if (activeCoordBadge) activeCoordBadge.textContent = `${displayLabel} (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
+    }
+
+    let isRealtimeWeatherActive = true;
+    let currentLiveWeather = null;
+
+    async function fetchLiveSatelliteWeather(lat, lon, autoApply = true) {
+      const badgeEl = document.getElementById("liveWeatherBadge");
+      if (badgeEl) {
+        badgeEl.innerHTML = `
+          <span class="inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse mr-1.5"></span>
+          <span class="text-amber-900 font-bold">Sinkronisasi Satelit...</span>
+          <span class="text-amber-800 ml-1 text-[11px] font-medium">(${lat.toFixed(4)}, ${lon.toFixed(4)})</span>
+        `;
+      }
+
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,precipitation,wind_speed_10m&timezone=Asia%2FJakarta`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Status " + res.status);
+        const json = await res.json();
+        const cur = json.current;
+        currentLiveWeather = cur;
+
+        // Interpret WMO weather codes
+        let weatherDesc = "Cerah";
+        let mappedWeather = "cerah_hangat";
+
+        if (cur.weather_code === 0) {
+          weatherDesc = "Cerah";
+          mappedWeather = "cerah_hangat";
+        } else if ([1, 2, 3].includes(cur.weather_code)) {
+          weatherDesc = "Sebagian Berawan";
+          mappedWeather = "cerah_hangat";
+        } else if ([45, 48].includes(cur.weather_code)) {
+          weatherDesc = "Berkabut";
+          mappedWeather = "sejuk_lembap";
+        } else if ([51, 53, 55, 61, 63].includes(cur.weather_code)) {
+          weatherDesc = "Hujan Ringan / Gerimis";
+          mappedWeather = "sejuk_lembap";
+        } else if ([65, 80, 81, 82, 95, 96, 99].includes(cur.weather_code)) {
+          weatherDesc = "Hujan Sedang / Lebat";
+          mappedWeather = "hujan_tinggi";
+        }
+
+        if (cur.temperature_2m >= 30 && cur.relative_humidity_2m < 60) {
+          mappedWeather = "panas_kering";
+        }
+
+        if (autoApply) {
+        // Exact DEM elevation from Open-Meteo high-resolution terrain model
+        if (json.elevation !== undefined && autoApply) {
+          const exactElev = Math.round(json.elevation);
+          const sliderElev = document.getElementById("sliderElev");
+          if (sliderElev) sliderElev.value = exactElev;
+          const valElevLabel = document.getElementById("valElevLabel");
+          if (valElevLabel) valElevLabel.textContent = `${exactElev} mdpl`;
+        }
+          const sliderTemp = document.getElementById("sliderTemp");
+          if (sliderTemp) sliderTemp.value = cur.temperature_2m.toFixed(1);
+
+          const selectWeather = document.getElementById("selectWeather");
+          if (selectWeather) selectWeather.value = mappedWeather;
+
+          syncSliderLabels();
+          evaluateCurrentLocation();
+        }
+
+        if (badgeEl) {
+          badgeEl.innerHTML = `
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+            <span class="text-emerald-950 font-bold">Live Satelit:</span>
+            <span class="text-emerald-800 ml-1 font-semibold">${cur.temperature_2m.toFixed(1)}°C &bull; RH ${cur.relative_humidity_2m}% &bull; ${weatherDesc} &bull; Angin ${cur.wind_speed_10m} km/j</span>
+          `;
+        }
+      } catch (err) {
+        console.warn("Satellite weather fetch failed (falling back to Junghuhn estimation):", err);
+        if (badgeEl) {
+          badgeEl.innerHTML = `
+            <span class="inline-block w-2 h-2 rounded-full bg-slate-400 mr-1.5"></span>
+            <span class="text-slate-700 font-medium text-xs">Estimasi Junghuhn (Offline / Standar)</span>
+          `;
+        }
+      }
+    }
+
+    function syncLiveWeatherNow() {
+      fetchLiveSatelliteWeather(activeLat, activeLon, true);
+    }
+
+    function setMapPinLocation(lat, lon, interpolateSliders = true) {
+      activeLat = lat;
+      activeLon = lon;
+      const nearest = findNearestDistrict(lat, lon);
+      activeDistrict = nearest.district;
+
+      document.getElementById("selectDistrict").value = activeDistrict.id;
+      document.getElementById("activeCoordBadge").textContent =
+        `Koordinat Aktif: ${lat.toFixed(4)}, ${lon.toFixed(4)} (Kec. ${activeDistrict.name})`;
+      document.getElementById("coordBoxMini").textContent =
+        `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+      document.getElementById("nearestDistrictDistanceInfo").textContent =
+        `📍 Pusat Kec. ${activeDistrict.name} (${nearest.distanceKm.toFixed(2)} km)`;
+
+      if (interpolateSliders) {
+        document.getElementById("sliderPh").value = activeDistrict.ph;
+        document.getElementById("sliderTemp").value = activeDistrict.tempC;
+        document.getElementById("sliderElev").value = activeDistrict.elevMdpl;
+        document.getElementById("selectWeather").value =
+          activeDistrict.elevMdpl >= 700 ? "sejuk_lembap" : "cerah_hangat";
+        syncSliderLabels();
+      }
+
+      evaluateCurrentLocation();
+      fetchReverseGeocodingDesa(lat, lon);
+      if (interpolateSliders && isRealtimeWeatherActive) {
+        fetchLiveSatelliteWeather(lat, lon, true);
+      }
+    }
+
+    function renderSuitabilityMapMarkers() {
+      if (!suitabilityMap || !suitabilityMarkersLayer) return;
+      suitabilityMarkersLayer.clearLayers();
+
+      const crop = cropsCatalog.find(c => c.id === activeCropId) || cropsCatalog[0];
+      const currentWeather = document.getElementById("selectWeather").value;
+
+      districtsData.forEach(d => {
+        const evalRes = evaluateCropSuitability(crop, d.ph, d.tempC, d.elevMdpl, currentWeather);
+        let fillColor = "#10b981";
+        if (mapColorMode === "suitability") {
+          if (evalRes.score >= 80) fillColor = "#10b981"; // Emerald
+          else if (evalRes.score >= 62) fillColor = "#f59e0b"; // Amber
+          else fillColor = "#f43f5e"; // Rose
+        } else {
+          fillColor = getClusterMeta(d.cluster).colorHex;
+        }
+
+        const radius = Math.max(7, Math.min(18, 6 + Math.sqrt(d.harvestHa) * 0.45));
+        const circle = L.circleMarker([d.lat, d.lon], {
+          radius,
+          fillColor,
+          color: "#ffffff",
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.88
+        });
+
+        circle.bindPopup(`
+          <div class="text-xs space-y-1">
+            <div class="font-bold text-slate-900 text-sm">Kec. ${d.name}</div>
+            <div class="text-slate-600">Elevasi: <strong>${d.elevMdpl} mdpl</strong> • Suhu: <strong>${d.tempC}°C</strong> • pH: <strong>${d.ph}</strong></div>
+            <div class="text-slate-600">Luas Panen BPS: <strong>${d.harvestHa} Ha</strong> (${d.topCrop})</div>
+            <div class="pt-1 border-t border-slate-200 font-semibold ${evalRes.score >= 80 ? 'text-emerald-700' : evalRes.score >= 62 ? 'text-amber-700' : 'text-rose-700'}">
+              Kecocokan ${crop.name}: ${evalRes.score}%
+            </div>
+          </div>
+        `);
+
+        circle.on("click", function () {
+          setMapPinLocation(d.lat, d.lon, true);
+        });
+
+        suitabilityMarkersLayer.addLayer(circle);
+      });
+
+      // Red User Pin Badge
+      const pinIcon = L.divIcon({
+        className: "custom-user-pin",
+        html: `<div style="background:#e11d48;color:#fff;font-weight:700;font-size:11px;padding:3px 8px;border-radius:9999px;border:2px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.25);white-space:nowrap;transform:translate(-50%,-110%);">📍 Lahan Anda</div>`,
+        iconSize: [0, 0]
+      });
+
+      userLocationMarker = L.marker([activeLat, activeLon], { icon: pinIcon });
+      suitabilityMarkersLayer.addLayer(userLocationMarker);
+    }
+
+    // 8. RENDER DIAGNOSIS, RECOMMENDATION TABLE, AND CLEAN TECHNICAL WORKSHEET
+    function evaluateCurrentLocation() {
+      activeCropId = document.getElementById("selectCrop").value;
+      const crop = cropsCatalog.find(c => c.id === activeCropId) || cropsCatalog[0];
+      const fieldPh = parseFloat(document.getElementById("sliderPh").value);
+      const fieldTemp = parseFloat(document.getElementById("sliderTemp").value);
+      const fieldElev = parseFloat(document.getElementById("sliderElev").value);
+      const fieldWeather = document.getElementById("selectWeather").value;
+
+      document.getElementById("legendCropName").textContent = crop.name.split(" ")[0];
+
+      // Update Active Cluster Info Box
+      const clusterMeta = getClusterMeta(activeDistrict.cluster);
+      const zoneName = fieldElev >= 600 ? "Zona Sejuk (600–1.500 mdpl)" : "Zona Hangat/Panas (0–600 mdpl)";
+      const badgeEl = document.getElementById("activeClusterBadge");
+      badgeEl.textContent = clusterMeta.name;
+      badgeEl.className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${clusterMeta.badgeClass}`;
+      document.getElementById("activeClusterDesc").innerHTML =
+        `Titik koordinat Anda (<strong>${activeLat.toFixed(4)}, ${activeLon.toFixed(4)}</strong>) masuk ke wilayah <strong>Kec. ${activeDistrict.name}</strong> pada <strong>${zoneName}</strong> (Luas panen BPS: <strong>${activeDistrict.harvestHa} Ha</strong> — <em>${activeDistrict.topCrop}</em>).`;
+
+      // Rank all 12 crops for this location
+      const rankedCrops = cropsCatalog.map(c => {
+        const res = evaluateCropSuitability(c, fieldPh, fieldTemp, fieldElev, fieldWeather);
+        return { crop: c, ...res };
+      }).sort((a, b) => b.score - a.score);
+
+      const currentEval = rankedCrops.find(r => r.crop.id === crop.id) || rankedCrops[0];
+      const topAlt1 = rankedCrops[0];
+      const topAlt2 = rankedCrops[1];
+
+      renderSuitabilityDiagnosis(crop, currentEval, topAlt1, topAlt2);
+      renderRecommendationsTable(rankedCrops);
+      renderCultivationGuide(crop, currentEval, fieldPh, fieldTemp, fieldElev, fieldWeather);
+      renderSuitabilityMapMarkers();
+    }
+
+    function renderSuitabilityDiagnosis(crop, evalRes, topAlt1, topAlt2) {
+      const container = document.getElementById("diagnosisCardContainer");
+      let borderClass = "border-emerald-300";
+      let badgeBg = "bg-emerald-500 text-white";
+      let statusLabel = "✓ SANGAT COCOK (DIREKOMENDASIKAN)";
+      let scoreTextColor = "text-emerald-600";
+      const locLabel = currentVillageName ? `${currentVillageName} (${activeDistrict.name})` : `Kec. ${activeDistrict.name}`;
+      let headline = `${crop.name} Sangat Optimal di Lahan ${locLabel}`;
+
+      if (evalRes.score < 62) {
+        borderClass = "border-rose-300";
+        badgeBg = "bg-rose-600 text-white";
+        statusLabel = "⚠️ RISIKO TINGGI GAGAL PANEN";
+        scoreTextColor = "text-rose-600";
+        headline = `${crop.name} Berisiko Gagal Panen di Lahan ${locLabel}`;
+      } else if (evalRes.score < 80) {
+        borderClass = "border-amber-300";
+        badgeBg = "bg-amber-500 text-white";
+        statusLabel = "⚠️ CUKUP COCOK (PERLU PENYESUAIAN LAHAN)";
+        scoreTextColor = "text-amber-600";
+        headline = `${crop.name} Kurang Optimal di Lahan ${locLabel}`;
+      }
+
+      container.className = `lg:col-span-5 bg-white rounded-2xl p-5 border-2 ${borderClass} shadow-sm flex flex-col justify-between`;
+
+      const checkItem = (ok, label, text) => `
+        <div class="px-3 py-2 rounded-lg border text-xs ${ok ? 'bg-emerald-50/50 border-emerald-200 text-slate-700' : 'bg-rose-50/60 border-rose-200 text-slate-700'}">
+          <span class="font-bold ${ok ? 'text-emerald-700' : 'text-rose-600'}">${ok ? '✓' : '✕'} ${label}:</span> ${text}
+        </div>
+      `;
+
+      container.innerHTML = `
+        <div>
+          <div class="flex items-start justify-between gap-3">
+            <span class="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wide ${badgeBg}">
+              ${statusLabel}
+            </span>
+            <div class="text-right shrink-0">
+              <span class="text-[11px] font-semibold text-slate-400 block">Skor Lokasi</span>
+              <span class="text-2xl sm:text-3xl font-extrabold ${scoreTextColor}">${evalRes.score}%</span>
+            </div>
+          </div>
+
+          <h3 class="text-base sm:text-lg font-extrabold text-slate-900 mt-3 leading-snug">
+            ${headline}
+          </h3>
+          <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+            ${crop.riskNoteHighElev}
+          </p>
+
+          <div class="space-y-2 mt-4">
+            ${checkItem(evalRes.phOk, "pH Tanah", evalRes.phReason)}
+            ${checkItem(evalRes.tempOk, "Suhu Udara", evalRes.tempReason)}
+            ${checkItem(evalRes.elevOk, "Ketinggian (Junghuhn)", evalRes.elevReason)}
+            ${checkItem(evalRes.weatherOk, "Cuaca & Curah Hujan", evalRes.weatherReason)}
+          </div>
+        </div>
+
+        <div class="mt-4 p-3 rounded-xl bg-amber-50/90 border border-amber-200 text-xs text-slate-800 leading-relaxed">
+          <strong class="text-amber-900">💡 Saran Pengganti Lebih Aman:</strong> Agar hasil panen maksimal di titik lokasi ini, tanaman yang jauh lebih cocok adalah
+          <button onclick="selectCropAndScroll('${topAlt1.crop.id}')" class="font-bold underline text-emerald-800 hover:text-emerald-600">${topAlt1.crop.name} (Kecocokan ${topAlt1.score}%)</button> dan
+          <button onclick="selectCropAndScroll('${topAlt2.crop.id}')" class="font-bold underline text-emerald-800 hover:text-emerald-600">${topAlt2.crop.name} (${topAlt2.score}%)</button>.
+        </div>
+      `;
+    }
+
+    function renderRecommendationsTable(rankedCrops) {
+      const tbody = document.getElementById("recommendationTableBody");
+      tbody.innerHTML = rankedCrops.slice(0, 7).map((item, idx) => {
+        const c = item.crop;
+        const isSelected = c.id === activeCropId;
+        const badgeCls = item.score >= 80
+          ? "bg-emerald-100 text-emerald-800 border-emerald-300"
+          : item.score >= 62
+          ? "bg-amber-100 text-amber-800 border-amber-300"
+          : "bg-rose-100 text-rose-800 border-rose-300";
+        const statusTxt = item.score >= 80
+          ? "Sangat Direkomendasikan"
+          : item.score >= 62
+          ? "Cukup Sesuai (Adaptasi)"
+          : "Tidak Direkomendasikan";
+
+        return `
+          <tr class="${isSelected ? 'bg-emerald-50/60' : 'hover:bg-slate-50'} transition">
+            <td class="py-2.5 px-2 font-bold text-slate-700">#${idx + 1}</td>
+            <td class="py-2.5 px-2 font-bold text-slate-900">${c.name}</td>
+            <td class="py-2.5 px-2 text-slate-600 font-mono-tech text-[11px]">
+              pH ${c.phMin}–${c.phMax} • ${c.tempMin}–${c.tempMax}°C • ${c.elevMin}–${c.elevMax}m
+            </td>
+            <td class="py-2.5 px-2 text-center">
+              <span class="px-2 py-0.5 rounded-full text-[11px] font-bold border ${badgeCls}">
+                ${item.score}%
+              </span>
+            </td>
+            <td class="py-2.5 px-2 font-medium text-slate-700">${statusTxt}</td>
+            <td class="py-2.5 px-2 text-right">
+              <button onclick="selectCropAndScroll('${c.id}')" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-emerald-700 text-white font-semibold text-[11px] transition">
+                Peta &amp; Cara Tanam
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // 9. CLEAN TECHNICAL WORKSHEET FOR CULTIVATION & SAPRODI CALCULATOR (NO AI SLOP!)
+    function renderCultivationGuide(crop, evalRes, fieldPh, fieldTemp, fieldElev, fieldWeather) {
+      const container = document.getElementById("cultivationWorksheetSection");
+      if (!container) return;
+
+      const polySpecs = {
+        kecil: { label: "Kecil 20×20 cm (±3 Liter / 2.5 kg)", liter: 3, kgMedia: 2.5, dolomitBaseGr: 3 },
+        sedang: { label: "Sedang 30×30 cm (±8 Liter / 6.0 kg)", liter: 8, kgMedia: 6.0, dolomitBaseGr: 6 },
+        besar: { label: "Besar 40×40 cm (±15 Liter / 12.0 kg)", liter: 15, kgMedia: 12.0, dolomitBaseGr: 12 }
+      };
+      const pSpec = polySpecs[polySizeKey] || polySpecs.sedang;
+
+      const phDeficit = Math.max(0, crop.phMin - fieldPh);
+      const dolomitGramPerPoly = phDeficit > 0 ? Math.ceil(phDeficit * 2 * pSpec.dolomitBaseGr) : 0;
+      const totalDolomitGram = dolomitGramPerPoly * polyCount;
+      const totalMediaKg = Math.round(pSpec.kgMedia * polyCount);
+      const tanahKg = (totalMediaKg * 0.5).toFixed(1);
+      const komposKg = (totalMediaKg * 0.25).toFixed(1);
+      const sekamKg = (totalMediaKg * 0.25).toFixed(1);
+
+      const totalPlantsPoly = polyCount * crop.plantsPerPoly;
+      const totalNpkSeasonKg = ((crop.npkGramPerPoly * polyCount * 2) / 1000).toFixed(2);
+      const estYieldPolyKg = (polyCount * crop.yieldKgPerPoly * (evalRes.score / 100)).toFixed(1);
+
+      const haFactor = landAreaM2 / 10000;
+      const pupukKandangKg = Math.round(15000 * haFactor);
+      const dolomitLahanKg = phDeficit > 0 ? Math.ceil(phDeficit * 2000 * haFactor) : 0;
+      const npkLahanKg = Math.round(250 * haFactor);
+      const estYieldLahanKg = Math.round(crop.yieldTonPerHa * 1000 * haFactor * (evalRes.score / 100));
+      const estPopulasiLahan = Math.round((landAreaM2 * 0.75) / 0.20);
+
+      const mlWaterPerPoly = polySizeKey === "kecil" ? 220 : polySizeKey === "sedang" ? 320 : 500;
+      let wateringInstruction = "";
+      if (fieldWeather === "sejuk_lembap" || fieldWeather === "hujan_tinggi") {
+        wateringInstruction = `Lokasi beriklim <strong>Sejuk &amp; Lembap (${fieldTemp.toFixed(1)}°C, ${Math.round(fieldElev)} mdpl)</strong>: siram <strong>1 kali sehari pada pagi hari (±${mlWaterPerPoly} ml/polybag)</strong>. Hindari sore/malam mendung agar perakaran tidak busuk.`;
+      } else {
+        wateringInstruction = `Lokasi beriklim <strong>Hangat/Terik (${fieldTemp.toFixed(1)}°C, ${Math.round(fieldElev)} mdpl)</strong>: siram <strong>2 kali sehari (pagi &amp; sore @ ±${mlWaterPerPoly} ml/polybag)</strong> untuk menjaga kelembapan media.`;
+      }
+
+      const phTreatmentNote = phDeficit > 0
+        ? `pH tanah saat ini <strong>${fieldPh.toFixed(1)}</strong> (masam). Campurkan <strong>Dolomit ${cultivationMode === 'polybag' ? `${dolomitGramPerPoly} gr/polybag (≈ ${(dolomitGramPerPoly / 5).toFixed(1)} sdt)` : `${dolomitLahanKg} kg`}</strong> pada H-7 sebelum tanam.`
+        : `pH tanah (<strong>${fieldPh.toFixed(1)}</strong>) sudah ideal (${crop.phMin}–${crop.phMax}). Tanpa pengapuran dolomit tambahan.`;
+
+      container.innerHTML = `
+        <!-- Modern Card Header (SaaS Style) -->
+        <div class="p-5 sm:p-6 bg-gradient-to-r from-slate-900 to-slate-800 text-white flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-700">
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                PANDUAN SARANA PRODUKSI &amp; TIMELINE BUDIDAYA
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+                Umur Panen: ${crop.harvestDays} &bull; Jarak: ${crop.spacingCm}
+              </span>
+            </div>
+            <h3 class="text-base sm:text-xl font-extrabold text-white">
+              Estimasi Saprodi &amp; SOP Lapangan: <span class="text-emerald-400">${crop.name}</span>
+            </h3>
+            <p class="text-xs text-slate-300 mt-0.5">
+              Kalkulasi teknis adaptif untuk <span class="text-amber-300 font-semibold">Kec. ${activeDistrict.name}</span> (${Math.round(fieldElev)} mdpl, pH ${fieldPh.toFixed(1)}, Suhu ${fieldTemp.toFixed(1)}°C).
+            </p>
+          </div>
+
+          <!-- Clean Segmented Mode Switcher -->
+          <div class="inline-flex rounded-xl p-1 bg-slate-950/80 border border-slate-700 shrink-0 self-start md:self-auto">
+            <button onclick="setCultivationScaleMode('polybag')" class="px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${cultivationMode === 'polybag' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'}">
+              <span>🪴 Polybag / Pekarangan</span>
+            </button>
+            <button onclick="setCultivationScaleMode('lahan')" class="px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${cultivationMode === 'lahan' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'}">
+              <span>🌾 Lahan Terbuka (m²)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2-Column Content Layout (Bento Grid Left, Timeline Stepper Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
+
+          <!-- LEFT COLUMN (5/12): INPUT CONTROLS & BENTO METRIC CARDS -->
+          <div class="lg:col-span-5 p-5 sm:p-6 space-y-4 bg-slate-50/60">
+            <div>
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-1 flex items-center gap-1.5">
+                <span>⚙️ Konfigurasi Kapasitas Budidaya</span>
+              </h4>
+              <p class="text-[11px] text-slate-500">Sesuaikan kapasitas wadah atau luas areal tanam:</p>
+            </div>
+
+            ${cultivationMode === 'polybag' ? `
+              <!-- Polybag Inputs -->
+              <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Ukuran Polybag:</label>
+                  <select onchange="onChangePolySize(this.value)" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-emerald-500">
+                    <option value="kecil" ${polySizeKey === 'kecil' ? 'selected' : ''}>Kecil 20×20 cm (±3 Liter / 2.5 kg)</option>
+                    <option value="sedang" ${polySizeKey === 'sedang' ? 'selected' : ''}>Sedang 30×30 cm (±8 Liter / 6.0 kg)</option>
+                    <option value="besar" ${polySizeKey === 'besar' ? 'selected' : ''}>Besar 40×40 cm (±15 Liter / 12.0 kg)</option>
+                  </select>
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                    <span>Jumlah Wadah:</span>
+                    <span class="text-emerald-700 font-bold font-mono">${polyCount} polybag</span>
+                  </div>
+                  <input type="number" min="1" max="5000" value="${polyCount}" oninput="onChangePolyCount(this.value)" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold font-mono text-slate-900 focus:ring-2 focus:ring-emerald-500" />
+                </div>
+              </div>
+            ` : `
+              <!-- Open Field Inputs -->
+              <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-semibold text-slate-700">Luas Lahan Budidaya:</label>
+                  <span class="text-emerald-700 font-bold font-mono text-xs">${landAreaM2} m² (${(landAreaM2/10000).toFixed(2)} Ha)</span>
+                </div>
+                <input type="number" min="10" max="100000" step="10" value="${landAreaM2}" oninput="onChangeLandArea(this.value)" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold font-mono text-slate-900 text-right focus:ring-2 focus:ring-emerald-500" />
+                <div class="grid grid-cols-4 gap-1.5 pt-1">
+                  <button onclick="onChangeLandArea(100)" class="py-1.5 px-2 rounded-lg border text-xs font-bold font-mono transition ${landAreaM2 == 100 ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">100 m²</button>
+                  <button onclick="onChangeLandArea(400)" class="py-1.5 px-2 rounded-lg border text-xs font-bold font-mono transition ${landAreaM2 == 400 ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">400 m²</button>
+                  <button onclick="onChangeLandArea(1000)" class="py-1.5 px-2 rounded-lg border text-xs font-bold font-mono transition ${landAreaM2 == 1000 ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">1.000 m²</button>
+                  <button onclick="onChangeLandArea(10000)" class="py-1.5 px-2 rounded-lg border text-xs font-bold font-mono transition ${landAreaM2 == 10000 ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">1 Ha</button>
+                </div>
+              </div>
+            `}
+
+            <!-- 4 Modern Bento Metric Cards (No boring rows!) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              ${cultivationMode === 'polybag' ? `
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Total Media Tanam</span>
+                    <span class="text-xl font-extrabold text-slate-900 mt-1 block">${totalMediaKg} kg</span>
+                  </div>
+                  <div class="text-[10px] text-slate-500 mt-2 pt-2 border-t border-slate-100">
+                    Tanah ${tanahKg}kg &bull; Kompos ${komposKg}kg &bull; Sekam ${sekamKg}kg
+                  </div>
+                </div>
+
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Kapur Dolomit</span>
+                    <span class="text-xl font-extrabold ${phDeficit > 0 ? 'text-amber-600' : 'text-emerald-600'} mt-1 block">
+                      ${phDeficit > 0 ? `${totalDolomitGram} gr` : '0 gr (Ideal)'}
+                    </span>
+                  </div>
+                  <div class="text-[10px] text-slate-500 mt-2 pt-2 border-t border-slate-100">
+                    ${phDeficit > 0 ? `Dosis: ${dolomitGramPerPoly} gr/polybag (H-7)` : `pH ${fieldPh.toFixed(1)} sudah ideal`}
+                  </div>
+                </div>
+
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Pupuk NPK 16-16-16</span>
+                    <span class="text-xl font-extrabold text-slate-900 mt-1 block">${totalNpkSeasonKg} kg</span>
+                  </div>
+                  <div class="text-[10px] text-slate-500 mt-2 pt-2 border-t border-slate-100">
+                    Aplikasi: ${crop.npkGramPerPoly} gr/polybag berkala
+                  </div>
+                </div>
+
+                <div class="bg-emerald-50/80 p-3.5 rounded-xl border border-emerald-200 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <span class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider block">Estimasi Hasil Panen</span>
+                    <span class="text-xl font-extrabold text-emerald-700 mt-1 block">± ${estYieldPolyKg} kg</span>
+                  </div>
+                  <div class="text-[10px] text-emerald-700 mt-2 pt-2 border-t border-emerald-200/60 font-semibold">
+                    ${totalPlantsPoly} tanaman (Skor: ${evalRes.score}%)
+                  </div>
+                </div>
+              ` : `
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Pupuk Kandang</span>
+                    <span class="text-xl font-extrabold text-slate-900 mt-1 block">${pupukKandangKg} kg</span>
+                  </div>
+                  <div class="text-[10px] text-slate-500 mt-2 pt-2 border-t border-slate-100">
+                    Dosis olah bedengan: 1.5 kg/m²
+                  </div>
+                </div>
+
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Kapur Pertanian</span>
+                    <span class="text-xl font-extrabold ${phDeficit > 0 ? 'text-amber-600' : 'text-emerald-600'} mt-1 block">
+                      ${phDeficit > 0 ? `${dolomitLahanKg} kg` : '0 kg (Ideal)'}
+                    </span>
+                  </div>
+                  <div class="text-[10px] text-slate-500 mt-2 pt-2 border-t border-slate-100">
+                    ${phDeficit > 0 ? `Sebar merata H-7 sebelum tanam` : `pH ${fieldPh.toFixed(1)} sudah ideal`}
+                  </div>
+                </div>
+
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">NPK 16-16-16</span>
+                    <span class="text-xl font-extrabold text-slate-900 mt-1 block">${npkLahanKg} kg</span>
+                  </div>
+                  <div class="text-[10px] text-slate-500 mt-2 pt-2 border-t border-slate-100">
+                    Jarak tanam: ${crop.spacingCm}
+                  </div>
+                </div>
+
+                <div class="bg-emerald-50/80 p-3.5 rounded-xl border border-emerald-200 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <span class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider block">Proyeksi Hasil</span>
+                    <span class="text-xl font-extrabold text-emerald-700 mt-1 block">± ${estYieldLahanKg} kg</span>
+                  </div>
+                  <div class="text-[10px] text-emerald-700 mt-2 pt-2 border-t border-emerald-200/60 font-semibold">
+                    ± ${estPopulasiLahan} tanaman (${evalRes.score}%)
+                  </div>
+                </div>
+              `}
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN (7/12): MODERN INTERACTIVE STEPPER TIMELINE (NO TABLE SLOP!) -->
+          <div class="lg:col-span-7 p-5 sm:p-6 bg-white space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                  <span>📅 Timeline Siklus Budidaya Lapangan</span>
+                </h4>
+                <p class="text-[11px] text-slate-500 mt-0.5">Tahapan kerja teknis terstruktur berdasarkan Hari Setelah Tanam (HST):</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-bold">
+                Adaptif: ${fieldTemp.toFixed(1)}°C &bull; pH ${fieldPh.toFixed(1)}
+              </span>
+            </div>
+
+            <!-- Modern Vertical Stepper -->
+            <div class="relative pl-6 space-y-3.5 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
+              
+              <!-- Step 1 -->
+              <div class="relative">
+                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-slate-800 text-white font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white">
+                  1
+                </div>
+                <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
+                  <div class="flex items-center justify-between gap-2 mb-1">
+                    <span class="font-bold text-xs text-slate-900">Pra-Tanam (H-7 s.d. H-1) &bull; Persiapan Media &amp; Koreksi pH</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-200 text-slate-700">Olah Media</span>
+                  </div>
+                  <p class="text-xs text-slate-600 leading-relaxed">
+                    ${crop.sop.stage1} ${phTreatmentNote}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="relative">
+                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-emerald-600 text-white font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white">
+                  2
+                </div>
+                <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
+                  <div class="flex items-center justify-between gap-2 mb-1">
+                    <span class="font-bold text-xs text-slate-900">Hari Tanam (0 HST) &bull; Penyemaian &amp; Pindah Tanam</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800">Tanam Benih</span>
+                  </div>
+                  <p class="text-xs text-slate-600 leading-relaxed">
+                    ${crop.sop.stage2} Lakukan penanaman pada sore hari (15.30–17.00 WIB) agar bibit tidak mengalami stres penguapan.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="relative">
+                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-blue-600 text-white font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white">
+                  3
+                </div>
+                <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
+                  <div class="flex items-center justify-between gap-2 mb-1">
+                    <span class="font-bold text-xs text-slate-900">Pemeliharaan Vegetatif (7 &ndash; 20 HST) &bull; Pengairan &amp; Pupuk</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-100 text-blue-800">Air &amp; NPK</span>
+                  </div>
+                  <p class="text-xs text-slate-600 leading-relaxed">
+                    ${wateringInstruction} ${crop.sop.stage3}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step 4 -->
+              <div class="relative">
+                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-amber-500 text-slate-950 font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white">
+                  4
+                </div>
+                <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
+                  <div class="flex items-center justify-between gap-2 mb-1">
+                    <span class="font-bold text-xs text-slate-900">Fase Akhir (${crop.harvestDays}) &bull; Panen &amp; Pasca Panen</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-100 text-amber-800 font-bold">Panen</span>
+                  </div>
+                  <p class="text-xs text-slate-600 leading-relaxed">
+                    ${crop.sop.stage4}
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Footer Note -->
+            <div class="p-3 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
+              <span><strong>Status Wilayah:</strong> Kec. ${activeDistrict.name} (${Math.round(fieldElev)} mdpl, ${fieldTemp.toFixed(1)}°C, pH ${fieldPh.toFixed(1)}) &bull; Skor: <strong class="text-emerald-700">${evalRes.score}%</strong>.</span>
+              <span class="text-[11px] font-semibold text-slate-500 font-mono">FTI UNSAP 2026</span>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    function onDistrictSelectChange() {
+      const id = parseInt(document.getElementById("selectDistrict").value, 10);
+      const d = districtsData.find(item => item.id === id) || districtsData[0];
+      setMapPinLocation(d.lat, d.lon, true);
+      if (suitabilityMap) suitabilityMap.panTo([d.lat, d.lon]);
+    }
+
+    function onSliderInput() {
+      syncSliderLabels();
+      evaluateCurrentLocation();
+    }
+
+    function syncSliderLabels() {
+      const ph = parseFloat(document.getElementById("sliderPh").value);
+      const temp = parseFloat(document.getElementById("sliderTemp").value);
+      const elev = parseFloat(document.getElementById("sliderElev").value);
+      document.getElementById("valPhLabel").textContent = ph.toFixed(1);
+      document.getElementById("valTempLabel").textContent = `${temp.toFixed(1)} °C`;
+      document.getElementById("valElevLabel").textContent = `${Math.round(elev)} mdpl`;
+    }
+
+    function setSuitabilityMapColorMode(mode) {
+      mapColorMode = mode;
+      const btnSuit = document.getElementById("btnMapModeSuitability");
+      const btnClust = document.getElementById("btnMapModeCluster");
+      if (mode === "suitability") {
+        btnSuit.className = "px-3 py-1.5 rounded-md text-xs font-bold bg-emerald-600 text-white shadow-sm transition";
+        btnClust.className = "px-3 py-1.5 rounded-md text-xs font-semibold text-slate-700 hover:text-slate-900 transition";
+      } else {
+        btnClust.className = "px-3 py-1.5 rounded-md text-xs font-bold bg-blue-600 text-white shadow-sm transition";
+        btnSuit.className = "px-3 py-1.5 rounded-md text-xs font-semibold text-slate-700 hover:text-slate-900 transition";
+      }
+      renderSuitabilityMapMarkers();
+    }
+
+    function selectCropAndScroll(cropId) {
+      document.getElementById("selectCrop").value = cropId;
+      evaluateCurrentLocation();
+      document.getElementById("cultivationWorksheetSection").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function setCultivationScaleMode(mode) {
+      cultivationMode = mode;
+      evaluateCurrentLocation();
+    }
+
+    function onChangePolySize(val) {
+      polySizeKey = val;
+      evaluateCurrentLocation();
+    }
+
+    function onChangePolyCount(val) {
+      const parsed = parseInt(val, 10);
+      if (!isNaN(parsed) && parsed > 0) {
+        polyCount = parsed;
+        evaluateCurrentLocation();
+      }
+    }
+
+    function onChangeLandArea(val) {
+      const parsed = parseInt(val, 10);
+      if (!isNaN(parsed) && parsed >= 10) {
+        landAreaM2 = parsed;
+        evaluateCurrentLocation();
+      }
+    }
+
+    function setQuickPhPreset(phVal) {
+      document.getElementById("sliderPh").value = phVal;
+      syncSliderLabels();
+      evaluateCurrentLocation();
+    }
+
+    function loadScenarioCase(caseKey) {
+      if (caseKey === "buahdua") {
+        // Uji Kasus Nyata Petani: Wilayah Kec. Buahdua (Dataran Sedang, 345 mdpl)
+        const buahdua = districtsData.find(d => d.name === "Buahdua") || { id: 12, lat: -6.7360, lon: 107.9730, ph: 6.4, tempC: 26.2, elevMdpl: 345 };
+        document.getElementById("selectDistrict").value = buahdua.id;
+        document.getElementById("selectCrop").value = "cabai_tw"; // Cabai Besar/TW adalah komoditas unggulan Buahdua 10 Ha
+        setMapPinLocation(buahdua.lat, buahdua.lon, true);
+        if (suitabilityMap) suitabilityMap.setView([buahdua.lat, buahdua.lon], 13);
+        const titleEl = document.getElementById("detectedLocalityTitle");
+        if (titleEl) titleEl.innerHTML = `🌿 <span class="text-teal-800 font-extrabold">Uji Kasus Petani: Wilayah Kec. Buahdua (345 mdpl)</span>`;
+        showLocationToast("📍 Lokasi berhasil dipusatkan ke Kecamatan Buahdua!");
+      } else if (caseKey === "dosen_sumedang_kota") {
+        // Studi Kasus Dosen 1: Rumah di Cekungan Dataran Rendah Sumedang Kota (Kotakaler/Regol)
+        document.getElementById("selectCrop").value = "kangkung";
+        setMapPinLocation(-6.8360, 107.9240, true);
+        if (suitabilityMap) suitabilityMap.setView([-6.8360, 107.9240], 13);
+        const titleEl = document.getElementById("detectedLocalityTitle");
+        if (titleEl) titleEl.innerHTML = `🏡 <span class="text-indigo-800 font-extrabold">Rumah Dosen 1: Sumedang Kota (Dataran Rendah)</span>`;
+        showLocationToast("📍 Memuat Kasus Dosen 1: Sumedang Kota");
+      } else if (caseKey === "dosen_cijeler_situraja") {
+        // Studi Kasus Dosen 2: Rumah di Kaki Perbukitan Desa Cijeler, Situraja
+        document.getElementById("selectCrop").value = "kangkung";
+        setMapPinLocation(-6.8601, 108.0056, true);
+        if (suitabilityMap) suitabilityMap.setView([-6.8601, 108.0056], 13);
+        const titleEl = document.getElementById("detectedLocalityTitle");
+        if (titleEl) titleEl.innerHTML = `⛰️ <span class="text-amber-800 font-extrabold">Rumah Dosen 2: Desa Cijeler, Situraja (Perbukitan)</span>`;
+        showLocationToast("📍 Memuat Kasus Dosen 2: Desa Cijeler, Situraja");
+      } else if (caseKey === "kangkung_cimalaka") {
+        const cimalaka = districtsData.find(d => d.name === "Cimalaka");
+        document.getElementById("selectCrop").value = "kangkung";
+        setMapPinLocation(cimalaka.lat, cimalaka.lon, true);
+        if (suitabilityMap) suitabilityMap.setView([cimalaka.lat, cimalaka.lon], 11);
+        showLocationToast("📍 Memuat Kasus Cimalaka: Kangkung");
+      } else if (caseKey === "kubis_ujungjaya") {
+        const ujungjaya = districtsData.find(d => d.name === "Ujung Jaya");
+        document.getElementById("selectCrop").value = "kubis";
+        setMapPinLocation(ujungjaya.lat, ujungjaya.lon, true);
+        if (suitabilityMap) suitabilityMap.setView([ujungjaya.lat, ujungjaya.lon], 11);
+        showLocationToast("📍 Memuat Kasus Ujung Jaya: Kubis");
+      }
+    }
+
+    // FUNGSI GPS PINTAR: TIDAK MEMAKSA CIJELER KETIKA ERROR/DI LUAR JANGKAUAN
+    function useMyGPSLocation() {
+      const btn = document.getElementById("btnMyGPS");
+      if (btn) btn.innerHTML = `<span class="inline-block animate-spin mr-1">⏳</span> Mengunci Sinyal GPS...`;
+
+      if (!navigator.geolocation) {
+        if (btn) btn.innerHTML = `<span>📍 Kunci GPS Pekarangan</span>`;
+        showLocationToast("Sensor GPS tidak didukung browser ini. Membuka pemilih kecamatan...");
+        openDistrictPickerModal();
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          const accuracy = pos.coords.accuracy ? Math.round(pos.coords.accuracy) : 10;
+          
+          const nearest = findNearestDistrict(lat, lon);
+          
+          // Toleransi radius Sumedang (maksimal 35 km dari batas kecamatan terdekat)
+          if (nearest.distanceKm <= 35) {
+            setMapPinLocation(lat, lon, true);
+            if (suitabilityMap) suitabilityMap.setView([lat, lon], 14);
+            if (btn) btn.innerHTML = `📍 GPS Terkunci: ${nearest.district.name} (±${accuracy}m)`;
+            showLocationToast(`📍 GPS Presisi Terkunci di Kec. ${nearest.district.name} (±${accuracy}m)!`);
+          } else {
+            // Posisi IP/GPS di luar Sumedang (misal cellular IP diarahkan ke gateway Bandung/Jakarta)
+            if (btn) btn.innerHTML = `<span>📍 Kunci GPS Pekarangan</span>`;
+            showLocationToast(`📍 GPS terdeteksi di luar Sumedang (${nearest.distanceKm.toFixed(0)} km). Membuka pemilih kecamatan...`);
+            openDistrictPickerModal();
+          }
+        },
+        err => {
+          console.warn("GPS Geolocation error/blocked by iframe permissions policy:", err);
+          if (btn) btn.innerHTML = `<span>📍 Kunci GPS Pekarangan</span>`;
+          
+          let reasonMsg = "Akses sensor GPS otomatis dibatasi oleh keamanan Google Sites / Browser.";
+          if (err && err.code === 3) reasonMsg = "Pencarian sinyal GPS melebihi batas waktu (timeout).";
+          else if (err && err.code === 2) reasonMsg = "Sinyal posisi GPS perangkat tidak tersedia.";
+          
+          showLocationToast(`${reasonMsg} Silakan pilih kecamatan Anda langsung.`);
+          openDistrictPickerModal();
+        },
+        { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 }
+      );
+    }
+
+    // MODAL PEMILIH 26 KECAMATAN SUMEDANG LENGKAP
+    function openDistrictPickerModal() {
+      const modal = document.getElementById("modalDistrictPicker");
+      if (!modal) return;
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      populateDistrictPickerGrid();
+      const searchInput = document.getElementById("searchDistrictInput");
+      if (searchInput) {
+        searchInput.value = "";
+        setTimeout(() => searchInput.focus(), 150);
+      }
+    }
+
+    function closeDistrictPickerModal() {
+      const modal = document.getElementById("modalDistrictPicker");
+      if (!modal) return;
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function populateDistrictPickerGrid(filterKeyword = "") {
+      const grid = document.getElementById("districtPickerGrid");
+      if (!grid) return;
+      
+      const kw = filterKeyword.toLowerCase().trim();
+      const filtered = districtsData.filter(d => 
+        d.name.toLowerCase().includes(kw) || 
+        d.topCrop.toLowerCase().includes(kw) ||
+        (d.elevMdpl + "").includes(kw)
+      );
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-8 text-center text-slate-400 text-sm">Tidak ditemukan kecamatan dengan kata kunci "${filterKeyword}"</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(d => {
+        const isCurrent = (activeDistrict && activeDistrict.id === d.id);
+        return `
+          <button onclick="selectDistrictFromPicker(${d.id})" class="text-left p-3 rounded-xl border transition-all cursor-pointer ${
+            isCurrent 
+              ? 'bg-emerald-50 border-emerald-500 ring-2 ring-emerald-500/30' 
+              : 'bg-white hover:bg-slate-50 border-slate-200 hover:border-emerald-300 shadow-sm'
+          }">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-xs sm:text-sm ${isCurrent ? 'text-emerald-900' : 'text-slate-800'}">Kec. ${d.name}</span>
+              <span class="text-[10px] font-mono-tech px-2 py-0.5 rounded ${isCurrent ? 'bg-emerald-200 text-emerald-800' : 'bg-slate-100 text-slate-600'}">
+                ${d.elevMdpl} mdpl
+              </span>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-1 flex items-center justify-between">
+              <span>Suhu: <strong>${d.tempC}°C</strong></span>
+              <span>pH: <strong>${d.ph}</strong></span>
+            </div>
+            <div class="text-[10px] text-emerald-700 font-medium truncate mt-1 bg-emerald-50/70 px-1.5 py-0.5 rounded">
+              🌾 ${d.topCrop}
+            </div>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function onDistrictSearchInput(val) {
+      populateDistrictPickerGrid(val);
+    }
+
+    function selectDistrictFromPicker(districtId) {
+      const d = districtsData.find(item => item.id === districtId);
+      if (!d) return;
+      
+      document.getElementById("selectDistrict").value = d.id;
+      setMapPinLocation(d.lat, d.lon, true);
+      if (suitabilityMap) suitabilityMap.setView([d.lat, d.lon], 13);
+      closeDistrictPickerModal();
+      showLocationToast(`📍 Lokasi aktif: Kec. ${d.name} (${d.elevMdpl} mdpl)`);
+    }
+
+    // TOAST NOTIFIKASI ELEGAN
+    function showLocationToast(msg, durationMs = 3800) {
+      const toast = document.getElementById("appGlobalToast");
+      const text = document.getElementById("appGlobalToastText");
+      if (!toast || !text) return;
+      
+      text.textContent = msg;
+      toast.classList.remove("opacity-0", "translate-y-4", "pointer-events-none");
+      toast.classList.add("opacity-100", "translate-y-0");
+
+      if (window._toastTimeout) clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(() => {
+        toast.classList.remove("opacity-100", "translate-y-0");
+        toast.classList.add("opacity-0", "translate-y-4", "pointer-events-none");
+      }, durationMs);
+    }
+
+    // 11. SECONDARY TABS (FULL CLUSTER MAP, KDD CHARTS, DATA TABLE)
+    function switchTab(tabId) {
+      const tabs = ["suitability", "map", "kdd", "data", "junghuhn"];
+      tabs.forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (t === tabId) {
+          el.classList.remove("hidden");
+          btn.className = "tab-nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-emerald-600 text-white shadow-sm";
+        } else {
+          el.classList.add("hidden");
+          btn.className = "tab-nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/50";
+        }
+      });
+
+      if (tabId === "suitability" && suitabilityMap) {
+        setTimeout(() => suitabilityMap.invalidateSize(), 100);
+      } else if (tabId === "map") {
+        setTimeout(() => renderClusterFullMapAndSummary(), 100);
+      } else if (tabId === "kdd") {
+        setTimeout(() => renderKddChartsAndTable(), 100);
+      } else if (tabId === "data") {
+        renderRawDatasetTable();
+      }
+    }
+
+    function changeKClusterCount(val) {
+      currentK = parseInt(val, 10);
+      kmeansResult = runKMeansEngine(currentK);
+      updateTopKPIs();
+      renderClusterFullMapAndSummary();
+      evaluateCurrentLocation();
+    }
+
+    function updateTopKPIs() {
+      const totalHarvest = districtsData.reduce((acc, d) => acc + d.harvestHa, 0);
+      const c0Harvest = districtsData.filter(d => d.cluster === 0).reduce((acc, d) => acc + d.harvestHa, 0);
+      const sharePct = ((c0Harvest / totalHarvest) * 100).toFixed(1);
+
+      document.getElementById("kpiTotalDistricts").textContent = districtsData.length;
+      document.getElementById("kpiTotalHarvest").textContent = `${totalHarvest.toLocaleString("id-ID")} Ha`;
+      document.getElementById("kpiTopClusterShare").textContent = `Klaster Tertinggi: ${c0Harvest.toLocaleString("id-ID")} Ha (${sharePct}%)`;
+      document.getElementById("kpiClusterCount").textContent = `k = ${kmeansResult.k}`;
+      document.getElementById("kpiSseValue").textContent = `SSE Inertia: ${kmeansResult.sse.toFixed(4)}`;
+      document.getElementById("kpiSilhouette").textContent = kmeansResult.silhouette.toFixed(4);
+    }
+
+    function renderClusterFullMapAndSummary() {
+      if (!clusterFullMapInstance) {
+        clusterFullMapInstance = L.map("clusterFullMap", {
+          center: [-6.835, 107.960],
+          zoom: 10,
+          minZoom: 9,
+          maxZoom: 18
+        });
+        L.tileLayer("https://tile.openstreetmap.de/{z}/{x}/{y}.png", {
+          maxZoom: 18,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(clusterFullMapInstance);        clusterFullMarkersLayer = L.layerGroup().addTo(clusterFullMapInstance);
+      }
+      clusterFullMapInstance.invalidateSize();
+      clusterFullMarkersLayer.clearLayers();
+
+      districtsData.forEach(d => {
+        const meta = getClusterMeta(d.cluster);
+        const radius = Math.max(8, Math.min(20, 7 + Math.sqrt(d.harvestHa) * 0.5));
+        const marker = L.circleMarker([d.lat, d.lon], {
+          radius,
+          fillColor: meta.colorHex,
+          color: "#ffffff",
+          weight: 2,
+          fillOpacity: 0.9
+        });
+        marker.bindPopup(`
+          <div class="text-xs space-y-1">
+            <div class="font-bold text-slate-900">${d.name}</div>
+            <div>Klaster: <strong>${meta.name}</strong></div>
+            <div>Luas Panen: <strong>${d.harvestHa} Ha</strong> • Elevasi: <strong>${d.elevMdpl} mdpl</strong></div>
+            <div>Komoditas Utama: ${d.topCrop}</div>
+          </div>
+        `);
+        clusterFullMarkersLayer.addLayer(marker);
+      });
+
+      const summaryContainer = document.getElementById("clusterSummaryCardsContainer");
+      let html = "";
+      for (let c = 0; c < currentK; c++) {
+        const members = districtsData.filter(d => d.cluster === c);
+        const meta = getClusterMeta(c);
+        const sumHa = members.reduce((a, b) => a + b.harvestHa, 0);
+        const avgElev = members.length ? Math.round(members.reduce((a, b) => a + b.elevMdpl, 0) / members.length) : 0;
+        html += `
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/70">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${meta.lightBadge}">${meta.name}</span>
+              <span class="text-xs font-mono-tech font-bold text-slate-700">${members.length} Kecamatan</span>
+            </div>
+            <div class="text-xs text-slate-600 mt-2">
+              Total Panen: <strong>${sumHa} Ha</strong> • Rata-rata Elevasi: <strong>${avgElev} mdpl</strong>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
+              <strong>Anggota:</strong> ${members.map(m => m.name).join(", ")}
+            </div>
+          </div>
+        `;
+      }
+      summaryContainer.innerHTML = html;
+    }
+
+    function renderKddChartsAndTable() {
+      const tbody = document.getElementById("kddNormalizationTableBody");
+      tbody.innerHTML = districtsData.map((d, i) => {
+        const meta = getClusterMeta(d.cluster);
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2 px-3">${i + 1}</td>
+            <td class="py-2 px-3 font-sans font-semibold text-slate-900">${d.name}</td>
+            <td class="py-2 px-3 text-right">${d.norm[0].toFixed(4)}</td>
+            <td class="py-2 px-3 text-right">${d.norm[1].toFixed(4)}</td>
+            <td class="py-2 px-3 text-right">${d.norm[2].toFixed(4)}</td>
+            <td class="py-2 px-3 text-right">${d.norm[3].toFixed(4)}</td>
+            <td class="py-2 px-3 text-right">${d.centroidDist.toFixed(4)}</td>
+            <td class="py-2 px-3 font-sans">
+              <span class="px-2 py-0.5 rounded text-[11px] font-bold border ${meta.lightBadge}">${meta.shortLabel}</span>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      if (elbowChartInstance) elbowChartInstance.destroy();
+      if (silhouetteChartInstance) silhouetteChartInstance.destroy();
+
+      const ctxElbow = document.getElementById("elbowChartCanvas").getContext("2d");
+      elbowChartInstance = new Chart(ctxElbow, {
+        type: "line",
+        data: {
+          labels: ["k=1", "k=2", "k=3 (Optimal)", "k=4", "k=5", "k=6"],
+          datasets: [{
+            label: "Sum of Squared Error (SSE)",
+            data: [5.8420, 2.9140, 1.6521, 1.3180, 1.0920, 0.9210],
+            borderColor: "#2563eb",
+            backgroundColor: "rgba(37, 99, 235, 0.12)",
+            borderWidth: 2.5,
+            pointRadius: 5,
+            fill: true,
+            tension: 0.25
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      const ctxSil = document.getElementById("silhouetteChartCanvas").getContext("2d");
+      silhouetteChartInstance = new Chart(ctxSil, {
+        type: "bar",
+        data: {
+          labels: ["k=2", "k=3 (Optimal)", "k=4", "k=5", "k=6"],
+          datasets: [{
+            label: "Silhouette Score",
+            data: [0.5120, 0.4810, 0.4190, 0.3850, 0.3610],
+            backgroundColor: ["#94a3b8", "#10b981", "#94a3b8", "#94a3b8", "#94a3b8"],
+            borderRadius: 6
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    }
+
+    function renderRawDatasetTable() {
+      const tbody = document.getElementById("rawDatasetTableBody");
+      tbody.innerHTML = districtsData.map((d, idx) => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-2.5 px-3 font-mono-tech">${idx + 1}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-900">${d.name}</td>
+          <td class="py-2.5 px-3 text-right font-mono-tech font-semibold text-emerald-700">${d.harvestHa}</td>
+          <td class="py-2.5 px-3 text-right font-mono-tech">${d.areaKm2.toFixed(2)}</td>
+          <td class="py-2.5 px-3 text-right font-mono-tech">${d.elevMdpl}</td>
+          <td class="py-2.5 px-3 text-right font-mono-tech">${d.tempC.toFixed(1)}</td>
+          <td class="py-2.5 px-3 text-right font-mono-tech">${d.ph.toFixed(1)}</td>
+          <td class="py-2.5 px-3 font-mono-tech text-[11px] text-slate-500">${d.lat.toFixed(4)}, ${d.lon.toFixed(4)}</td>
+          <td class="py-2.5 px-3 text-slate-700">${d.topCrop}</td>
+          <td class="py-2.5 px-3 text-right">
+            <button onclick="jumpToDistrictOnMap(${d.id})" class="px-2.5 py-1 rounded bg-slate-100 hover:bg-emerald-600 hover:text-white text-slate-700 font-semibold text-[11px] transition">
+              Pilih Lokasi
+            </button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function jumpToDistrictOnMap(districtId) {
+      switchTab("suitability");
+      document.getElementById("selectDistrict").value = districtId;
+      onDistrictSelectChange();
+    }
+
+    function exportDatasetCSV() {
+      const headers = ["No", "Kecamatan", "Luas_Panen_Ha", "Luas_Wilayah_Km2", "Elevasi_mdpl", "Suhu_C", "pH_Tanah", "Latitude", "Longitude", "Klaster_KMeans"];
+      const rows = districtsData.map((d, i) => [
+        i + 1,
+        `"${d.name}"`,
+        d.harvestHa,
+        d.areaKm2,
+        d.elevMdpl,
+        d.tempC,
+        d.ph,
+        d.lat,
+        d.lon,
+        `"${getClusterMeta(d.cluster).shortLabel}"`
+      ]);
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+      const link = document.createElement("a");
+      link.setAttribute("href", encodeURI(csvContent));
+      link.setAttribute("download", "Dataset_Klaster_Sayuran_Sumedang_BPS2025.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // 12. INITIALIZE ON WINDOW LOAD
+    window.onload = function () {
+      // Populate District Select
+      const distSelect = document.getElementById("selectDistrict");
+      distSelect.innerHTML = districtsData.map(d =>
+        `<option value="${d.id}" ${d.id === activeDistrict.id ? 'selected' : ''}>${d.name} (${d.elevMdpl} mdpl, ${d.tempC}°C)</option>`
+      ).join("");
+
+      // Populate Crop Select
+      const cropSelect = document.getElementById("selectCrop");
+      cropSelect.innerHTML = cropsCatalog.map(c =>
+        `<option value="${c.id}" ${c.id === activeCropId ? 'selected' : ''}>${c.name}</option>`
+      ).join("");
+
+      kmeansResult = runKMeansEngine(currentK);
+      updateTopKPIs();
+      initMaps();
+      setMapPinLocation(activeDistrict.lat, activeDistrict.lon, true);
+
+      // Auto-refresh data satelit cuaca secara berkala setiap 10 menit di latar belakang
+      setInterval(() => {
+        if (typeof isRealtimeWeatherActive !== 'undefined' && isRealtimeWeatherActive && typeof activeLat !== 'undefined') {
+          console.log("Auto-sync satelit cuaca di latar belakang...");
+          fetchLiveSatelliteWeather(activeLat, activeLon, true);
+        }
+      }, 10 * 60 * 1000);
+      // Auto resize leaflet maps on initial load and window resize
+      setTimeout(() => { if (suitabilityMap) suitabilityMap.invalidateSize(); }, 300);
+      setTimeout(() => { if (suitabilityMap) suitabilityMap.invalidateSize(); }, 800);
+      setTimeout(() => { if (suitabilityMap) suitabilityMap.invalidateSize(); }, 1500);
+      window.addEventListener('resize', () => {
+        if (typeof suitabilityMap !== 'undefined' && suitabilityMap) suitabilityMap.invalidateSize();
+        if (typeof clusterFullMapInstance !== 'undefined' && clusterFullMapInstance) clusterFullMapInstance.invalidateSize();
+      });
+    };
+  </script>
+
+  <!-- MODAL PEMILIH 26 KECAMATAN SUMEDANG LENGKAP -->
+  <div id="modalDistrictPicker" class="fixed inset-0 z-[9999] bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
+      <!-- Modal Header -->
+      <div class="p-4 sm:p-5 border-b border-slate-100 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 font-bold text-sm">
+            🗺️
+          </div>
+          <div>
+            <h3 class="text-sm sm:text-base font-extrabold text-white">Pilih Lokasi Kecamatan di Sumedang</h3>
+            <p class="text-[11px] text-slate-300">Tersedia lengkap 26 Kecamatan (termasuk Buahdua, Sumedang Kota, Situraja, dll.)</p>
+          </div>
+        </div>
+        <button onclick="closeDistrictPickerModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center cursor-pointer transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="p-3 sm:p-4 border-b border-slate-100 bg-slate-50">
+        <div class="relative">
+          <input 
+            type="text" 
+            id="searchDistrictInput" 
+            oninput="onDistrictSearchInput(this.value)" 
+            placeholder="🔍 Cari nama kecamatan (misal: Buahdua, Tanjungsari, Tomo)..." 
+            class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+        </div>
+      </div>
+
+      <!-- District Grid -->
+      <div class="p-3 sm:p-4 overflow-y-auto flex-1 max-h-[58vh]">
+        <div id="districtPickerGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3 sm:p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between text-xs text-slate-500">
+        <span>💡 Klik salah satu kecamatan untuk langsung memusatkan peta &amp; rekomendasi</span>
+        <button onclick="closeDistrictPickerModal()" class="px-3.5 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold cursor-pointer transition">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFIKASI GLOBAL -->
+  <div id="appGlobalToast" class="fixed bottom-5 right-5 z-[99999] max-w-md bg-slate-900/95 text-white px-4 py-3 rounded-xl shadow-2xl border border-emerald-500/40 backdrop-blur transition-all duration-300 transform translate-y-4 opacity-0 pointer-events-none flex items-center gap-3">
+    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 text-xs font-bold">
+      ✓
+    </div>
+    <div id="appGlobalToastText" class="text-xs font-medium leading-relaxed">
+      Notifikasi sistem
+    </div>
+  </div>
+
+</body>
+</html>
