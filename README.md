@@ -5,7 +5,7 @@ Sistem Informasi Geografis (WebGIS) Berbasis Penentuan Klaster Wilayah (*K-Means
 ## 👤 Identitas Pengembang
 - **Nama**: Ahmad Al Fauzi
 - **NIM**: 230660121014
-- **Program Studi**: S1 Teknik Informatika (Kelas: VII A)
+- **Program Studi**: S1 Teknik Informatika 
 - **Fakultas**: Fakultas Teknologi Informasi (FTI)
 - **Perguruan Tinggi**: Universitas Sebelas April (UNSAP) Sumedang
 
