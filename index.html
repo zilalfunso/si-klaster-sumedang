@@ -166,21 +166,21 @@
           Pemetaan Spasial Lokasi Petani &amp; Rekomendasi Kecocokan Sayuran (Anti Gagal Panen)
         </h2>
         <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-4xl leading-relaxed">
-          Klik tombol <strong class="text-white">"<svg class="w-3.5 h-3.5 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Gunakan Lokasi GPS Saya"</strong> atau <strong class="text-white">klik langsung titik mana saja pada Peta Spasial Kabupaten Sumedang</strong> di bawah. Sistem otomatis mendeteksi koordinat <em>Latitude/Longitude</em>, menghitung interpolasi ketinggian (mdpl), suhu (°C), pH tanah, serta klaster <em>K-Means</em> terdekat untuk mengecek kecocokan tanaman.
+          Klik tombol <strong class="text-white">"<svg class="w-3.5 h-3.5 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Gunakan Lokasi GPS Saya"</strong> atau <strong class="text-white">klik langsung titik mana saja pada Peta Spasial Kabupaten Sumedang</strong> di bawah. Sistem otomatis mendeteksi koordinat <em>Latitude/Longitude</em>, menghitung interpolasi ketinggian (mdpl), suhu (&deg;C), pH tanah, serta klaster <em>K-Means</em> terdekat untuk mengecek kecocokan tanaman.
         </p>
 
         <div class="flex flex-wrap items-center gap-2 mt-4">
           <button onclick="useMyGPSLocation()" id="btnMyGPS" class="px-4 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition shadow-sm flex items-center gap-1.5 cursor-pointer" title="Kunci Koordinat GPS Pekarangan via Sensor Perangkat">
             <svg class="w-3.5 h-3.5 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>📍 Kunci GPS Pekarangan</span>
+            <span>&#128205; Kunci GPS Pekarangan</span>
           </button>
           <button onclick="openDistrictPickerModal()" id="btnOpenDistrictPicker" class="px-4 py-2 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/40 transition shadow-sm flex items-center gap-1.5 cursor-pointer" title="Pilih Cepat 1 dari 26 Kecamatan di Kabupaten Sumedang">
             <svg class="w-3.5 h-3.5 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-            <span>🗺️ Pilih Kecamatan (26 Wilayah)</span>
+            <span>&#128506;&#65039; Pilih Kecamatan (26 Wilayah)</span>
           </button>
           <button onclick="resetToDefaultView()" class="px-3.5 py-2 rounded-lg text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700/60 transition shadow-sm flex items-center gap-1.5 cursor-pointer" title="Kembalikan Tampilan Peta ke Tengah Sumedang">
             <svg class="w-3.5 h-3.5 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-            <span>🔄 Reset Peta</span>
+            <span>&#128260; Reset Peta</span>
           </button>
         </div>
       </div>
@@ -193,10 +193,10 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-slate-100">
               <div>
                 <h3 class="text-sm sm:text-base font-bold text-slate-900">
-                  🗺️ Peta Spasial Interaktif Lokasi Lahan &amp; Klaster Kabupaten Sumedang
+                  &#128506;&#65039; Peta Spasial Interaktif Lokasi Lahan &amp; Klaster Kabupaten Sumedang
                 </h3>
                 <p class="text-xs text-slate-500 mt-0.5">
-                  <strong class="text-slate-700">Klik di titik mana saja pada peta</strong> untuk memindahkan pin lokasi lahan petani (<span class="text-rose-600 font-semibold">📍 Pin Merah</span>) dan melihat kecocokan sayuran secara spasial.
+                  <strong class="text-slate-700">Klik di titik mana saja pada peta</strong> untuk memindahkan pin lokasi lahan petani (<span class="text-rose-600 font-semibold">&#128205; Pin Merah</span>) dan melihat kecocokan sayuran secara spasial.
                 </p>
               </div>
             </div>
@@ -205,7 +205,7 @@
             <div class="flex flex-wrap items-center justify-between gap-2 my-3">
               <div class="inline-flex rounded-lg p-0.5 bg-slate-100 border border-slate-200">
                 <button onclick="setSuitabilityMapColorMode('suitability')" id="btnMapModeSuitability" class="px-3 py-1.5 rounded-md text-xs font-bold bg-emerald-600 text-white shadow-sm transition">
-                  🎯 Warna Kecocokan Tanaman
+                  &#127919; Warna Kecocokan Tanaman
                 </button>
                 <button onclick="setSuitabilityMapColorMode('cluster')" id="btnMapModeCluster" class="px-3 py-1.5 rounded-md text-xs font-semibold text-slate-700 hover:text-slate-900 transition">
                   <svg class="w-4 h-4 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Warna Klaster K-Means
@@ -215,22 +215,22 @@
               <!-- PILIHAN TIPE PETA: ASLI (OSM) VS FOTO SATELIT NYATA -->
               <div class="inline-flex items-center rounded-lg p-0.5 bg-slate-100 border border-slate-200">
                 <button onclick="setBaseTileLayer('osm')" id="btnTileOSM" class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-900 text-white shadow-sm transition cursor-pointer" title="Peta Standar OpenStreetMap Asli (Warna Hijau & Jalanan Asli)">
-                  🗺️ Peta Asli (OSM)
+                  &#128506;&#65039; Peta Asli (OSM)
                 </button>
                 <button onclick="setBaseTileLayer('satellite')" id="btnTileSat" class="px-2.5 py-1 rounded-md text-[11px] font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer" title="Foto Satelit Nyata dari Luar Angkasa">
-                  🛰️ Foto Satelit Nyata
+                  &#128752; Foto Satelit Nyata
                 </button>
               </div>
 
               <div id="mapLegendSuitability" class="flex flex-wrap items-center gap-3 text-[11px] font-medium text-slate-600">
                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Cocok (<span id="legendCropName">Kangkung</span> &ge;80%)</span>
-                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Cukup (62–79%)</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Cukup (62-79%)</span>
                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> Risiko Gagal Panen (&lt;62%)</span>
               </div>
             </div>
 
             <div class="mb-2.5 flex items-center justify-between text-[11px] bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200/80 text-slate-600 font-mono-tech">
-              <span id="nearestDistrictDistanceInfo">📍 Pusat Kec. Cimalaka (0.00 km)</span>
+              <span id="nearestDistrictDistanceInfo">&#128205; Pusat Kec. Cimalaka (0.00 km)</span>
               <span class="text-slate-400">OpenStreetMap Spatial Layer</span>
             </div>
           </div>
@@ -284,7 +284,7 @@
                       <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600"></span>
                     </span>
                     <span id="detectedLocalityTitle" class="text-xs font-extrabold text-slate-900">
-                      📍 Memuat Lokasi Presisi Desa...
+                      &#128205; Memuat Lokasi Presisi Desa...
                     </span>
                   </div>
                   <span id="detectedLocalityBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-600 text-white shadow-xs">
@@ -323,14 +323,14 @@
                 <!-- Suhu Udara -->
                 <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90">
                   <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
-                    <span class="text-slate-700">Suhu Udara (°C):</span>
-                    <span id="valTempLabel" class="font-mono-tech font-bold text-emerald-700">24.0°C</span>
+                    <span class="text-slate-700">Suhu Udara (&deg;C):</span>
+                    <span id="valTempLabel" class="font-mono-tech font-bold text-emerald-700">24.0&deg;C</span>
                   </div>
                   <input type="range" id="sliderTemp" min="16.0" max="33.0" step="0.5" value="24.0" oninput="onSliderInput()" class="w-full cursor-pointer" />
                   <div class="flex justify-between text-[10px] text-slate-400 mt-1">
-                    <span>16°C</span>
-                    <span>24°C</span>
-                    <span>33°C</span>
+                    <span>16&deg;C</span>
+                    <span>24&deg;C</span>
+                    <span>33&deg;C</span>
                   </div>
                 </div>
 
@@ -380,7 +380,7 @@
               </span>
             </div>
             <p id="activeClusterDesc" class="text-xs text-slate-300 leading-relaxed">
-              Titik koordinat Anda masuk ke wilayah Kec. Cimalaka pada Zona Sejuk (600–1.500 mdpl).
+              Titik koordinat Anda masuk ke wilayah Kec. Cimalaka pada Zona Sejuk (600-1.500 mdpl).
             </p>
           </div>
         </div>
@@ -444,7 +444,7 @@
               Peta Sebaran Spasial Klaster Potensi Budidaya Sayuran (26 Kecamatan Kab. Sumedang)
             </h2>
             <p class="text-xs text-slate-500 mt-0.5">
-              Visualisasi hasil pengelompokan algoritma <em>K-Means Clustering</em> berdasarkan Luas Panen (Ha), Luas Wilayah (km&sup2;), Ketinggian (mdpl), dan Suhu Rata-rata (°C).
+              Visualisasi hasil pengelompokan algoritma <em>K-Means Clustering</em> berdasarkan Luas Panen (Ha), Luas Wilayah (km&sup2;), Ketinggian (mdpl), dan Suhu Rata-rata (&deg;C).
             </p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
@@ -548,7 +548,7 @@
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <button onclick="exportDatasetCSV()" class="px-3.5 py-2 rounded-lg text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition">
-              ⬇️ Unduh Dataset &amp; Hasil Klaster (.CSV)
+              &#11015; Unduh Dataset &amp; Hasil Klaster (.CSV)
             </button>
           </div>
         </div>
@@ -562,7 +562,7 @@
                 <th class="py-2.5 px-3 text-right">Luas Panen (Ha)</th>
                 <th class="py-2.5 px-3 text-right">Luas Wilayah (km&sup2;)</th>
                 <th class="py-2.5 px-3 text-right">Elevasi (mdpl)</th>
-                <th class="py-2.5 px-3 text-right">Suhu (°C)</th>
+                <th class="py-2.5 px-3 text-right">Suhu (&deg;C)</th>
                 <th class="py-2.5 px-3 text-right">pH Rata-rata</th>
                 <th class="py-2.5 px-3">Koordinat (Lat, Lon)</th>
                 <th class="py-2.5 px-3">Komoditas Terluas (BPS)</th>
@@ -593,7 +593,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60">
             <div class="text-xs font-bold uppercase tracking-wider text-amber-700">Zona I &bull; Daerah Panas / Dataran Rendah</div>
-            <div class="text-lg font-extrabold text-slate-900 mt-1">0 – 600 mdpl (22.7°C – 26.3°C)</div>
+            <div class="text-lg font-extrabold text-slate-900 mt-1">0 - 600 mdpl (22.7&deg;C - 26.3&deg;C)</div>
             <p class="text-xs text-slate-600 mt-2 leading-relaxed">
               <strong>Kecamatan:</strong> Tomo, Ujung Jaya, Jatigede, Darmaraja, Wado, Situraja, Cisitu, Conggeang, Buahdua, Surian, Sumedang Utara, Sumedang Selatan, Ganeas, Paseh, Cisarua, Tanjungkerta, Tanjungmedar, Jatinunggal.
             </p>
@@ -604,7 +604,7 @@
 
           <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60">
             <div class="text-xs font-bold uppercase tracking-wider text-emerald-700">Zona II &bull; Daerah Sedang / Lereng Menengah</div>
-            <div class="text-lg font-extrabold text-slate-900 mt-1">600 – 1.500 mdpl (17.1°C – 22.6°C)</div>
+            <div class="text-lg font-extrabold text-slate-900 mt-1">600 - 1.500 mdpl (17.1&deg;C - 22.6&deg;C)</div>
             <p class="text-xs text-slate-600 mt-2 leading-relaxed">
               <strong>Kecamatan:</strong> Pamulihan, Cimanggung, Sukasari, Tanjungsari, Rancakalong, Cimalaka, Cibugel, Jatinangor.
             </p>
@@ -617,7 +617,7 @@
             <div class="text-xs font-bold uppercase tracking-wider text-blue-700">Mitigasi Risiko Gagal Panen Spasial</div>
             <div class="text-lg font-extrabold text-slate-900 mt-1">Pencegahan Salah Tanam</div>
             <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-              Menanam komoditas Zona I (seperti Kangkung Darat/Ketimun) pada puncak Zona II (&gt;1.000 mdpl, suhu &lt;21°C) memicu pertumbuhan kerdil. Sebaliknya, menanam Kubis pada Zona I (&lt;400 mdpl, suhu &gt;27°C) menyebabkan gagal krop.
+              Menanam komoditas Zona I (seperti Kangkung Darat/Ketimun) pada puncak Zona II (&gt;1.000 mdpl, suhu &lt;21&deg;C) memicu pertumbuhan kerdil. Sebaliknya, menanam Kubis pada Zona I (&lt;400 mdpl, suhu &gt;27&deg;C) menyebabkan gagal krop.
             </p>
           </div>
         </div>
@@ -681,19 +681,19 @@
         tempMin: 25.0, tempMax: 32.0,
         elevMin: 5, elevMax: 650,
         idealWeather: ["cerah_hangat", "panas_kering"],
-        harvestDays: "21–28 HST (Panen Cepat)",
+        harvestDays: "21-28 HST (Panen Cepat)",
         polySizeRec: "sedang",
         plantsPerPoly: 6,
         npkGramPerPoly: 3,
         yieldKgPerPoly: 0.19,
-        spacingCm: "15 × 15 cm",
+        spacingCm: "15 &times; 15 cm",
         yieldTonPerHa: 14.0,
-        riskNoteHighElev: "Membutuhkan penyinaran matahari terik & suhu hangat (25–30°C) di dataran rendah. Pada dataran tinggi (>900 mdpl) bersuhu dingin, pertumbuhan daun kangkung kerdil dan rentan gagal panen.",
+        riskNoteHighElev: "Membutuhkan penyinaran matahari terik & suhu hangat (25-30\u00B0C) di dataran rendah. Pada dataran tinggi (>900 mdpl) bersuhu dingin, pertumbuhan daun kangkung kerdil dan rentan gagal panen.",
         sop: {
           stage1: "Siapkan media tanam gembur (Tanah : Pupuk Kandang : Sekam Bakar = 2:1:1). Pastikan lubang drainase polybag/bedengan lancar.",
-          stage2: "Tanam benih langsung (tanpa semai) 5–7 biji per polybag (atau alur 15×15 cm di bedengan) sedalam 1.5 cm, tutup tipis dengan kompos halus.",
-          stage3: "Kocor NPK 16-16-16 + sedikit Urea pada 7–10 HST agar batang dan daun cepat rimbun dan renyah.",
-          stage4: "Waspadai karat putih (Albugo) & ulat daun. Panen umur 21–25 HST sebelum tanaman berbunga dengan cara dicabut atau dipotong 3 cm di atas pangkal batang."
+          stage2: "Tanam benih langsung (tanpa semai) 5-7 biji per polybag (atau alur 15&times;15 cm di bedengan) sedalam 1.5 cm, tutup tipis dengan kompos halus.",
+          stage3: "Kocor NPK 16-16-16 + sedikit Urea pada 7-10 HST agar batang dan daun cepat rimbun dan renyah.",
+          stage4: "Waspadai karat putih (Albugo) & ulat daun. Panen umur 21-25 HST sebelum tanaman berbunga dengan cara dicabut atau dipotong 3 cm di atas pangkal batang."
         }
       },
       {
@@ -703,19 +703,19 @@
         tempMin: 18.0, tempMax: 24.5,
         elevMin: 600, elevMax: 1500,
         idealWeather: ["sejuk_lembap", "cerah_hangat"],
-        harvestDays: "30–40 HST",
+        harvestDays: "30-40 HST",
         polySizeRec: "kecil",
         plantsPerPoly: 1,
         npkGramPerPoly: 4,
         yieldKgPerPoly: 0.25,
-        spacingCm: "20 × 20 cm",
+        spacingCm: "20 &times; 20 cm",
         yieldTonPerHa: 18.0,
-        riskNoteHighElev: "Sangat cocok di dataran menengah hingga tinggi beriklim sejuk. Pada dataran rendah yang terlalu panas (>28°C), daun sawi cenderung tipis dan cepat berbunga prematur.",
+        riskNoteHighElev: "Sangat cocok di dataran menengah hingga tinggi beriklim sejuk. Pada dataran rendah yang terlalu panas (>28\u00B0C), daun sawi cenderung tipis dan cepat berbunga prematur.",
         sop: {
           stage1: "Campurkan Tanah Gembur : Kompos Matang : Sekam Bakar (2:1:1). Aduk rata kapur Dolomit H-7 bila pH tanah di bawah 5.8.",
-          stage2: "Semai benih selama 10–14 hari (muncul 3–4 daun sejati), lalu pindah tanam 1 bibit per polybag (jarak 20×20 cm di bedengan) pada sore hari.",
+          stage2: "Semai benih selama 10-14 hari (muncul 3-4 daun sejati), lalu pindah tanam 1 bibit per polybag (jarak 20&times;20 cm di bedengan) pada sore hari.",
           stage3: "Berikan pupuk susulan NPK 16-16-16 pada umur 10 HST dan 20 HST dengan cara dikocor di sekeliling perakaran.",
-          stage4: "Kendalikan ulat daun (Plutella) dengan pestisida nabati daun mimba. Panen pada 30–40 HST saat krop/daun mencapai ukuran maksimal."
+          stage4: "Kendalikan ulat daun (Plutella) dengan pestisida nabati daun mimba. Panen pada 30-40 HST saat krop/daun mencapai ukuran maksimal."
         }
       },
       {
@@ -725,19 +725,19 @@
         tempMin: 20.0, tempMax: 26.5,
         elevMin: 400, elevMax: 1350,
         idealWeather: ["cerah_hangat", "sejuk_lembap"],
-        harvestDays: "85–95 HST (Panen Berkala)",
+        harvestDays: "85-95 HST (Panen Berkala)",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 8,
         yieldKgPerPoly: 0.45,
-        spacingCm: "50 × 60 cm",
+        spacingCm: "50 &times; 60 cm",
         yieldTonPerHa: 11.5,
         riskNoteHighElev: "Adaptif di dataran menengah hingga tinggi, namun rentan busuk buah antraknosa bila kelembapan terlalu ekstrem dan drainase buruk.",
         sop: {
-          stage1: "Gunakan polybag Besar 40×40 cm atau bedengan bermulsa plastik hitam perak. Berikan pupuk kandang matang dan Dolomit H-10 sebelum tanam.",
-          stage2: "Semai benih 21–25 hari hingga berdaun 4–5 helai. Pindah tanam 1 bibit per lubang disertai pemasangan ajir bambu penopang.",
+          stage1: "Gunakan polybag Besar 40&times;40 cm atau bedengan bermulsa plastik hitam perak. Berikan pupuk kandang matang dan Dolomit H-10 sebelum tanam.",
+          stage2: "Semai benih 21-25 hari hingga berdaun 4-5 helai. Pindah tanam 1 bibit per lubang disertai pemasangan ajir bambu penopang.",
           stage3: "Lakukan perempelan tunas air di bawah cabang Y. Kocor NPK 16-16-16 setiap 14 hari sekali, tambah KNO3/MKP saat memasuki fase berbunga.",
-          stage4: "Cegah kutu kebul, thrips, dan patek (antraknosa) dengan sanitasi buah busuk. Panen perdana umur 85–95 HST saat buah merah 80%."
+          stage4: "Cegah kutu kebul, thrips, dan patek (antraknosa) dengan sanitasi buah busuk. Panen perdana umur 85-95 HST saat buah merah 80%."
         }
       },
       {
@@ -747,18 +747,18 @@
         tempMin: 21.0, tempMax: 26.0,
         elevMin: 600, elevMax: 1250,
         idealWeather: ["cerah_hangat", "sejuk_lembap"],
-        harvestDays: "80–90 HST",
+        harvestDays: "80-90 HST",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 8,
         yieldKgPerPoly: 0.50,
-        spacingCm: "50 × 60 cm",
+        spacingCm: "50 &times; 60 cm",
         yieldTonPerHa: 13.0,
-        riskNoteHighElev: "Membutuhkan rentang pH tanah netral (6.0–6.8) dan suhu sejuk-hangat stabil agar bunga tidak mudah rontok.",
+        riskNoteHighElev: "Membutuhkan rentang pH tanah netral (6.0-6.8) dan suhu sejuk-hangat stabil agar bunga tidak mudah rontok.",
         sop: {
-          stage1: "Siapkan media gembur kaya bahan organik pada polybag 40×40 cm atau bedengan tinggi 30 cm dengan drainase baik.",
-          stage2: "Pindah tanam bibit umur 21–24 HSS (Hari Setelah Semai) pada sore hari, pasang ajir bambu setinggi 120 cm.",
-          stage3: "Kocor NPK 16-16-16 rutin setiap 10–14 hari. Semprot pupuk kalsium (Ca) pada fase pembungaan untuk mencegah rontok bunga dan busuk ujung buah.",
+          stage1: "Siapkan media gembur kaya bahan organik pada polybag 40&times;40 cm atau bedengan tinggi 30 cm dengan drainase baik.",
+          stage2: "Pindah tanam bibit umur 21-24 HSS (Hari Setelah Semai) pada sore hari, pasang ajir bambu setinggi 120 cm.",
+          stage3: "Kocor NPK 16-16-16 rutin setiap 10-14 hari. Semprot pupuk kalsium (Ca) pada fase pembungaan untuk mencegah rontok bunga dan busuk ujung buah.",
           stage4: "Pasang perangkap likat kuning untuk mengendalikan lalat buah dan thrips. Panen saat buah berwarna merah menyala."
         }
       },
@@ -769,19 +769,19 @@
         tempMin: 16.0, tempMax: 22.0,
         elevMin: 800, elevMax: 1600,
         idealWeather: ["sejuk_lembap"],
-        harvestDays: "75–90 HST",
+        harvestDays: "75-90 HST",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 7,
         yieldKgPerPoly: 1.10,
-        spacingCm: "50 × 50 cm",
+        spacingCm: "50 &times; 50 cm",
         yieldTonPerHa: 24.0,
-        riskNoteHighElev: "Komoditas wajib dataran tinggi sejuk (800–1.600 mdpl). Apabila ditanam di dataran rendah bersuhu panas (>26°C), kubis tidak akan membentuk krop (gagal panen).",
+        riskNoteHighElev: "Komoditas wajib dataran tinggi sejuk (800-1.600 mdpl). Apabila ditanam di dataran rendah bersuhu panas (>26\u00B0C), kubis tidak akan membentuk krop (gagal panen).",
         sop: {
           stage1: "Pastikan pH tanah minimal 6.0 (aplikasikan Dolomit H-14 jika tanah asam) untuk mencegah penyakit akar gada (Plasmodiophora brassicae).",
-          stage2: "Semai benih 20–25 hari, pindah tanam 1 bibit per polybag 40×40 cm atau jarak 50×50 cm di bedengan.",
+          stage2: "Semai benih 20-25 hari, pindah tanam 1 bibit per polybag 40&times;40 cm atau jarak 50&times;50 cm di bedengan.",
           stage3: "Lakukan pembumbunan tanah di pangkal batang pada 20 HST dan pemupukan NPK susulan pada 15, 30, dan 45 HST.",
-          stage4: "Awasi ulat krop (Crocidolomia). Panen pada 75–90 HST ketika krop kubis sudah padat dan keras saat ditekan."
+          stage4: "Awasi ulat krop (Crocidolomia). Panen pada 75-90 HST ketika krop kubis sudah padat dan keras saat ditekan."
         }
       },
       {
@@ -791,16 +791,16 @@
         tempMin: 18.0, tempMax: 25.0,
         elevMin: 650, elevMax: 1400,
         idealWeather: ["cerah_hangat", "sejuk_lembap"],
-        harvestDays: "70–80 HST",
+        harvestDays: "70-80 HST",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 8,
         yieldKgPerPoly: 0.90,
-        spacingCm: "50 × 60 cm",
+        spacingCm: "50 &times; 60 cm",
         yieldTonPerHa: 20.0,
         riskNoteHighElev: "Tumbuh optimal di lereng pegunungan sejuk. Suhu malam yang terlalu panas di dataran rendah menghambat pembentukan buah tomat.",
         sop: {
-          stage1: "Gunakan media poros (Tanah : Kompos : Sekam = 2:1:1) di polybag 40×40 cm. Koreksi pH dengan Dolomit agar kalsium terserap optimal.",
+          stage1: "Gunakan media poros (Tanah : Kompos : Sekam = 2:1:1) di polybag 40&times;40 cm. Koreksi pH dengan Dolomit agar kalsium terserap optimal.",
           stage2: "Pindah tanam bibit umur 21 HSS, segera pasang ajir penopang dan ikat batang utama secara longgar dengan tali rafia.",
           stage3: "Pangkas tunas ketiak (pewiwilan) secara berkala. Kocor NPK 16-16-16 tiap 2 minggu dan jaga kelembapan tanah tetap stabil.",
           stage4: "Cegah busuk daun (Phytophthora) saat musim hujan dan busuk pantat buah (blossom end rot). Panen saat buah berubah warna kuning-kemerahan."
@@ -813,19 +813,19 @@
         tempMin: 24.0, tempMax: 30.0,
         elevMin: 20, elevMax: 650,
         idealWeather: ["cerah_hangat", "panas_kering"],
-        harvestDays: "38–45 HST",
+        harvestDays: "38-45 HST",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 6,
         yieldKgPerPoly: 0.85,
-        spacingCm: "40 × 60 cm",
+        spacingCm: "40 &times; 60 cm",
         yieldTonPerHa: 19.0,
         riskNoteHighElev: "Sangat produktif di dataran rendah hingga menengah yang hangat (seperti Ujungjaya & Tanjungkerta). Kurang optimal di dataran tinggi dingin.",
         sop: {
-          stage1: "Siapkan polybag 40×40 cm atau bedengan gembur, pasang lanjaran/para-para bambu setinggi 1.5 meter untuk merambatkan sulur.",
+          stage1: "Siapkan polybag 40&times;40 cm atau bedengan gembur, pasang lanjaran/para-para bambu setinggi 1.5 meter untuk merambatkan sulur.",
           stage2: "Tanam benih langsung 2 biji per lubang sedalam 2 cm, sisakan 1 tanaman terbaik pada umur 7 HST.",
           stage3: "Rambatkan sulur ke lanjaran pada 14 HST. Kocor NPK 16-16-16 pada umur 10, 20, dan 30 HST.",
-          stage4: "Kendalikan kumbang daun (Aulacophora) dan embun bulu. Panen buah muda umur 38–45 HST setiap 2–3 hari sekali."
+          stage4: "Kendalikan kumbang daun (Aulacophora) dan embun bulu. Panen buah muda umur 38-45 HST setiap 2-3 hari sekali."
         }
       },
       {
@@ -835,19 +835,19 @@
         tempMin: 25.0, tempMax: 31.0,
         elevMin: 10, elevMax: 650,
         idealWeather: ["cerah_hangat", "panas_kering"],
-        harvestDays: "55–65 HST",
+        harvestDays: "55-65 HST",
         polySizeRec: "sedang",
         plantsPerPoly: 3,
         npkGramPerPoly: 5,
         yieldKgPerPoly: 0.22,
-        spacingCm: "15 × 20 cm",
+        spacingCm: "15 &times; 20 cm",
         yieldTonPerHa: 10.5,
         riskNoteHighElev: "Membutuhkan penyinaran matahari penuh (>70%) dan cuaca kering-hangat pada fase pembentukan umbi.",
         sop: {
           stage1: "Gunakan media tanam sangat poros (campuran pasir/sekam bakar tinggi) agar umbi tidak terendam air.",
-          stage2: "Potong 1/4 ujung umbi bibit yang sehat, benamkan 3/4 bagian umbi ke permukaan tanah (3 umbi per polybag 30×30 cm).",
+          stage2: "Potong 1/4 ujung umbi bibit yang sehat, benamkan 3/4 bagian umbi ke permukaan tanah (3 umbi per polybag 30&times;30 cm).",
           stage3: "Pupuk susulan NPK + KCl pada umur 15 dan 30 HST untuk memacu pembesaran umbi lapis.",
-          stage4: "Waspadai ulat bawang (Spodoptera exigua) dan layu Fusarium. Panen pada 55–65 HST saat 70% leher batang melunak dan rebah."
+          stage4: "Waspadai ulat bawang (Spodoptera exigua) dan layu Fusarium. Panen pada 55-65 HST saat 70% leher batang melunak dan rebah."
         }
       },
       {
@@ -857,19 +857,19 @@
         tempMin: 18.0, tempMax: 24.0,
         elevMin: 700, elevMax: 1500,
         idealWeather: ["sejuk_lembap", "cerah_hangat"],
-        harvestDays: "60–70 HST",
+        harvestDays: "60-70 HST",
         polySizeRec: "sedang",
         plantsPerPoly: 2,
         npkGramPerPoly: 4,
         yieldKgPerPoly: 0.30,
-        spacingCm: "20 × 25 cm",
+        spacingCm: "20 &times; 25 cm",
         yieldTonPerHa: 12.0,
-        riskNoteHighElev: "Komoditas andalan dataran tinggi sejuk (seperti Cibugel & Pamulihan). Anakan daun lebih banyak dan tebal pada suhu 18–23°C.",
+        riskNoteHighElev: "Komoditas andalan dataran tinggi sejuk (seperti Cibugel & Pamulihan). Anakan daun lebih banyak dan tebal pada suhu 18-23\u00B0C.",
         sop: {
-          stage1: "Campurkan tanah gembur dan pupuk kandang matang (2:1) ke dalam polybag 30×30 cm atau bedengan.",
+          stage1: "Campurkan tanah gembur dan pupuk kandang matang (2:1) ke dalam polybag 30&times;30 cm atau bedengan.",
           stage2: "Gunakan bibit anakan sehat, potong sedikit ujung daun dan akar tua, tanam 2 rumpun per polybag.",
           stage3: "Bumbun pangkal batang secara berkala agar batang semu putih lebih panjang. Kocor NPK 16-16-16 pada 15 dan 35 HST.",
-          stage4: "Jaga dari serangan ulat grayak dan bercak ungu (Alternaria). Panen umur 60–70 HST dengan mencabut seluruh rumpun."
+          stage4: "Jaga dari serangan ulat grayak dan bercak ungu (Alternaria). Panen umur 60-70 HST dengan mencabut seluruh rumpun."
         }
       },
       {
@@ -879,19 +879,19 @@
         tempMin: 20.0, tempMax: 26.0,
         elevMin: 500, elevMax: 1200,
         idealWeather: ["sejuk_lembap", "cerah_hangat"],
-        harvestDays: "90–110 HST (Panen Kontinu)",
+        harvestDays: "90-110 HST (Panen Kontinu)",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 10,
         yieldKgPerPoly: 2.20,
-        spacingCm: "200 × 200 cm",
+        spacingCm: "200 &times; 200 cm",
         yieldTonPerHa: 28.0,
         riskNoteHighElev: "Sangat cocok di lereng beriklim sedang-sejuk dengan ketersediaan air cukup (seperti Wado & Pamulihan).",
         sop: {
-          stage1: "Buat lubang tanam besar atau gunakan planterbag/polybag ≥40×40 cm dengan para-para rambatan yang kuat.",
+          stage1: "Buat lubang tanam besar atau gunakan planterbag/polybag \u226540&times;40 cm dengan para-para rambatan yang kuat.",
           stage2: "Tanam buah bibit yang telah bertunas sedalam 5 cm dengan posisi tunas menghadap ke atas.",
           stage3: "Rambatkan sulur ke para-para, pangkas cabang yang terlalu rapat, dan berikan NPK + pupuk kandang setiap bulan.",
-          stage4: "Panen buah muda secara rutin setiap 5–7 hari sekali setelah tanaman berumur 90 HST."
+          stage4: "Panen buah muda secara rutin setiap 5-7 hari sekali setelah tanaman berumur 90 HST."
         }
       },
       {
@@ -901,19 +901,19 @@
         tempMin: 24.0, tempMax: 30.0,
         elevMin: 20, elevMax: 700,
         idealWeather: ["cerah_hangat", "panas_kering"],
-        harvestDays: "45–55 HST",
+        harvestDays: "45-55 HST",
         polySizeRec: "sedang",
         plantsPerPoly: 2,
         npkGramPerPoly: 5,
         yieldKgPerPoly: 0.40,
-        spacingCm: "30 × 60 cm",
+        spacingCm: "30 &times; 60 cm",
         yieldTonPerHa: 12.5,
         riskNoteHighElev: "Tumbuh optimal di dataran rendah hingga menengah yang hangat dengan penyinaran matahari penuh.",
         sop: {
-          stage1: "Siapkan media polybag 30×30 cm atau bedengan, koreksi pH tanah bila asam dengan kapur Dolomit.",
+          stage1: "Siapkan media polybag 30&times;30 cm atau bedengan, koreksi pH tanah bila asam dengan kapur Dolomit.",
           stage2: "Tanam langsung 2 benih per lubang sedalam 2 cm, pasang turus/lanjaran bambu setinggi 175 cm pada umur 10 HST.",
           stage3: "Lilitkan sulur tanaman ke lanjaran searah jarum jam. Kocor NPK pada umur 14 dan 28 HST.",
-          stage4: "Kendalikan kutu daun (Aphis) dan penggerek polong. Panen polong muda umur 45–55 HST sebelum biji menonjol keras."
+          stage4: "Kendalikan kutu daun (Aphis) dan penggerek polong. Panen polong muda umur 45-55 HST sebelum biji menonjol keras."
         }
       },
       {
@@ -923,19 +923,19 @@
         tempMin: 23.0, tempMax: 31.0,
         elevMin: 10, elevMax: 800,
         idealWeather: ["cerah_hangat", "sejuk_lembap"],
-        harvestDays: "20–25 HST (Panen Cepat)",
+        harvestDays: "20-25 HST (Panen Cepat)",
         polySizeRec: "kecil",
         plantsPerPoly: 8,
         npkGramPerPoly: 3,
         yieldKgPerPoly: 0.16,
-        spacingCm: "10 × 15 cm",
+        spacingCm: "10 &times; 15 cm",
         yieldTonPerHa: 10.0,
         riskNoteHighElev: "Toleran di berbagai ketinggian hingga 800 mdpl, namun rentan rebah kecambah bila curah hujan terlalu ekstrem.",
         sop: {
           stage1: "Haluskan permukaan media tanam (Tanah : Kompos : Sekam = 2:1:1) karena biji bayam berukuran sangat kecil.",
           stage2: "Campur benih bayam dengan abu/pasir halus (1:5) lalu taburkan merata di permukaan polybag/bedengan.",
           stage3: "Siram dengan semprotan halus setiap pagi/sore. Kocor pupuk NPK cair dosis ringan pada umur 10 HST.",
-          stage4: "Panen bayam cabut pada umur 20–25 HST ketika tinggi tanaman mencapai 18–22 cm."
+          stage4: "Panen bayam cabut pada umur 20-25 HST ketika tinggi tanaman mencapai 18-22 cm."
         }
       }
     ,
@@ -946,19 +946,19 @@
         tempMin: 22.0, tempMax: 30.0,
         elevMin: 20, elevMax: 900,
         idealWeather: ["cerah_hangat", "panas_kering"],
-        harvestDays: "60–75 HST (Panen Panjang)",
+        harvestDays: "60-75 HST (Panen Panjang)",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 8,
         yieldKgPerPoly: 1.8,
-        spacingCm: "60 × 70 cm",
+        spacingCm: "60 &times; 70 cm",
         yieldTonPerHa: 22.0,
         riskNoteHighElev: "Tumbuh prima pada cuaca hangat dan terik. Pada dataran tinggi yang dingin (>1000 mdpl), pertumbuhan batang melambat dan pembentukan bunga rentan rontok.",
         sop: {
           stage1: "Gunakan media gembur kaya bahan organik (Tanah : Kompos : Sekam Bakar = 2:1:1). Taburkan dolomit jika pH < 5.8.",
-          stage2: "Semai biji 20 hari, lalu pindah tanam 1 bibit sehat per polybag besar (40×40 cm) pada sore hari.",
+          stage2: "Semai biji 20 hari, lalu pindah tanam 1 bibit sehat per polybag besar (40&times;40 cm) pada sore hari.",
           stage3: "Kocor NPK 16-16-16 setiap 10 hari. Pasang ajir/turus bambu setinggi 1 meter agar tanaman tegak menopang buah.",
-          stage4: "Waspadai kutu kebul & layu bakteri. Panen buah terong yang sudah mengkilap padat setiap 4–6 hari sekali hingga umur 4–5 bulan."
+          stage4: "Waspadai kutu kebul & layu bakteri. Panen buah terong yang sudah mengkilap padat setiap 4-6 hari sekali hingga umur 4-5 bulan."
         }
       },
       {
@@ -968,18 +968,18 @@
         tempMin: 18.0, tempMax: 25.0,
         elevMin: 400, elevMax: 1400,
         idealWeather: ["cerah_hangat", "sejuk_lembap"],
-        harvestDays: "45–55 HST",
+        harvestDays: "45-55 HST",
         polySizeRec: "sedang",
         plantsPerPoly: 2,
         npkGramPerPoly: 5,
         yieldKgPerPoly: 0.35,
-        spacingCm: "30 × 40 cm",
+        spacingCm: "30 &times; 40 cm",
         yieldTonPerHa: 12.0,
-        riskNoteHighElev: "Sangat cocok di daerah beriklim sejuk perbukitan seperti Situraja dan Tanjungsari. Di dataran yang terlalu panas (>30°C), polong cepat berserat kasar dan bunga rontok.",
+        riskNoteHighElev: "Sangat cocok di daerah beriklim sejuk perbukitan seperti Situraja dan Tanjungsari. Di dataran yang terlalu panas (>30\u00B0C), polong cepat berserat kasar dan bunga rontok.",
         sop: {
           stage1: "Gemburkan tanah dan campur kompos matang. Buncis mengikat nitrogen mandiri via bintil akar, hindari urea berlebih.",
           stage2: "Tanam benih langsung 2 biji per polybag sedalam 2 cm. Siram lembut hingga lembap.",
-          stage3: "Pasang lanjaran bambu setinggi 1.5–2 m untuk jenis merambat. Kocor NPK seimbang pada 15 dan 30 HST.",
+          stage3: "Pasang lanjaran bambu setinggi 1.5-2 m untuk jenis merambat. Kocor NPK seimbang pada 15 dan 30 HST.",
           stage4: "Panen polong muda saat masih lentur dan biji belum menonjol setiap 2 hari sekali."
         }
       },
@@ -990,19 +990,19 @@
         tempMin: 15.0, tempMax: 21.0,
         elevMin: 800, elevMax: 1800,
         idealWeather: ["sejuk_lembap", "cerah_hangat"],
-        harvestDays: "90–110 HST",
+        harvestDays: "90-110 HST",
         polySizeRec: "besar",
         plantsPerPoly: 8,
         npkGramPerPoly: 6,
         yieldKgPerPoly: 0.6,
-        spacingCm: "10 × 15 cm",
+        spacingCm: "10 &times; 15 cm",
         yieldTonPerHa: 25.0,
         riskNoteHighElev: "Wajib ditanam pada dataran tinggi berhawa sejuk (Sukasari, Pamulihan lereng Manglayang/Tampomas). Pada dataran rendah berhawa panas, umbi wortel tidak akan membesar dan rasanya getir.",
         sop: {
           stage1: "Media tanam harus sangat gembur, remah, dan bebas kerikil (Tanah halus : Pasir halus : Kompos halus = 1:1:1) agar umbi lurus mulus.",
           stage2: "Tabur benih halus di alur polybag/bedengan, tutup tipis tanah. Lakukan penjarangan saat bibit setinggi 5 cm.",
           stage3: "Timbun pangkal umbi yang menyembul ke permukaan agar tidak terkena sinar matahari langsung (mencegah bahu umbi kehijauan).",
-          stage4: "Panen pada umur 90–100 HST dengan cara mencabut umbi perlahan saat tanah dalam kondisi gembur lembap."
+          stage4: "Panen pada umur 90-100 HST dengan cara mencabut umbi perlahan saat tanah dalam kondisi gembur lembap."
         }
       },
       {
@@ -1012,14 +1012,14 @@
         tempMin: 15.0, tempMax: 20.0,
         elevMin: 800, elevMax: 1800,
         idealWeather: ["sejuk_lembap"],
-        harvestDays: "55–65 HST",
+        harvestDays: "55-65 HST",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 8,
         yieldKgPerPoly: 0.45,
-        spacingCm: "50 × 50 cm",
+        spacingCm: "50 &times; 50 cm",
         yieldTonPerHa: 15.0,
-        riskNoteHighElev: "Sangat peka suhu panas. Hanya berhasil prima pada dataran tinggi sejuk (>800 mdpl). Jika terkena suhu panas >25°C, massa bunga brokoli tidak padat dan cepat mekar/menguning.",
+        riskNoteHighElev: "Sangat peka suhu panas. Hanya berhasil prima pada dataran tinggi sejuk (>800 mdpl). Jika terkena suhu panas >25\u00B0C, massa bunga brokoli tidak padat dan cepat mekar/menguning.",
         sop: {
           stage1: "Olah media kaya hara dan berikan pupuk kandang matang dosis tinggi. Pengapuran dolomit penting jika pH < 6.0.",
           stage2: "Semai 25 hari hingga berdaun 4 helai, lalu pindah tanam ke polybag besar pada sore hari.",
@@ -1034,19 +1034,19 @@
         tempMin: 16.0, tempMax: 22.0,
         elevMin: 600, elevMax: 1600,
         idealWeather: ["sejuk_lembap", "cerah_hangat"],
-        harvestDays: "50–65 HST",
+        harvestDays: "50-65 HST",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 8,
         yieldKgPerPoly: 0.5,
-        spacingCm: "50 × 50 cm",
+        spacingCm: "50 &times; 50 cm",
         yieldTonPerHa: 18.0,
         riskNoteHighElev: "Memerlukan agroklimat sejuk untuk inisiasi pembentukan bunga padat putih. Pada dataran rendah terik, kembang kol rentan gagal membentuk krop (buta).",
         sop: {
           stage1: "Siapkan media tanam remah bernutrisi tinggi. Campurkan pupuk kandang sapi/kambing matang dan kapur dolomit.",
           stage2: "Pindah tanam bibit umur 20 hari secara hati-hati agar perakaran tidak putus.",
           stage3: "Ikat daun atas menutupi krop bunga putih (blanching) saat bunga mulai muncul agar warnanya tetap putih bersih terhindar dari sinar UV langsung.",
-          stage4: "Panen krop bunga saat masih padat keras berdiameter 15–20 cm."
+          stage4: "Panen krop bunga saat masih padat keras berdiameter 15-20 cm."
         }
       },
       {
@@ -1056,12 +1056,12 @@
         tempMin: 23.0, tempMax: 31.0,
         elevMin: 10, elevMax: 800,
         idealWeather: ["cerah_hangat", "panas_kering"],
-        harvestDays: "50–60 HST (Panen Panjang)",
+        harvestDays: "50-60 HST (Panen Panjang)",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 7,
         yieldKgPerPoly: 1.5,
-        spacingCm: "75 × 100 cm",
+        spacingCm: "75 &times; 100 cm",
         yieldTonPerHa: 20.0,
         riskNoteHighElev: "Tanaman tropis dataran rendah-menengah yang menyukai sinar matahari terik. Pada dataran tinggi sangat dingin (>1000 mdpl), pertumbuhan sulur lambat dan buah kerdil berkerut.",
         sop: {
@@ -1078,12 +1078,12 @@
         tempMin: 22.0, tempMax: 30.0,
         elevMin: 15, elevMax: 750,
         idealWeather: ["cerah_hangat"],
-        harvestDays: "45–55 HST",
+        harvestDays: "45-55 HST",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 6,
         yieldKgPerPoly: 1.2,
-        spacingCm: "60 × 80 cm",
+        spacingCm: "60 &times; 80 cm",
         yieldTonPerHa: 18.0,
         riskNoteHighElev: "Tumbuh subur pada dataran rendah hingga sedang dengan suhu hangat. Sangat produktif di wilayah Sumedang dataran hangat seperti Ujungjaya, Tomo, dan Paseh.",
         sop: {
@@ -1100,17 +1100,17 @@
         tempMin: 18.0, tempMax: 24.0,
         elevMin: 700, elevMax: 1500,
         idealWeather: ["sejuk_lembap", "cerah_hangat"],
-        harvestDays: "80–90 HST (Hijau) / 100–110 HST (Warna)",
+        harvestDays: "80-90 HST (Hijau) / 100-110 HST (Warna)",
         polySizeRec: "besar",
         plantsPerPoly: 1,
         npkGramPerPoly: 10,
         yieldKgPerPoly: 0.8,
-        spacingCm: "50 × 60 cm",
+        spacingCm: "50 &times; 60 cm",
         yieldTonPerHa: 25.0,
         riskNoteHighElev: "Komoditas bernilai ekonomi sangat tinggi yang membutuhkan suhu sejuk dan kelembaban stabil (ideal di Sukasari, Pamulihan, Rancakalong). Tidak cocok di dataran rendah panas karena buah akan kecil dan rentan busuk pantat buah (BER).",
         sop: {
           stage1: "Sangat dianjurkan naungan greenhouse/rain shelter. Gunakan media cocopeat : sekam bakar : kompos matang.",
-          stage2: "Semai benih 30 hari. Pindah tanam bibit kokoh pada sore hari ke polybag 40×40 cm.",
+          stage2: "Semai benih 30 hari. Pindah tanam bibit kokoh pada sore hari ke polybag 40&times;40 cm.",
           stage3: "Gunakan sistem tali rambat vertikal. Nutrisi AB Mix atau NPK berkadar Kalsium & Kalium tinggi.",
           stage4: "Panen paprika saat buah berdinding tebal dan mengkilap (panen hijau atau tunggu matang merah/kuning)."
         }
@@ -1122,19 +1122,19 @@
         tempMin: 16.0, tempMax: 22.0,
         elevMin: 700, elevMax: 1600,
         idealWeather: ["sejuk_lembap", "cerah_hangat"],
-        harvestDays: "100–120 HST",
+        harvestDays: "100-120 HST",
         polySizeRec: "sedang",
         plantsPerPoly: 6,
         npkGramPerPoly: 5,
         yieldKgPerPoly: 0.25,
-        spacingCm: "15 × 15 cm",
+        spacingCm: "15 &times; 15 cm",
         yieldTonPerHa: 10.0,
         riskNoteHighElev: "Memerlukan periode suhu dingin (vernalisasi) untuk pembentukan siung umbi. Sangat gagal jika ditanam di dataran rendah tropis yang bersuhu panas.",
         sop: {
           stage1: "Media tanah gembur, remah, subur, kaya kalsium dan sulfur untuk pembentukan aroma allicin.",
-          stage2: "Tancapkan siung bibit bernas dengan ujung tunas menghadap ke atas sedalam 2–3 cm.",
+          stage2: "Tancapkan siung bibit bernas dengan ujung tunas menghadap ke atas sedalam 2-3 cm.",
           stage3: "Pemupukan NPK dan pupuk ZA (sulfur) pada 20 dan 45 HST. Kurangi penyiraman menjelang fase pembentukan umbi.",
-          stage4: "Panen saat 60–70% daun telah menguning dan rebah. Jemur umbi di bawah naungan berangin."
+          stage4: "Panen saat 60-70% daun telah menguning dan rebah. Jemur umbi di bawah naungan berangin."
         }
       },
       {
@@ -1144,12 +1144,12 @@
         tempMin: 21.0, tempMax: 30.0,
         elevMin: 20, elevMax: 1100,
         idealWeather: ["cerah_hangat", "panas_kering"],
-        harvestDays: "65–75 HST",
+        harvestDays: "65-75 HST",
         polySizeRec: "besar",
         plantsPerPoly: 2,
         npkGramPerPoly: 10,
         yieldKgPerPoly: 0.7,
-        spacingCm: "25 × 75 cm",
+        spacingCm: "25 &times; 75 cm",
         yieldTonPerHa: 14.0,
         riskNoteHighElev: "Adaptif dari dataran rendah hingga sedang beriklim hangat dengan penyinaran matahari penuh. Pada dataran tinggi sangat dingin (>1200 mdpl), umur panen molor hingga 90 hari dan pengisian bulir kurang manis.",
         sop: {
@@ -1308,7 +1308,7 @@
           badgeClass: "bg-blue-900/90 text-blue-300 border-blue-700",
           lightBadge: "bg-blue-50 text-blue-700 border-blue-200",
           colorHex: "#3b82f6",
-          desc: "Kawasan penyangga agroklimat sejuk–menengah dengan spesialisasi komoditas adaptif."
+          desc: "Kawasan penyangga agroklimat sejuk-menengah dengan spesialisasi komoditas adaptif."
         },
         {
           name: "Cluster 3 (Potensi Rendah)",
@@ -1316,7 +1316,7 @@
           badgeClass: "bg-amber-900/90 text-amber-300 border-amber-700",
           lightBadge: "bg-amber-50 text-amber-700 border-amber-200",
           colorHex: "#f59e0b",
-          desc: "Kawasan dataran rendah–menengah dengan fokus sayuran toleran suhu hangat."
+          desc: "Kawasan dataran rendah-menengah dengan fokus sayuran toleran suhu hangat."
         },
         {
           name: "Cluster 4 (Pengembangan)",
@@ -1372,7 +1372,7 @@
       const phHalfSpan = Math.max(0.5, (crop.phMax - crop.phMin) / 2);
       let phScore = 100;
       let phOk = (ph >= crop.phMin && ph <= crop.phMax);
-      let phReason = `pH ${ph.toFixed(1)} sesuai rentang ideal (${crop.phMin}–${crop.phMax})`;
+      let phReason = `pH ${ph.toFixed(1)} sesuai rentang ideal (${crop.phMin}-${crop.phMax})`;
 
       if (phOk) {
         // Natural gradient: 92% to 100% based on distance from sweet spot
@@ -1381,11 +1381,11 @@
       } else if (ph < crop.phMin) {
         const diff = crop.phMin - ph;
         phScore = Math.max(18, Math.round(90 - diff * 45));
-        phReason = `pH ${ph.toFixed(1)} terlalu asam (ideal ${crop.phMin}–${crop.phMax})`;
+        phReason = `pH ${ph.toFixed(1)} terlalu asam (ideal ${crop.phMin}-${crop.phMax})`;
       } else {
         const diff = ph - crop.phMax;
         phScore = Math.max(18, Math.round(90 - diff * 45));
-        phReason = `pH ${ph.toFixed(1)} terlalu basa (ideal ${crop.phMin}–${crop.phMax})`;
+        phReason = `pH ${ph.toFixed(1)} terlalu basa (ideal ${crop.phMin}-${crop.phMax})`;
       }
 
       // 2) Temperature Check: smooth gradient around optimal center
@@ -1393,7 +1393,7 @@
       const tempHalfSpan = Math.max(1.5, (crop.tempMax - crop.tempMin) / 2);
       let tempScore = 100;
       let tempOk = (tempC >= crop.tempMin && tempC <= crop.tempMax);
-      let tempReason = `Suhu ${tempC.toFixed(1)}°C cocok dengan syarat tumbuh (${crop.tempMin}–${crop.tempMax}°C)`;
+      let tempReason = `Suhu ${tempC.toFixed(1)}\u00B0C cocok dengan syarat tumbuh (${crop.tempMin}-${crop.tempMax}\u00B0C)`;
 
       if (tempOk) {
         const distRatio = Math.abs(tempC - tempMid) / tempHalfSpan;
@@ -1401,11 +1401,11 @@
       } else if (tempC < crop.tempMin) {
         const diff = crop.tempMin - tempC;
         tempScore = Math.max(12, Math.round(88 - diff * 14));
-        tempReason = `Suhu ${tempC.toFixed(1)}°C terlalu dingin (ideal ${crop.tempMin}–${crop.tempMax}°C)`;
+        tempReason = `Suhu ${tempC.toFixed(1)}\u00B0C terlalu dingin (ideal ${crop.tempMin}-${crop.tempMax}\u00B0C)`;
       } else {
         const diff = tempC - crop.tempMax;
         tempScore = Math.max(12, Math.round(88 - diff * 14));
-        tempReason = `Suhu ${tempC.toFixed(1)}°C terlalu panas (ideal ${crop.tempMin}–${crop.tempMax}°C)`;
+        tempReason = `Suhu ${tempC.toFixed(1)}\u00B0C terlalu panas (ideal ${crop.tempMin}-${crop.tempMax}\u00B0C)`;
       }
 
       // 3) Elevation Junghuhn Check: smooth gradient around optimal center
@@ -1413,7 +1413,7 @@
       const elevHalfSpan = Math.max(150, (crop.elevMax - crop.elevMin) / 2);
       let elevScore = 100;
       let elevOk = (elevMdpl >= crop.elevMin && elevMdpl <= crop.elevMax);
-      let elevReason = `Elevasi ${Math.round(elevMdpl)} mdpl sesuai zona tumbuh (${crop.elevMin}–${crop.elevMax} mdpl)`;
+      let elevReason = `Elevasi ${Math.round(elevMdpl)} mdpl sesuai zona tumbuh (${crop.elevMin}-${crop.elevMax} mdpl)`;
 
       if (elevOk) {
         const distRatio = Math.abs(elevMdpl - elevMid) / elevHalfSpan;
@@ -1421,11 +1421,11 @@
       } else if (elevMdpl < crop.elevMin) {
         const diff = crop.elevMin - elevMdpl;
         elevScore = Math.max(10, Math.round(86 - (diff / 400) * 60));
-        elevReason = `${Math.round(elevMdpl)} mdpl terlalu rendah (ideal ${crop.elevMin}–${crop.elevMax} mdpl)`;
+        elevReason = `${Math.round(elevMdpl)} mdpl terlalu rendah (ideal ${crop.elevMin}-${crop.elevMax} mdpl)`;
       } else {
         const diff = elevMdpl - crop.elevMax;
         elevScore = Math.max(10, Math.round(86 - (diff / 400) * 60));
-        elevReason = `${Math.round(elevMdpl)} mdpl terlalu tinggi (ideal ${crop.elevMin}–${crop.elevMax} mdpl)`;
+        elevReason = `${Math.round(elevMdpl)} mdpl terlalu tinggi (ideal ${crop.elevMin}-${crop.elevMax} mdpl)`;
       }
 
       // 4) Weather Check (Weight 15%)
@@ -1472,7 +1472,7 @@
       document.getElementById("selectCrop").value = "kangkung";
       setMapPinLocation(cimalaka.lat, cimalaka.lon, true);
       if (suitabilityMap) suitabilityMap.setView([-6.835, 107.960], 11);
-      showLocationToast("🔄 Tampilan peta telah di-reset ke Kabupaten Sumedang");
+      showLocationToast("\u{1F504} Tampilan peta telah di-reset ke Kabupaten Sumedang");
     }
 
     function setBaseTileLayer(type) {
@@ -1544,12 +1544,12 @@
       const distCijeler = Math.hypot(lat - (-6.8601), lon - (108.0056));
       if (distCijeler < 0.02) {
         currentVillageName = "Desa Cijeler";
-        const displayLabel = "📍 Desa Cijeler, Kec. Situraja";
+        const displayLabel = "\u{1F4CD} Desa Cijeler, Kec. Situraja";
         if (titleEl) titleEl.innerHTML = `<span class="text-amber-800 font-extrabold">${displayLabel}</span>`;
         const activeCoordBadge = document.getElementById("activeCoordBadge");
         if (activeCoordBadge) activeCoordBadge.textContent = `${displayLabel} (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
         const miniDist = document.getElementById("nearestDistrictDistanceInfo");
-        if (miniDist) miniDist.textContent = "📍 Desa Cijeler (Kec. Situraja)";
+        if (miniDist) miniDist.textContent = "\u{1F4CD} Desa Cijeler (Kec. Situraja)";
         return;
       }
 
@@ -1557,12 +1557,12 @@
       const distBuahdua = Math.hypot(lat - (-6.7360), lon - (107.9730));
       if (distBuahdua < 0.035) {
         currentVillageName = "Kecamatan Buahdua";
-        const displayLabel = "📍 Wilayah Kec. Buahdua";
+        const displayLabel = "\u{1F4CD} Wilayah Kec. Buahdua";
         if (titleEl) titleEl.innerHTML = `<span class="text-teal-800 font-extrabold">${displayLabel}</span>`;
         const activeCoordBadge = document.getElementById("activeCoordBadge");
         if (activeCoordBadge) activeCoordBadge.textContent = `${displayLabel} (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
         const miniDist = document.getElementById("nearestDistrictDistanceInfo");
-        if (miniDist) miniDist.textContent = "📍 Pusat Kec. Buahdua (345 mdpl)";
+        if (miniDist) miniDist.textContent = "\u{1F4CD} Pusat Kec. Buahdua (345 mdpl)";
         return;
       }
 
@@ -1574,13 +1574,13 @@
           const data = await res.json();
           const village = data.locality || data.city || "";
           currentVillageName = village && village !== activeDistrict.name ? `Desa ${village}` : "";
-          const displayLabel = currentVillageName ? `📍 ${currentVillageName}, Kec. ${activeDistrict.name}` : `📍 Wilayah Kec. ${activeDistrict.name}`;
+          const displayLabel = currentVillageName ? `\u{1F4CD} ${currentVillageName}, Kec. ${activeDistrict.name}` : `\u{1F4CD} Wilayah Kec. ${activeDistrict.name}`;
           
           if (titleEl) titleEl.innerHTML = `<span class="text-emerald-800 font-extrabold">${displayLabel}</span>`;
           const activeCoordBadge = document.getElementById("activeCoordBadge");
           if (activeCoordBadge) activeCoordBadge.textContent = `${displayLabel} (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
           const miniDist = document.getElementById("nearestDistrictDistanceInfo");
-          if (miniDist) miniDist.textContent = currentVillageName ? `📍 ${currentVillageName} (${activeDistrict.name})` : `📍 Pusat Kec. ${activeDistrict.name}`;
+          if (miniDist) miniDist.textContent = currentVillageName ? `\u{1F4CD} ${currentVillageName} (${activeDistrict.name})` : `\u{1F4CD} Pusat Kec. ${activeDistrict.name}`;
           return;
         }
       } catch (err) {
@@ -1589,7 +1589,7 @@
 
       // Fallback aman ke nama kecamatan terdekat
       currentVillageName = "";
-      const displayLabel = `📍 Wilayah Kec. ${activeDistrict.name}`;
+      const displayLabel = `\u{1F4CD} Wilayah Kec. ${activeDistrict.name}`;
       if (titleEl) titleEl.innerHTML = `<span class="text-emerald-800 font-extrabold">${displayLabel}</span>`;
       const activeCoordBadge = document.getElementById("activeCoordBadge");
       if (activeCoordBadge) activeCoordBadge.textContent = `${displayLabel} (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
@@ -1664,7 +1664,7 @@
           badgeEl.innerHTML = `
             <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
             <span class="text-emerald-950 font-bold">Live Satelit:</span>
-            <span class="text-emerald-800 ml-1 font-semibold">${cur.temperature_2m.toFixed(1)}°C &bull; RH ${cur.relative_humidity_2m}% &bull; ${weatherDesc} &bull; Angin ${cur.wind_speed_10m} km/j</span>
+            <span class="text-emerald-800 ml-1 font-semibold">${cur.temperature_2m.toFixed(1)}\u00B0C \u2022 RH ${cur.relative_humidity_2m}% \u2022 ${weatherDesc} \u2022 Angin ${cur.wind_speed_10m} km/j</span>
           `;
         }
       } catch (err) {
@@ -1694,7 +1694,7 @@
       document.getElementById("coordBoxMini").textContent =
         `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
       document.getElementById("nearestDistrictDistanceInfo").textContent =
-        `📍 Pusat Kec. ${activeDistrict.name} (${nearest.distanceKm.toFixed(2)} km)`;
+        `\u{1F4CD} Pusat Kec. ${activeDistrict.name} (${nearest.distanceKm.toFixed(2)} km)`;
 
       if (interpolateSliders) {
         document.getElementById("sliderPh").value = activeDistrict.ph;
@@ -1743,7 +1743,7 @@
         circle.bindPopup(`
           <div class="text-xs space-y-1">
             <div class="font-bold text-slate-900 text-sm">Kec. ${d.name}</div>
-            <div class="text-slate-600">Elevasi: <strong>${d.elevMdpl} mdpl</strong> • Suhu: <strong>${d.tempC}°C</strong> • pH: <strong>${d.ph}</strong></div>
+            <div class="text-slate-600">Elevasi: <strong>${d.elevMdpl} mdpl</strong> \u2022 Suhu: <strong>${d.tempC}\u00B0C</strong> \u2022 pH: <strong>${d.ph}</strong></div>
             <div class="text-slate-600">Luas Panen BPS: <strong>${d.harvestHa} Ha</strong> (${d.topCrop})</div>
             <div class="pt-1 border-t border-slate-200 font-semibold ${evalRes.score >= 80 ? 'text-emerald-700' : evalRes.score >= 62 ? 'text-amber-700' : 'text-rose-700'}">
               Kecocokan ${crop.name}: ${evalRes.score}%
@@ -1761,7 +1761,7 @@
       // Red User Pin Badge
       const pinIcon = L.divIcon({
         className: "custom-user-pin",
-        html: `<div style="background:#e11d48;color:#fff;font-weight:700;font-size:11px;padding:3px 8px;border-radius:9999px;border:2px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.25);white-space:nowrap;transform:translate(-50%,-110%);">📍 Lahan Anda</div>`,
+        html: `<div style="background:#e11d48;color:#fff;font-weight:700;font-size:11px;padding:3px 8px;border-radius:9999px;border:2px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.25);white-space:nowrap;transform:translate(-50%,-110%);">\u{1F4CD} Lahan Anda</div>`,
         iconSize: [0, 0]
       });
 
@@ -1782,12 +1782,12 @@
 
       // Update Active Cluster Info Box
       const clusterMeta = getClusterMeta(activeDistrict.cluster);
-      const zoneName = fieldElev >= 600 ? "Zona Sejuk (600–1.500 mdpl)" : "Zona Hangat/Panas (0–600 mdpl)";
+      const zoneName = fieldElev >= 600 ? "Zona Sejuk (600-1.500 mdpl)" : "Zona Hangat/Panas (0-600 mdpl)";
       const badgeEl = document.getElementById("activeClusterBadge");
       badgeEl.textContent = clusterMeta.name;
       badgeEl.className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${clusterMeta.badgeClass}`;
       document.getElementById("activeClusterDesc").innerHTML =
-        `Titik koordinat Anda (<strong>${activeLat.toFixed(4)}, ${activeLon.toFixed(4)}</strong>) masuk ke wilayah <strong>Kec. ${activeDistrict.name}</strong> pada <strong>${zoneName}</strong> (Luas panen BPS: <strong>${activeDistrict.harvestHa} Ha</strong> — <em>${activeDistrict.topCrop}</em>).`;
+        `Titik koordinat Anda (<strong>${activeLat.toFixed(4)}, ${activeLon.toFixed(4)}</strong>) masuk ke wilayah <strong>Kec. ${activeDistrict.name}</strong> pada <strong>${zoneName}</strong> (Luas panen BPS: <strong>${activeDistrict.harvestHa} Ha</strong> - <em>${activeDistrict.topCrop}</em>).`;
 
       // Rank all 12 crops for this location
       const rankedCrops = cropsCatalog.map(c => {
@@ -1809,7 +1809,7 @@
       const container = document.getElementById("diagnosisCardContainer");
       let borderClass = "border-emerald-300";
       let badgeBg = "bg-emerald-500 text-white";
-      let statusLabel = "✓ SANGAT COCOK (DIREKOMENDASIKAN)";
+      let statusLabel = "\u2713 SANGAT COCOK (DIREKOMENDASIKAN)";
       let scoreTextColor = "text-emerald-600";
       const locLabel = currentVillageName ? `${currentVillageName} (${activeDistrict.name})` : `Kec. ${activeDistrict.name}`;
       let headline = `${crop.name} Sangat Optimal di Lahan ${locLabel}`;
@@ -1817,13 +1817,13 @@
       if (evalRes.score < 62) {
         borderClass = "border-rose-300";
         badgeBg = "bg-rose-600 text-white";
-        statusLabel = "⚠️ RISIKO TINGGI GAGAL PANEN";
+        statusLabel = "\u26A0 RISIKO TINGGI GAGAL PANEN";
         scoreTextColor = "text-rose-600";
         headline = `${crop.name} Berisiko Gagal Panen di Lahan ${locLabel}`;
       } else if (evalRes.score < 80) {
         borderClass = "border-amber-300";
         badgeBg = "bg-amber-500 text-white";
-        statusLabel = "⚠️ CUKUP COCOK (PERLU PENYESUAIAN LAHAN)";
+        statusLabel = "\u26A0 CUKUP COCOK (PERLU PENYESUAIAN LAHAN)";
         scoreTextColor = "text-amber-600";
         headline = `${crop.name} Kurang Optimal di Lahan ${locLabel}`;
       }
@@ -1832,7 +1832,7 @@
 
       const checkItem = (ok, label, text) => `
         <div class="px-3 py-2 rounded-lg border text-xs ${ok ? 'bg-emerald-50/50 border-emerald-200 text-slate-700' : 'bg-rose-50/60 border-rose-200 text-slate-700'}">
-          <span class="font-bold ${ok ? 'text-emerald-700' : 'text-rose-600'}">${ok ? '✓' : '✕'} ${label}:</span> ${text}
+          <span class="font-bold ${ok ? 'text-emerald-700' : 'text-rose-600'}">${ok ? '\u2713' : '\u2715'} ${label}:</span> ${text}
         </div>
       `;
 
@@ -1864,7 +1864,7 @@
         </div>
 
         <div class="mt-4 p-3 rounded-xl bg-amber-50/90 border border-amber-200 text-xs text-slate-800 leading-relaxed">
-          <strong class="text-amber-900">💡 Saran Pengganti Lebih Aman:</strong> Agar hasil panen maksimal di titik lokasi ini, tanaman yang jauh lebih cocok adalah
+          <strong class="text-amber-900">\u{1F4A1} Saran Pengganti Lebih Aman:</strong> Agar hasil panen maksimal di titik lokasi ini, tanaman yang jauh lebih cocok adalah
           <button onclick="selectCropAndScroll('${topAlt1.crop.id}')" class="font-bold underline text-emerald-800 hover:text-emerald-600">${topAlt1.crop.name} (Kecocokan ${topAlt1.score}%)</button> dan
           <button onclick="selectCropAndScroll('${topAlt2.crop.id}')" class="font-bold underline text-emerald-800 hover:text-emerald-600">${topAlt2.crop.name} (${topAlt2.score}%)</button>.
         </div>
@@ -1892,7 +1892,7 @@
             <td class="py-2.5 px-2 font-bold text-slate-700">#${idx + 1}</td>
             <td class="py-2.5 px-2 font-bold text-slate-900">${c.name}</td>
             <td class="py-2.5 px-2 text-slate-600 font-mono-tech text-[11px]">
-              pH ${c.phMin}–${c.phMax} • ${c.tempMin}–${c.tempMax}°C • ${c.elevMin}–${c.elevMax}m
+              pH ${c.phMin}-${c.phMax} \u2022 ${c.tempMin}-${c.tempMax}\u00B0C \u2022 ${c.elevMin}-${c.elevMax}m
             </td>
             <td class="py-2.5 px-2 text-center">
               <span class="px-2 py-0.5 rounded-full text-[11px] font-bold border ${badgeCls}">
@@ -1916,9 +1916,9 @@
       if (!container) return;
 
       const polySpecs = {
-        kecil: { label: "Kecil 20×20 cm (±3 Liter / 2.5 kg)", liter: 3, kgMedia: 2.5, dolomitBaseGr: 3 },
-        sedang: { label: "Sedang 30×30 cm (±8 Liter / 6.0 kg)", liter: 8, kgMedia: 6.0, dolomitBaseGr: 6 },
-        besar: { label: "Besar 40×40 cm (±15 Liter / 12.0 kg)", liter: 15, kgMedia: 12.0, dolomitBaseGr: 12 }
+        kecil: { label: "Kecil 20&times;20 cm (\u00B13 Liter / 2.5 kg)", liter: 3, kgMedia: 2.5, dolomitBaseGr: 3 },
+        sedang: { label: "Sedang 30&times;30 cm (\u00B18 Liter / 6.0 kg)", liter: 8, kgMedia: 6.0, dolomitBaseGr: 6 },
+        besar: { label: "Besar 40&times;40 cm (\u00B115 Liter / 12.0 kg)", liter: 15, kgMedia: 12.0, dolomitBaseGr: 12 }
       };
       const pSpec = polySpecs[polySizeKey] || polySpecs.sedang;
 
@@ -1944,14 +1944,14 @@
       const mlWaterPerPoly = polySizeKey === "kecil" ? 220 : polySizeKey === "sedang" ? 320 : 500;
       let wateringInstruction = "";
       if (fieldWeather === "sejuk_lembap" || fieldWeather === "hujan_tinggi") {
-        wateringInstruction = `Lokasi beriklim <strong>Sejuk &amp; Lembap (${fieldTemp.toFixed(1)}°C, ${Math.round(fieldElev)} mdpl)</strong>: siram <strong>1 kali sehari pada pagi hari (±${mlWaterPerPoly} ml/polybag)</strong>. Hindari sore/malam mendung agar perakaran tidak busuk.`;
+        wateringInstruction = `Lokasi beriklim <strong>Sejuk &amp; Lembap (${fieldTemp.toFixed(1)}\u00B0C, ${Math.round(fieldElev)} mdpl)</strong>: siram <strong>1 kali sehari pada pagi hari (\u00B1${mlWaterPerPoly} ml/polybag)</strong>. Hindari sore/malam mendung agar perakaran tidak busuk.`;
       } else {
-        wateringInstruction = `Lokasi beriklim <strong>Hangat/Terik (${fieldTemp.toFixed(1)}°C, ${Math.round(fieldElev)} mdpl)</strong>: siram <strong>2 kali sehari (pagi &amp; sore @ ±${mlWaterPerPoly} ml/polybag)</strong> untuk menjaga kelembapan media.`;
+        wateringInstruction = `Lokasi beriklim <strong>Hangat/Terik (${fieldTemp.toFixed(1)}\u00B0C, ${Math.round(fieldElev)} mdpl)</strong>: siram <strong>2 kali sehari (pagi &amp; sore @ \u00B1${mlWaterPerPoly} ml/polybag)</strong> untuk menjaga kelembapan media.`;
       }
 
       const phTreatmentNote = phDeficit > 0
-        ? `pH tanah saat ini <strong>${fieldPh.toFixed(1)}</strong> (masam). Campurkan <strong>Dolomit ${cultivationMode === 'polybag' ? `${dolomitGramPerPoly} gr/polybag (≈ ${(dolomitGramPerPoly / 5).toFixed(1)} sdt)` : `${dolomitLahanKg} kg`}</strong> pada H-7 sebelum tanam.`
-        : `pH tanah (<strong>${fieldPh.toFixed(1)}</strong>) sudah ideal (${crop.phMin}–${crop.phMax}). Tanpa pengapuran dolomit tambahan.`;
+        ? `pH tanah saat ini <strong>${fieldPh.toFixed(1)}</strong> (masam). Campurkan <strong>Dolomit ${cultivationMode === 'polybag' ? `${dolomitGramPerPoly} gr/polybag (\u2248 ${(dolomitGramPerPoly / 5).toFixed(1)} sdt)` : `${dolomitLahanKg} kg`}</strong> pada H-7 sebelum tanam.`
+        : `pH tanah (<strong>${fieldPh.toFixed(1)}</strong>) sudah ideal (${crop.phMin}-${crop.phMax}). Tanpa pengapuran dolomit tambahan.`;
 
       container.innerHTML = `
         <!-- Modern Card Header (SaaS Style) -->
@@ -1962,24 +1962,24 @@
                 PANDUAN SARANA PRODUKSI &amp; TIMELINE BUDIDAYA
               </span>
               <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
-                Umur Panen: ${crop.harvestDays} &bull; Jarak: ${crop.spacingCm}
+                Umur Panen: ${crop.harvestDays} \u2022 Jarak: ${crop.spacingCm}
               </span>
             </div>
             <h3 class="text-base sm:text-xl font-extrabold text-white">
               Estimasi Saprodi &amp; SOP Lapangan: <span class="text-emerald-400">${crop.name}</span>
             </h3>
             <p class="text-xs text-slate-300 mt-0.5">
-              Kalkulasi teknis adaptif untuk <span class="text-amber-300 font-semibold">Kec. ${activeDistrict.name}</span> (${Math.round(fieldElev)} mdpl, pH ${fieldPh.toFixed(1)}, Suhu ${fieldTemp.toFixed(1)}°C).
+              Kalkulasi teknis adaptif untuk <span class="text-amber-300 font-semibold">Kec. ${activeDistrict.name}</span> (${Math.round(fieldElev)} mdpl, pH ${fieldPh.toFixed(1)}, Suhu ${fieldTemp.toFixed(1)}\u00B0C).
             </p>
           </div>
 
           <!-- Clean Segmented Mode Switcher -->
           <div class="inline-flex rounded-xl p-1 bg-slate-950/80 border border-slate-700 shrink-0 self-start md:self-auto">
             <button onclick="setCultivationScaleMode('polybag')" class="px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${cultivationMode === 'polybag' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'}">
-              <span>🪴 Polybag / Pekarangan</span>
+              <span>\u{1FAB4} Polybag / Pekarangan</span>
             </button>
             <button onclick="setCultivationScaleMode('lahan')" class="px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${cultivationMode === 'lahan' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'}">
-              <span>🌾 Lahan Terbuka (m²)</span>
+              <span>\u{1F33E} Lahan Terbuka (m\u00B2)</span>
             </button>
           </div>
         </div>
@@ -1991,7 +1991,7 @@
           <div class="lg:col-span-5 p-5 sm:p-6 space-y-4 bg-slate-50/60">
             <div>
               <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-1 flex items-center gap-1.5">
-                <span>⚙️ Konfigurasi Kapasitas Budidaya</span>
+                <span>\u2699 Konfigurasi Kapasitas Budidaya</span>
               </h4>
               <p class="text-[11px] text-slate-500">Sesuaikan kapasitas wadah atau luas areal tanam:</p>
             </div>
@@ -2002,9 +2002,9 @@
                 <div>
                   <label class="block text-xs font-semibold text-slate-700 mb-1">Ukuran Polybag:</label>
                   <select onchange="onChangePolySize(this.value)" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-emerald-500">
-                    <option value="kecil" ${polySizeKey === 'kecil' ? 'selected' : ''}>Kecil 20×20 cm (±3 Liter / 2.5 kg)</option>
-                    <option value="sedang" ${polySizeKey === 'sedang' ? 'selected' : ''}>Sedang 30×30 cm (±8 Liter / 6.0 kg)</option>
-                    <option value="besar" ${polySizeKey === 'besar' ? 'selected' : ''}>Besar 40×40 cm (±15 Liter / 12.0 kg)</option>
+                    <option value="kecil" ${polySizeKey === 'kecil' ? 'selected' : ''}>Kecil 20&times;20 cm (\u00B13 Liter / 2.5 kg)</option>
+                    <option value="sedang" ${polySizeKey === 'sedang' ? 'selected' : ''}>Sedang 30&times;30 cm (\u00B18 Liter / 6.0 kg)</option>
+                    <option value="besar" ${polySizeKey === 'besar' ? 'selected' : ''}>Besar 40&times;40 cm (\u00B115 Liter / 12.0 kg)</option>
                   </select>
                 </div>
                 <div>
@@ -2020,13 +2020,13 @@
               <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
                 <div class="flex items-center justify-between">
                   <label class="text-xs font-semibold text-slate-700">Luas Lahan Budidaya:</label>
-                  <span class="text-emerald-700 font-bold font-mono text-xs">${landAreaM2} m² (${(landAreaM2/10000).toFixed(2)} Ha)</span>
+                  <span class="text-emerald-700 font-bold font-mono text-xs">${landAreaM2} m\u00B2 (${(landAreaM2/10000).toFixed(2)} Ha)</span>
                 </div>
                 <input type="number" min="10" max="100000" step="10" value="${landAreaM2}" oninput="onChangeLandArea(this.value)" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold font-mono text-slate-900 text-right focus:ring-2 focus:ring-emerald-500" />
                 <div class="grid grid-cols-4 gap-1.5 pt-1">
-                  <button onclick="onChangeLandArea(100)" class="py-1.5 px-2 rounded-lg border text-xs font-bold font-mono transition ${landAreaM2 == 100 ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">100 m²</button>
-                  <button onclick="onChangeLandArea(400)" class="py-1.5 px-2 rounded-lg border text-xs font-bold font-mono transition ${landAreaM2 == 400 ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">400 m²</button>
-                  <button onclick="onChangeLandArea(1000)" class="py-1.5 px-2 rounded-lg border text-xs font-bold font-mono transition ${landAreaM2 == 1000 ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">1.000 m²</button>
+                  <button onclick="onChangeLandArea(100)" class="py-1.5 px-2 rounded-lg border text-xs font-bold font-mono transition ${landAreaM2 == 100 ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">100 m\u00B2</button>
+                  <button onclick="onChangeLandArea(400)" class="py-1.5 px-2 rounded-lg border text-xs font-bold font-mono transition ${landAreaM2 == 400 ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">400 m\u00B2</button>
+                  <button onclick="onChangeLandArea(1000)" class="py-1.5 px-2 rounded-lg border text-xs font-bold font-mono transition ${landAreaM2 == 1000 ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">1.000 m\u00B2</button>
                   <button onclick="onChangeLandArea(10000)" class="py-1.5 px-2 rounded-lg border text-xs font-bold font-mono transition ${landAreaM2 == 10000 ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">1 Ha</button>
                 </div>
               </div>
@@ -2041,7 +2041,7 @@
                     <span class="text-xl font-extrabold text-slate-900 mt-1 block">${totalMediaKg} kg</span>
                   </div>
                   <div class="text-[10px] text-slate-500 mt-2 pt-2 border-t border-slate-100">
-                    Tanah ${tanahKg}kg &bull; Kompos ${komposKg}kg &bull; Sekam ${sekamKg}kg
+                    Tanah ${tanahKg}kg \u2022 Kompos ${komposKg}kg \u2022 Sekam ${sekamKg}kg
                   </div>
                 </div>
 
@@ -2070,7 +2070,7 @@
                 <div class="bg-emerald-50/80 p-3.5 rounded-xl border border-emerald-200 shadow-sm flex flex-col justify-between">
                   <div>
                     <span class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider block">Estimasi Hasil Panen</span>
-                    <span class="text-xl font-extrabold text-emerald-700 mt-1 block">± ${estYieldPolyKg} kg</span>
+                    <span class="text-xl font-extrabold text-emerald-700 mt-1 block">\u00B1 ${estYieldPolyKg} kg</span>
                   </div>
                   <div class="text-[10px] text-emerald-700 mt-2 pt-2 border-t border-emerald-200/60 font-semibold">
                     ${totalPlantsPoly} tanaman (Skor: ${evalRes.score}%)
@@ -2083,7 +2083,7 @@
                     <span class="text-xl font-extrabold text-slate-900 mt-1 block">${pupukKandangKg} kg</span>
                   </div>
                   <div class="text-[10px] text-slate-500 mt-2 pt-2 border-t border-slate-100">
-                    Dosis olah bedengan: 1.5 kg/m²
+                    Dosis olah bedengan: 1.5 kg/m\u00B2
                   </div>
                 </div>
 
@@ -2112,10 +2112,10 @@
                 <div class="bg-emerald-50/80 p-3.5 rounded-xl border border-emerald-200 shadow-sm flex flex-col justify-between">
                   <div>
                     <span class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider block">Proyeksi Hasil</span>
-                    <span class="text-xl font-extrabold text-emerald-700 mt-1 block">± ${estYieldLahanKg} kg</span>
+                    <span class="text-xl font-extrabold text-emerald-700 mt-1 block">\u00B1 ${estYieldLahanKg} kg</span>
                   </div>
                   <div class="text-[10px] text-emerald-700 mt-2 pt-2 border-t border-emerald-200/60 font-semibold">
-                    ± ${estPopulasiLahan} tanaman (${evalRes.score}%)
+                    \u00B1 ${estPopulasiLahan} tanaman (${evalRes.score}%)
                   </div>
                 </div>
               `}
@@ -2127,12 +2127,12 @@
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
                 <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-                  <span>📅 Timeline Siklus Budidaya Lapangan</span>
+                  <span>\u{1F4C5} Timeline Siklus Budidaya Lapangan</span>
                 </h4>
                 <p class="text-[11px] text-slate-500 mt-0.5">Tahapan kerja teknis terstruktur berdasarkan Hari Setelah Tanam (HST):</p>
               </div>
               <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-bold">
-                Adaptif: ${fieldTemp.toFixed(1)}°C &bull; pH ${fieldPh.toFixed(1)}
+                Adaptif: ${fieldTemp.toFixed(1)}\u00B0C \u2022 pH ${fieldPh.toFixed(1)}
               </span>
             </div>
 
@@ -2146,7 +2146,7 @@
                 </div>
                 <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
                   <div class="flex items-center justify-between gap-2 mb-1">
-                    <span class="font-bold text-xs text-slate-900">Pra-Tanam (H-7 s.d. H-1) &bull; Persiapan Media &amp; Koreksi pH</span>
+                    <span class="font-bold text-xs text-slate-900">Pra-Tanam (H-7 s.d. H-1) \u2022 Persiapan Media &amp; Koreksi pH</span>
                     <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-200 text-slate-700">Olah Media</span>
                   </div>
                   <p class="text-xs text-slate-600 leading-relaxed">
@@ -2162,11 +2162,11 @@
                 </div>
                 <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
                   <div class="flex items-center justify-between gap-2 mb-1">
-                    <span class="font-bold text-xs text-slate-900">Hari Tanam (0 HST) &bull; Penyemaian &amp; Pindah Tanam</span>
+                    <span class="font-bold text-xs text-slate-900">Hari Tanam (0 HST) \u2022 Penyemaian &amp; Pindah Tanam</span>
                     <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800">Tanam Benih</span>
                   </div>
                   <p class="text-xs text-slate-600 leading-relaxed">
-                    ${crop.sop.stage2} Lakukan penanaman pada sore hari (15.30–17.00 WIB) agar bibit tidak mengalami stres penguapan.
+                    ${crop.sop.stage2} Lakukan penanaman pada sore hari (15.30-17.00 WIB) agar bibit tidak mengalami stres penguapan.
                   </p>
                 </div>
               </div>
@@ -2178,7 +2178,7 @@
                 </div>
                 <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
                   <div class="flex items-center justify-between gap-2 mb-1">
-                    <span class="font-bold text-xs text-slate-900">Pemeliharaan Vegetatif (7 &ndash; 20 HST) &bull; Pengairan &amp; Pupuk</span>
+                    <span class="font-bold text-xs text-slate-900">Pemeliharaan Vegetatif (7 &ndash; 20 HST) \u2022 Pengairan &amp; Pupuk</span>
                     <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-100 text-blue-800">Air &amp; NPK</span>
                   </div>
                   <p class="text-xs text-slate-600 leading-relaxed">
@@ -2194,7 +2194,7 @@
                 </div>
                 <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
                   <div class="flex items-center justify-between gap-2 mb-1">
-                    <span class="font-bold text-xs text-slate-900">Fase Akhir (${crop.harvestDays}) &bull; Panen &amp; Pasca Panen</span>
+                    <span class="font-bold text-xs text-slate-900">Fase Akhir (${crop.harvestDays}) \u2022 Panen &amp; Pasca Panen</span>
                     <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-100 text-amber-800 font-bold">Panen</span>
                   </div>
                   <p class="text-xs text-slate-600 leading-relaxed">
@@ -2207,7 +2207,7 @@
 
             <!-- Footer Note -->
             <div class="p-3 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
-              <span><strong>Status Wilayah:</strong> Kec. ${activeDistrict.name} (${Math.round(fieldElev)} mdpl, ${fieldTemp.toFixed(1)}°C, pH ${fieldPh.toFixed(1)}) &bull; Skor: <strong class="text-emerald-700">${evalRes.score}%</strong>.</span>
+              <span><strong>Status Wilayah:</strong> Kec. ${activeDistrict.name} (${Math.round(fieldElev)} mdpl, ${fieldTemp.toFixed(1)}\u00B0C, pH ${fieldPh.toFixed(1)}) \u2022 Skor: <strong class="text-emerald-700">${evalRes.score}%</strong>.</span>
               <span class="text-[11px] font-semibold text-slate-500 font-mono">FTI UNSAP 2026</span>
             </div>
           </div>
@@ -2233,7 +2233,7 @@
       const temp = parseFloat(document.getElementById("sliderTemp").value);
       const elev = parseFloat(document.getElementById("sliderElev").value);
       document.getElementById("valPhLabel").textContent = ph.toFixed(1);
-      document.getElementById("valTempLabel").textContent = `${temp.toFixed(1)} °C`;
+      document.getElementById("valTempLabel").textContent = `${temp.toFixed(1)} \u00B0C`;
       document.getElementById("valElevLabel").textContent = `${Math.round(elev)} mdpl`;
     }
 
@@ -2298,46 +2298,46 @@
         setMapPinLocation(buahdua.lat, buahdua.lon, true);
         if (suitabilityMap) suitabilityMap.setView([buahdua.lat, buahdua.lon], 13);
         const titleEl = document.getElementById("detectedLocalityTitle");
-        if (titleEl) titleEl.innerHTML = `🌿 <span class="text-teal-800 font-extrabold">Uji Kasus Petani: Wilayah Kec. Buahdua (345 mdpl)</span>`;
-        showLocationToast("📍 Lokasi berhasil dipusatkan ke Kecamatan Buahdua!");
+        if (titleEl) titleEl.innerHTML = `\u{1F33F} <span class="text-teal-800 font-extrabold">Uji Kasus Petani: Wilayah Kec. Buahdua (345 mdpl)</span>`;
+        showLocationToast("\u{1F4CD} Lokasi berhasil dipusatkan ke Kecamatan Buahdua!");
       } else if (caseKey === "dosen_sumedang_kota") {
         // Studi Kasus Dosen 1: Rumah di Cekungan Dataran Rendah Sumedang Kota (Kotakaler/Regol)
         document.getElementById("selectCrop").value = "kangkung";
         setMapPinLocation(-6.8360, 107.9240, true);
         if (suitabilityMap) suitabilityMap.setView([-6.8360, 107.9240], 13);
         const titleEl = document.getElementById("detectedLocalityTitle");
-        if (titleEl) titleEl.innerHTML = `🏡 <span class="text-indigo-800 font-extrabold">Rumah Dosen 1: Sumedang Kota (Dataran Rendah)</span>`;
-        showLocationToast("📍 Memuat Kasus Dosen 1: Sumedang Kota");
+        if (titleEl) titleEl.innerHTML = `\u{1F3E1} <span class="text-indigo-800 font-extrabold">Rumah Dosen 1: Sumedang Kota (Dataran Rendah)</span>`;
+        showLocationToast("\u{1F4CD} Memuat Kasus Dosen 1: Sumedang Kota");
       } else if (caseKey === "dosen_cijeler_situraja") {
         // Studi Kasus Dosen 2: Rumah di Kaki Perbukitan Desa Cijeler, Situraja
         document.getElementById("selectCrop").value = "kangkung";
         setMapPinLocation(-6.8601, 108.0056, true);
         if (suitabilityMap) suitabilityMap.setView([-6.8601, 108.0056], 13);
         const titleEl = document.getElementById("detectedLocalityTitle");
-        if (titleEl) titleEl.innerHTML = `⛰️ <span class="text-amber-800 font-extrabold">Rumah Dosen 2: Desa Cijeler, Situraja (Perbukitan)</span>`;
-        showLocationToast("📍 Memuat Kasus Dosen 2: Desa Cijeler, Situraja");
+        if (titleEl) titleEl.innerHTML = `\u26F0 <span class="text-amber-800 font-extrabold">Rumah Dosen 2: Desa Cijeler, Situraja (Perbukitan)</span>`;
+        showLocationToast("\u{1F4CD} Memuat Kasus Dosen 2: Desa Cijeler, Situraja");
       } else if (caseKey === "kangkung_cimalaka") {
         const cimalaka = districtsData.find(d => d.name === "Cimalaka");
         document.getElementById("selectCrop").value = "kangkung";
         setMapPinLocation(cimalaka.lat, cimalaka.lon, true);
         if (suitabilityMap) suitabilityMap.setView([cimalaka.lat, cimalaka.lon], 11);
-        showLocationToast("📍 Memuat Kasus Cimalaka: Kangkung");
+        showLocationToast("\u{1F4CD} Memuat Kasus Cimalaka: Kangkung");
       } else if (caseKey === "kubis_ujungjaya") {
         const ujungjaya = districtsData.find(d => d.name === "Ujung Jaya");
         document.getElementById("selectCrop").value = "kubis";
         setMapPinLocation(ujungjaya.lat, ujungjaya.lon, true);
         if (suitabilityMap) suitabilityMap.setView([ujungjaya.lat, ujungjaya.lon], 11);
-        showLocationToast("📍 Memuat Kasus Ujung Jaya: Kubis");
+        showLocationToast("\u{1F4CD} Memuat Kasus Ujung Jaya: Kubis");
       }
     }
 
     // FUNGSI GPS PINTAR: TIDAK MEMAKSA CIJELER KETIKA ERROR/DI LUAR JANGKAUAN
     function useMyGPSLocation() {
       const btn = document.getElementById("btnMyGPS");
-      if (btn) btn.innerHTML = `<span class="inline-block animate-spin mr-1">⏳</span> Mengunci Sinyal GPS...`;
+      if (btn) btn.innerHTML = `<span class="inline-block animate-spin mr-1">\u23F3</span> Mengunci Sinyal GPS...`;
 
       if (!navigator.geolocation) {
-        if (btn) btn.innerHTML = `<span>📍 Kunci GPS Pekarangan</span>`;
+        if (btn) btn.innerHTML = `<span>\u{1F4CD} Kunci GPS Pekarangan</span>`;
         showLocationToast("Sensor GPS tidak didukung browser ini. Membuka pemilih kecamatan...");
         openDistrictPickerModal();
         return;
@@ -2355,18 +2355,18 @@
           if (nearest.distanceKm <= 35) {
             setMapPinLocation(lat, lon, true);
             if (suitabilityMap) suitabilityMap.setView([lat, lon], 14);
-            if (btn) btn.innerHTML = `📍 GPS Terkunci: ${nearest.district.name} (±${accuracy}m)`;
-            showLocationToast(`📍 GPS Presisi Terkunci di Kec. ${nearest.district.name} (±${accuracy}m)!`);
+            if (btn) btn.innerHTML = `\u{1F4CD} GPS Terkunci: ${nearest.district.name} (\u00B1${accuracy}m)`;
+            showLocationToast(`\u{1F4CD} GPS Presisi Terkunci di Kec. ${nearest.district.name} (\u00B1${accuracy}m)!`);
           } else {
             // Posisi IP/GPS di luar Sumedang (misal cellular IP diarahkan ke gateway Bandung/Jakarta)
-            if (btn) btn.innerHTML = `<span>📍 Kunci GPS Pekarangan</span>`;
-            showLocationToast(`📍 GPS terdeteksi di luar Sumedang (${nearest.distanceKm.toFixed(0)} km). Membuka pemilih kecamatan...`);
+            if (btn) btn.innerHTML = `<span>\u{1F4CD} Kunci GPS Pekarangan</span>`;
+            showLocationToast(`\u{1F4CD} GPS terdeteksi di luar Sumedang (${nearest.distanceKm.toFixed(0)} km). Membuka pemilih kecamatan...`);
             openDistrictPickerModal();
           }
         },
         err => {
           console.warn("GPS Geolocation error/blocked by iframe permissions policy:", err);
-          if (btn) btn.innerHTML = `<span>📍 Kunci GPS Pekarangan</span>`;
+          if (btn) btn.innerHTML = `<span>\u{1F4CD} Kunci GPS Pekarangan</span>`;
           
           let reasonMsg = "Akses sensor GPS otomatis dibatasi oleh keamanan Google Sites / Browser.";
           if (err && err.code === 3) reasonMsg = "Pencarian sinyal GPS melebihi batas waktu (timeout).";
@@ -2431,11 +2431,11 @@
               </span>
             </div>
             <div class="text-[11px] text-slate-500 mt-1 flex items-center justify-between">
-              <span>Suhu: <strong>${d.tempC}°C</strong></span>
+              <span>Suhu: <strong>${d.tempC}\u00B0C</strong></span>
               <span>pH: <strong>${d.ph}</strong></span>
             </div>
             <div class="text-[10px] text-emerald-700 font-medium truncate mt-1 bg-emerald-50/70 px-1.5 py-0.5 rounded">
-              🌾 ${d.topCrop}
+              \u{1F33E} ${d.topCrop}
             </div>
           </button>
         `;
@@ -2454,7 +2454,7 @@
       setMapPinLocation(d.lat, d.lon, true);
       if (suitabilityMap) suitabilityMap.setView([d.lat, d.lon], 13);
       closeDistrictPickerModal();
-      showLocationToast(`📍 Lokasi aktif: Kec. ${d.name} (${d.elevMdpl} mdpl)`);
+      showLocationToast(`\u{1F4CD} Lokasi aktif: Kec. ${d.name} (${d.elevMdpl} mdpl)`);
     }
 
     // TOAST NOTIFIKASI ELEGAN
@@ -2551,7 +2551,7 @@
           <div class="text-xs space-y-1">
             <div class="font-bold text-slate-900">${d.name}</div>
             <div>Klaster: <strong>${meta.name}</strong></div>
-            <div>Luas Panen: <strong>${d.harvestHa} Ha</strong> • Elevasi: <strong>${d.elevMdpl} mdpl</strong></div>
+            <div>Luas Panen: <strong>${d.harvestHa} Ha</strong> \u2022 Elevasi: <strong>${d.elevMdpl} mdpl</strong></div>
             <div>Komoditas Utama: ${d.topCrop}</div>
           </div>
         `);
@@ -2572,7 +2572,7 @@
               <span class="text-xs font-mono-tech font-bold text-slate-700">${members.length} Kecamatan</span>
             </div>
             <div class="text-xs text-slate-600 mt-2">
-              Total Panen: <strong>${sumHa} Ha</strong> • Rata-rata Elevasi: <strong>${avgElev} mdpl</strong>
+              Total Panen: <strong>${sumHa} Ha</strong> \u2022 Rata-rata Elevasi: <strong>${avgElev} mdpl</strong>
             </div>
             <div class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
               <strong>Anggota:</strong> ${members.map(m => m.name).join(", ")}
@@ -2697,7 +2697,7 @@
       // Populate District Select
       const distSelect = document.getElementById("selectDistrict");
       distSelect.innerHTML = districtsData.map(d =>
-        `<option value="${d.id}" ${d.id === activeDistrict.id ? 'selected' : ''}>${d.name} (${d.elevMdpl} mdpl, ${d.tempC}°C)</option>`
+        `<option value="${d.id}" ${d.id === activeDistrict.id ? 'selected' : ''}>${d.name} (${d.elevMdpl} mdpl, ${d.tempC}\u00B0C)</option>`
       ).join("");
 
       // Populate Crop Select
@@ -2736,7 +2736,7 @@
       <div class="p-4 sm:p-5 border-b border-slate-100 bg-slate-900 text-white flex items-center justify-between">
         <div class="flex items-center gap-2.5">
           <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 font-bold text-sm">
-            🗺️
+            \u{1F5FA}
           </div>
           <div>
             <h3 class="text-sm sm:text-base font-extrabold text-white">Pilih Lokasi Kecamatan di Sumedang</h3>
@@ -2744,7 +2744,7 @@
           </div>
         </div>
         <button onclick="closeDistrictPickerModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center cursor-pointer transition">
-          ✕
+          \u2715
         </button>
       </div>
 
@@ -2755,7 +2755,7 @@
             type="text" 
             id="searchDistrictInput" 
             oninput="onDistrictSearchInput(this.value)" 
-            placeholder="🔍 Cari nama kecamatan (misal: Buahdua, Tanjungsari, Tomo)..." 
+            placeholder="\u{1F50D} Cari nama kecamatan (misal: Buahdua, Tanjungsari, Tomo)..." 
             class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
           />
         </div>
@@ -2770,7 +2770,7 @@
 
       <!-- Modal Footer -->
       <div class="p-3 sm:p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between text-xs text-slate-500">
-        <span>💡 Klik salah satu kecamatan untuk langsung memusatkan peta &amp; rekomendasi</span>
+        <span>\u{1F4A1} Klik salah satu kecamatan untuk langsung memusatkan peta &amp; rekomendasi</span>
         <button onclick="closeDistrictPickerModal()" class="px-3.5 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold cursor-pointer transition">
           Tutup
         </button>
@@ -2781,7 +2781,7 @@
   <!-- TOAST NOTIFIKASI GLOBAL -->
   <div id="appGlobalToast" class="fixed bottom-5 right-5 z-[99999] max-w-md bg-slate-900/95 text-white px-4 py-3 rounded-xl shadow-2xl border border-emerald-500/40 backdrop-blur transition-all duration-300 transform translate-y-4 opacity-0 pointer-events-none flex items-center gap-3">
     <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 text-xs font-bold">
-      ✓
+      \u2713
     </div>
     <div id="appGlobalToastText" class="text-xs font-medium leading-relaxed">
       Notifikasi sistem
