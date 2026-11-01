@@ -18,3 +18,4 @@ Sistem Informasi Geografis (WebGIS) Berbasis Penentuan Klaster Wilayah (*K-Means
 4. **Integrasi Satelit Cuaca Real-Time (Open-Meteo)**: Pemantauan suhu, kelembapan (RH%), dan cuaca aktual terkini langsung dari satelit.
 5. **Kalkulator Kebutuhan Sarana Produksi (Saprodi)**: Estimasi otomatis media tanam, kapur dolomit, pupuk NPK 16-16-16, dan potensi hasil panen.
 6. **Peta Spasial Ganda**: Peta kartografi hijau asli (*OpenStreetMap*) & foto satelit nyata dari luar angkasa (*Esri World Imagery*).
+
