@@ -598,7 +598,7 @@
               <strong>Kecamatan:</strong> Tomo, Ujung Jaya, Jatigede, Darmaraja, Wado, Situraja, Cisitu, Conggeang, Buahdua, Surian, Sumedang Utara, Sumedang Selatan, Ganeas, Paseh, Cisarua, Tanjungkerta, Tanjungmedar, Jatinunggal.
             </p>
             <p class="text-xs text-slate-800 font-semibold mt-2">
-              Komoditas Utama: Ketimun, Bawang Merah, Kangkung Darat, Kacang Panjang, Bayam, Cabai Rawit.
+              Komoditas Utama: Ketimun, Bawang Merah, Kangkung, Kacang Panjang, Bayam, Cabai Rawit.
             </p>
           </div>
 
@@ -617,7 +617,7 @@
             <div class="text-xs font-bold uppercase tracking-wider text-blue-700">Mitigasi Risiko Gagal Panen Spasial</div>
             <div class="text-lg font-extrabold text-slate-900 mt-1">Pencegahan Salah Tanam</div>
             <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-              Menanam komoditas Zona I (seperti Kangkung Darat/Ketimun) pada puncak Zona II (&gt;1.000 mdpl, suhu &lt;21&deg;C) memicu pertumbuhan kerdil. Sebaliknya, menanam Kubis pada Zona I (&lt;400 mdpl, suhu &gt;27&deg;C) menyebabkan gagal krop.
+              Menanam komoditas Zona I (seperti Kangkung/Ketimun) pada puncak Zona II (&gt;1.000 mdpl, suhu &lt;21&deg;C) memicu pertumbuhan kerdil. Sebaliknya, menanam Kubis pada Zona I (&lt;400 mdpl, suhu &gt;27&deg;C) menyebabkan gagal krop.
             </p>
           </div>
         </div>
@@ -676,7 +676,8 @@
     const cropsCatalog = [
       {
         id: "kangkung",
-        name: "Kangkung Darat",
+        name: "Kangkung",
+        subName: "Kangkung Darat & Cabut",
         phMin: 6.0, phMax: 7.5,
         tempMin: 25.0, tempMax: 32.0,
         elevMin: 5, elevMax: 650,
@@ -698,7 +699,8 @@
       },
       {
         id: "sawi",
-        name: "Petsai / Sawi (Caisim & Pakcoy)",
+        name: "Petsai / Sawi",
+        subName: "Caisim & Pakcoy",
         phMin: 5.8, phMax: 7.0,
         tempMin: 18.0, tempMax: 24.5,
         elevMin: 600, elevMax: 1500,
@@ -742,7 +744,8 @@
       },
       {
         id: "cabai_keriting",
-        name: "Cabai Keriting & Cabai Besar (TW)",
+        name: "Cabai Besar",
+        subName: "Cabai Keriting & TW",
         phMin: 6.0, phMax: 6.8,
         tempMin: 21.0, tempMax: 26.0,
         elevMin: 600, elevMax: 1250,
@@ -764,7 +767,8 @@
       },
       {
         id: "kubis",
-        name: "Kubis (Kol Dataran Tinggi)",
+        name: "Kubis",
+        subName: "Kol Dataran Tinggi",
         phMin: 6.0, phMax: 7.0,
         tempMin: 16.0, tempMax: 22.0,
         elevMin: 800, elevMax: 1600,
@@ -786,7 +790,8 @@
       },
       {
         id: "tomat",
-        name: "Tomat Sayur",
+        name: "Tomat",
+        subName: "Tomat Sayur & Buah",
         phMin: 5.8, phMax: 6.8,
         tempMin: 18.0, tempMax: 25.0,
         elevMin: 650, elevMax: 1400,
@@ -918,7 +923,8 @@
       },
       {
         id: "bayam",
-        name: "Bayam Cabut",
+        name: "Bayam",
+        subName: "Bayam Cabut Hijau & Merah",
         phMin: 6.0, phMax: 7.2,
         tempMin: 23.0, tempMax: 31.0,
         elevMin: 10, elevMax: 800,
@@ -941,7 +947,8 @@
     ,
       {
         id: "terung",
-        name: "Terung / Terong (Ungu, Hijau, & Bulat)",
+        name: "Terung",
+        subName: "Terong Ungu, Hijau, & Bulat",
         phMin: 5.8, phMax: 7.0,
         tempMin: 22.0, tempMax: 30.0,
         elevMin: 20, elevMax: 900,
@@ -963,7 +970,8 @@
       },
       {
         id: "buncis",
-        name: "Buncis (Tegak & Rambat)",
+        name: "Buncis",
+        subName: "Buncis Tegak & Rambat",
         phMin: 5.8, phMax: 6.8,
         tempMin: 18.0, tempMax: 25.0,
         elevMin: 400, elevMax: 1400,
@@ -985,7 +993,8 @@
       },
       {
         id: "wortel",
-        name: "Wortel Dataran Tinggi",
+        name: "Wortel",
+        subName: "Wortel Dataran Tinggi",
         phMin: 6.0, phMax: 6.8,
         tempMin: 15.0, tempMax: 21.0,
         elevMin: 800, elevMax: 1800,
@@ -1029,7 +1038,8 @@
       },
       {
         id: "kembang_kol",
-        name: "Kembang Kol (Bunga Kol)",
+        name: "Kembang Kol",
+        subName: "Bunga Kol (Cauliflower)",
         phMin: 6.0, phMax: 7.0,
         tempMin: 16.0, tempMax: 22.0,
         elevMin: 600, elevMax: 1600,
@@ -1051,7 +1061,8 @@
       },
       {
         id: "pare",
-        name: "Pare / Peria",
+        name: "Pare",
+        subName: "Pare Pahit & Peria Hijau",
         phMin: 5.5, phMax: 6.8,
         tempMin: 23.0, tempMax: 31.0,
         elevMin: 10, elevMax: 800,
@@ -1073,7 +1084,8 @@
       },
       {
         id: "gambas",
-        name: "Gambas / Oyong",
+        name: "Gambas",
+        subName: "Oyong Hibrida",
         phMin: 5.5, phMax: 6.8,
         tempMin: 22.0, tempMax: 30.0,
         elevMin: 15, elevMax: 750,
@@ -1095,7 +1107,8 @@
       },
       {
         id: "paprika",
-        name: "Paprika (Dataran Tinggi)",
+        name: "Paprika",
+        subName: "Paprika Dataran Tinggi",
         phMin: 6.0, phMax: 6.8,
         tempMin: 18.0, tempMax: 24.0,
         elevMin: 700, elevMax: 1500,
@@ -1139,7 +1152,8 @@
       },
       {
         id: "jagung_manis",
-        name: "Jagung Manis Hortikultura",
+        name: "Jagung Manis",
+        subName: "Jagung Manis Hortikultura",
         phMin: 5.8, phMax: 7.0,
         tempMin: 21.0, tempMax: 30.0,
         elevMin: 20, elevMax: 1100,
@@ -1890,7 +1904,7 @@
         return `
           <tr class="${isSelected ? 'bg-emerald-50/60' : 'hover:bg-slate-50'} transition">
             <td class="py-2.5 px-2 font-bold text-slate-700">#${idx + 1}</td>
-            <td class="py-2.5 px-2 font-bold text-slate-900">${c.name}</td>
+            <td class="py-2.5 px-2 font-bold text-slate-900">${c.name}${c.subName ? `<span class="block text-[10px] font-normal text-slate-400 mt-0.5">${c.subName}</span>` : ""}</td>
             <td class="py-2.5 px-2 text-slate-600 font-mono-tech text-[11px]">
               pH ${c.phMin}-${c.phMax} \u2022 ${c.tempMin}-${c.tempMax}\u00B0C \u2022 ${c.elevMin}-${c.elevMax}m
             </td>
