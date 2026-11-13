@@ -17,6 +17,10 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <style>
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: #f8fafc;
@@ -59,6 +63,28 @@
     ::-webkit-scrollbar-thumb {
       background: #cbd5e1;
       border-radius: 3px;
+    }
+
+    /* Dark Mode Scrollbar & Controls */
+    html.theme-sky-dark,
+    body.theme-sky-dark {
+      color-scheme: dark;
+    }
+    .theme-sky-dark::-webkit-scrollbar-track,
+    .theme-sky-dark ::-webkit-scrollbar-track,
+    html.theme-sky-dark::-webkit-scrollbar-track {
+      background: #020617 !important;
+    }
+    .theme-sky-dark::-webkit-scrollbar-thumb,
+    .theme-sky-dark ::-webkit-scrollbar-thumb,
+    html.theme-sky-dark::-webkit-scrollbar-thumb {
+      background: #1e293b !important;
+      border-radius: 3px;
+    }
+    .theme-sky-dark::-webkit-scrollbar-thumb:hover,
+    .theme-sky-dark ::-webkit-scrollbar-thumb:hover,
+    html.theme-sky-dark::-webkit-scrollbar-thumb:hover {
+      background: #334155 !important;
     }
 
     /* Bento Cards for Recommended Crops */
@@ -2608,8 +2634,8 @@
               ${statusLabel}
             </span>
             <div class="text-right shrink-0">
-              <span class="text-[11px] font-semibold text-slate-400 block">Skor Lokasi</span>
-              <span class="text-2xl sm:text-3xl font-extrabold ${scoreTextColor}">${evalRes.score}%</span>
+              <span class="text-[10px] font-bold text-slate-400 block uppercase tracking-wider">Skor Lokasi</span>
+              <span class="text-lg sm:text-xl font-black ${scoreTextColor} font-mono">${evalRes.score}%</span>
             </div>
           </div>
 
@@ -4159,8 +4185,10 @@
       // 2. Toggle Theme Class for Cards & Text Harmony
       if (sky.dark) {
         document.body.classList.add("theme-sky-dark");
+        document.documentElement.classList.add("theme-sky-dark");
       } else {
         document.body.classList.remove("theme-sky-dark");
+        document.documentElement.classList.remove("theme-sky-dark");
       }
 
       // 3. Update Header Badges
@@ -4547,25 +4575,25 @@
     }
 
     function drawNightStarsFx(ctx, w, h) {
-      // 1. Twinkling Stars
+      // 1. Soft Twinkling Stars (Gentle soft blue-white, non-distracting)
       for (let i = 0; i < fxNightStars.length; i++) {
         const s = fxNightStars[i];
-        const alpha = Math.max(0.1, s.baseAlpha + Math.sin(fxTime * s.freq + s.phase) * 0.35);
+        const alpha = Math.max(0.06, (s.baseAlpha + Math.sin(fxTime * s.freq + s.phase) * 0.25) * 0.4);
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(248, 250, 252, ${alpha})`;
+        ctx.arc(s.x, s.y, Math.min(1.2, s.r * 0.8), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(186, 230, 253, ${alpha})`;
         ctx.fill();
       }
 
       // 2. Fireflies (Glowing Bio-luminescent motes)
       for (let i = 0; i < fxNightFireflies.length; i++) {
         const f = fxNightFireflies[i];
-        const pulse = 0.4 + Math.sin(fxTime * 0.04 + f.phase) * 0.4;
+        const pulse = 0.35 + Math.sin(fxTime * 0.04 + f.phase) * 0.35;
 
         // Glow halo
         const halo = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 4.5);
-        halo.addColorStop(0, `rgba(163, 230, 53, ${pulse * 0.7})`);
-        halo.addColorStop(1, "rgba(163, 230, 53, 0)");
+        halo.addColorStop(0, `rgba(52, 211, 153, ${pulse * 0.6})`);
+        halo.addColorStop(1, "rgba(52, 211, 153, 0)");
         ctx.fillStyle = halo;
         ctx.beginPath();
         ctx.arc(f.x, f.y, f.r * 4.5, 0, Math.PI * 2);
@@ -4573,8 +4601,8 @@
 
         // Core
         ctx.beginPath();
-        ctx.arc(f.x, f.y, f.r * 0.9, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(254, 252, 232, ${pulse})`;
+        ctx.arc(f.x, f.y, f.r * 0.8, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(209, 250, 229, ${pulse * 0.85})`;
         ctx.fill();
 
         // Wander
