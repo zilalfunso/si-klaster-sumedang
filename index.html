@@ -134,18 +134,23 @@
       transition: background-color 0.8s ease, border-color 0.8s ease, color 0.4s ease;
     }
 
-    /* Dark Mode Theme Class (Applied automatically during night / twilight) */
+    /* ========================================================================= */
+    /* HIGH-CONTRAST ACCESSIBILITY OVERRIDES FOR CIRCADIAN DARK / NIGHT THEME    */
+    /* ========================================================================= */
+
     .theme-sky-dark {
       color: #f8fafc;
     }
 
+    /* 1. Main White Cards */
     .theme-sky-dark .bg-white {
       background-color: #0f172a !important;
       color: #f8fafc !important;
       border-color: #1e293b !important;
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4) !important;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45) !important;
     }
 
+    /* 2. Text Colors */
     .theme-sky-dark .text-slate-900 {
       color: #f8fafc !important;
     }
@@ -166,6 +171,11 @@
       color: #94a3b8 !important;
     }
 
+    .theme-sky-dark .text-slate-400 {
+      color: #94a3b8 !important;
+    }
+
+    /* 3. Slate Neutral Backgrounds */
     .theme-sky-dark .bg-slate-50, 
     .theme-sky-dark .bg-slate-50\/60,
     .theme-sky-dark .bg-slate-50\/70,
@@ -173,13 +183,181 @@
     .theme-sky-dark .bg-slate-50\/90 {
       background-color: #162033 !important;
       border-color: #1e293b !important;
+      color: #e2e8f0 !important;
     }
 
     .theme-sky-dark .bg-slate-100 {
       background-color: #1e293b !important;
       color: #e2e8f0 !important;
+      border-color: #334155 !important;
     }
 
+    .theme-sky-dark .bg-slate-200 {
+      background-color: #334155 !important;
+    }
+
+    /* 4. Amber / Warning / Suggestion Boxes (Fix Screenshot 1) */
+    .theme-sky-dark .bg-amber-50,
+    .theme-sky-dark .bg-amber-50\/50,
+    .theme-sky-dark .bg-amber-50\/60,
+    .theme-sky-dark .bg-amber-50\/80,
+    .theme-sky-dark .bg-amber-50\/90,
+    .theme-sky-dark div[class*="bg-amber-50"] {
+      background-color: rgba(245, 158, 11, 0.12) !important;
+      border-color: rgba(245, 158, 11, 0.35) !important;
+      color: #fef3c7 !important;
+    }
+
+    .theme-sky-dark .text-amber-900,
+    .theme-sky-dark .text-amber-950,
+    .theme-sky-dark div[class*="bg-amber-50"] strong,
+    .theme-sky-dark div[class*="bg-amber-50"] .text-amber-900,
+    .theme-sky-dark div[class*="bg-amber-50"] .text-amber-950 {
+      color: #fde68a !important;
+    }
+
+    .theme-sky-dark .text-amber-800,
+    .theme-sky-dark div[class*="bg-amber-50"] .text-amber-800 {
+      color: #fcd34d !important;
+    }
+
+    .theme-sky-dark .text-amber-700,
+    .theme-sky-dark .text-amber-600 {
+      color: #fbbf24 !important;
+    }
+
+    .theme-sky-dark .bg-amber-100 {
+      background-color: rgba(245, 158, 11, 0.22) !important;
+      border-color: rgba(245, 158, 11, 0.4) !important;
+      color: #fef08a !important;
+    }
+
+    .theme-sky-dark .bg-amber-200 {
+      background-color: rgba(245, 158, 11, 0.28) !important;
+      color: #fef08a !important;
+    }
+
+    .theme-sky-dark .border-amber-100,
+    .theme-sky-dark .border-amber-200,
+    .theme-sky-dark .border-amber-200\/70,
+    .theme-sky-dark .border-amber-300 {
+      border-color: rgba(245, 158, 11, 0.35) !important;
+    }
+
+    /* Suggestion Interactive Link Buttons */
+    .theme-sky-dark div[class*="bg-amber-50"] button,
+    .theme-sky-dark div[class*="bg-emerald-50"] button {
+      color: #38bdf8 !important;
+      text-decoration-color: rgba(56, 189, 248, 0.6) !important;
+    }
+
+    .theme-sky-dark div[class*="bg-amber-50"] button:hover,
+    .theme-sky-dark div[class*="bg-emerald-50"] button:hover {
+      color: #7dd3fc !important;
+    }
+
+    /* 5. Checklist Pills & Emerald / Success Elements (Fix Screenshot 2) */
+    .theme-sky-dark .bg-emerald-50,
+    .theme-sky-dark .bg-emerald-50\/50,
+    .theme-sky-dark .bg-emerald-50\/60,
+    .theme-sky-dark .bg-emerald-50\/70,
+    .theme-sky-dark .bg-emerald-50\/80,
+    .theme-sky-dark .bg-emerald-50\/90,
+    .theme-sky-dark div[class*="bg-emerald-50"] {
+      background-color: rgba(16, 185, 129, 0.12) !important;
+      border-color: rgba(16, 185, 129, 0.35) !important;
+      color: #e2e8f0 !important;
+    }
+
+    .theme-sky-dark div[class*="bg-emerald-50"] span.font-bold,
+    .theme-sky-dark .text-emerald-700,
+    .theme-sky-dark .text-emerald-600 {
+      color: #34d399 !important;
+    }
+
+    .theme-sky-dark .text-emerald-800,
+    .theme-sky-dark .text-emerald-900 {
+      color: #6ee7b7 !important;
+    }
+
+    .theme-sky-dark .bg-emerald-100 {
+      background-color: rgba(16, 185, 129, 0.22) !important;
+      border-color: rgba(16, 185, 129, 0.4) !important;
+      color: #a7f3d0 !important;
+    }
+
+    .theme-sky-dark .border-emerald-200,
+    .theme-sky-dark .border-emerald-200\/60 {
+      border-color: rgba(16, 185, 129, 0.35) !important;
+    }
+
+    /* 6. Rose / Error / Checklist Fail / BPS Fact Elements */
+    .theme-sky-dark .bg-rose-50,
+    .theme-sky-dark .bg-rose-50\/50,
+    .theme-sky-dark .bg-rose-50\/60,
+    .theme-sky-dark .bg-rose-50\/70,
+    .theme-sky-dark .bg-rose-50\/80,
+    .theme-sky-dark .bg-rose-50\/90,
+    .theme-sky-dark div[class*="bg-rose-50"] {
+      background-color: rgba(244, 63, 94, 0.12) !important;
+      border-color: rgba(244, 63, 94, 0.35) !important;
+      color: #ffe4e6 !important;
+    }
+
+    .theme-sky-dark div[class*="bg-rose-50"] span.font-bold,
+    .theme-sky-dark .text-rose-600,
+    .theme-sky-dark .text-rose-700 {
+      color: #fb7185 !important;
+    }
+
+    .theme-sky-dark .text-rose-800 {
+      color: #fda4af !important;
+    }
+
+    .theme-sky-dark .text-rose-900,
+    .theme-sky-dark .text-rose-950,
+    .theme-sky-dark div[class*="bg-rose-50"] p {
+      color: #fecdd3 !important;
+    }
+
+    .theme-sky-dark .bg-rose-100,
+    .theme-sky-dark .bg-rose-200 {
+      background-color: rgba(244, 63, 94, 0.22) !important;
+      border-color: rgba(244, 63, 94, 0.4) !important;
+      color: #ffe4e6 !important;
+    }
+
+    .theme-sky-dark .border-rose-200,
+    .theme-sky-dark .border-rose-200\/60 {
+      border-color: rgba(244, 63, 94, 0.35) !important;
+    }
+
+    /* 7. HPT Proteksi Tanaman Inner Cards (Fix Screenshot 4) */
+    .theme-sky-dark .bg-white\/80,
+    .theme-sky-dark div[class*="bg-white/80"] {
+      background-color: #0b1120 !important;
+      border-color: #1e293b !important;
+      color: #f8fafc !important;
+    }
+
+    .theme-sky-dark div[class*="bg-white/80"] strong {
+      color: #ffffff !important;
+    }
+
+    .theme-sky-dark div[class*="bg-white/80"] p,
+    .theme-sky-dark div[class*="bg-white/80"] .text-slate-700 {
+      color: #cbd5e1 !important;
+    }
+
+    .theme-sky-dark div[class*="bg-white/80"] .text-rose-700 {
+      color: #fb7185 !important;
+    }
+
+    .theme-sky-dark div[class*="bg-white/80"] .text-emerald-700 {
+      color: #34d399 !important;
+    }
+
+    /* 8. Table & Form Controls */
     .theme-sky-dark .border-slate-200,
     .theme-sky-dark .border-slate-200\/80,
     .theme-sky-dark .border-slate-200\/90,
@@ -627,7 +805,7 @@
         </div>
 
         <!-- RIGHT: TOP RECOMMENDED VEGETABLES FOR THIS LOCATION -->
-        <div class="lg:col-span-7 bg-slate-900 text-white rounded-2xl p-5 border border-slate-800 shadow-sm flex flex-col justify-between">
+        <div class="lg:col-span-7 bg-slate-900 text-white rounded-2xl p-5 border border-slate-800 shadow-sm flex flex-col">
           <div class="pb-3 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <h3 class="text-base font-bold text-white flex items-center gap-1.5">
@@ -674,7 +852,7 @@
           </div>
 
           <!-- Footer Toggle Count -->
-          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+          <div class="mt-auto pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
             <span id="recoCountLabel" class="text-slate-400 text-[11px]">Menampilkan 6 tanaman terbaik</span>
             <button type="button" onclick="toggleRecoShowAll()" id="btnToggleRecoShowAll" class="px-3 py-1 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/15 text-emerald-300 border border-emerald-400/20 transition">
               Lihat Semua 22 Tanaman
