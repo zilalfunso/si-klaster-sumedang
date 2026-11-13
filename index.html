@@ -357,6 +357,17 @@
       color: #34d399 !important;
     }
 
+    /* Stepper & Number Badges in Dark Mode */
+    .theme-sky-dark .ring-white,
+    .theme-sky-dark .dark-step-ring {
+      --tw-ring-color: #0f172a !important;
+      box-shadow: 0 0 0 4px #0f172a !important;
+    }
+
+    .theme-sky-dark .step-connector {
+      background-color: #334155 !important;
+    }
+
     /* 8. Table & Form Controls */
     .theme-sky-dark .border-slate-200,
     .theme-sky-dark .border-slate-200\/80,
@@ -3168,11 +3179,12 @@
             </div>
 
             <!-- Modern Vertical Stepper -->
-            <div class="relative pl-6 space-y-3.5 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
+            <div class="relative pl-6 space-y-3.5">
               
               <!-- Step 1 -->
               <div class="relative">
-                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-slate-800 text-white font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white">
+                <div class="step-connector absolute left-[-15px] top-6 -bottom-3.5 w-0.5 bg-slate-200"></div>
+                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-slate-800 text-white font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white dark-step-ring">
                   1
                 </div>
                 <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
@@ -3188,7 +3200,8 @@
 
               <!-- Step 2 -->
               <div class="relative">
-                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-emerald-600 text-white font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white">
+                <div class="step-connector absolute left-[-15px] top-6 -bottom-3.5 w-0.5 bg-slate-200"></div>
+                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-emerald-600 text-white font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white dark-step-ring">
                   2
                 </div>
                 <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
@@ -3204,7 +3217,8 @@
 
               <!-- Step 3 -->
               <div class="relative">
-                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-blue-600 text-white font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white">
+                <div class="step-connector absolute left-[-15px] top-6 -bottom-3.5 w-0.5 bg-slate-200"></div>
+                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-blue-600 text-white font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white dark-step-ring">
                   3
                 </div>
                 <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
@@ -3218,14 +3232,14 @@
                 </div>
               </div>
 
-              <!-- Step 4 -->
+              <!-- Step 4 (Final Step - Line terminates here cleanly!) -->
               <div class="relative">
-                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-amber-500 text-slate-950 font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white">
+                <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-amber-500 text-slate-950 font-mono text-[10px] font-bold flex items-center justify-center ring-4 ring-white dark-step-ring">
                   4
                 </div>
                 <div class="bg-slate-50 hover:bg-slate-100/70 transition p-3.5 rounded-xl border border-slate-200/80">
                   <div class="flex items-center justify-between gap-2 mb-1">
-                    <span class="font-bold text-xs text-slate-900">Fase Akhir (${crop.harvestDays}) &bull; Panen &amp; Pasca Panen</span>
+                    <span class="font-bold text-xs text-slate-900">Fase Akhir (${crop.harvestDays.replace(/\s*\([^)]*\)/g, '')}) &bull; Panen &amp; Pasca Panen</span>
                     <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-100 text-amber-800 font-bold">Panen</span>
                   </div>
                   <p class="text-xs text-slate-600 leading-relaxed">
@@ -3981,30 +3995,43 @@
 
 
     // =========================================================================
-    // CIRCADIAN 1,440-MINUTE REAL-TIME SKY DYNAMIC ENGINE
+    // CIRCADIAN 1,440-MINUTE REAL-TIME SKY DYNAMIC ENGINE (SMOOTH LERP LENGKAP)
     // =========================================================================
     let skyIsSimulationMode = false;
     let skySimulatedMinute = 0;
     let skyTimerInterval = null;
 
-    // 10 Key Sky Anchors throughout 24 hours (1,440 minutes)
+    // 14 Key Sky Anchors throughout 24 hours (1,440 minutes) with 3-stop RGB vectors for buttery-smooth lerping
     const skyTimeAnchors = [
-      { min: 0,    grad: "linear-gradient(180deg, #020617 0%, #0b1329 100%)", icon: "\u{1F319}", label: "Malam Dini Hari", dark: true },
-      { min: 270,  grad: "linear-gradient(180deg, #070e1e 0%, #162038 100%)", icon: "\u{1F30C}", label: "Fajar Menjelang Subuh", dark: true },
-      { min: 330,  grad: "linear-gradient(180deg, #1e1b4b 0%, #4c1d95 60%, #9a3412 100%)", icon: "\u{1F305}", label: "Fajar Subuh (Semburat Lembayung)", dark: true },
-      { min: 375,  grad: "linear-gradient(180deg, #fef3c7 0%, #fed7aa 50%, #ecfdf5 100%)", icon: "\u{1F305}", label: "Matahari Terbit (Golden Morning)", dark: false },
-      { min: 480,  grad: "linear-gradient(180deg, #f0fdf4 0%, #e0f2fe 50%, #f8fafc 100%)", icon: "\u{2600}\uFE0F", label: "Pagi Segar (Fresh Garden)", dark: false },
-      { min: 720,  grad: "linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)", icon: "\u{2600}\uFE0F", label: "Siang Hari (Matahari Terik)", dark: false },
-      { min: 930,  grad: "linear-gradient(180deg, #fffbeb 0%, #fef3c7 50%, #fed7aa 100%)", icon: "\u{1F324}\uFE0F", label: "Sore Hari (Hangat Gading)", dark: false },
-      { min: 1035, grad: "linear-gradient(180deg, #fff7ed 0%, #fed7aa 50%, #ea580c 100%)", icon: "\u{1F307}", label: "Senja Keemasan (Golden Hour)", dark: false },
-      { min: 1075, grad: "linear-gradient(180deg, #2e1065 0%, #7c2d12 50%, #9a3412 100%)", icon: "\u{1F307}", label: "Senja Lembayung (Sunset Glow)", dark: true },
-      { min: 1115, grad: "linear-gradient(180deg, #1e1b4b 0%, #311042 60%, #0f172a 100%)", icon: "\u{1F306}", label: "Maghrib Menuju Isya", dark: true },
-      { min: 1170, grad: "linear-gradient(180deg, #090d16 0%, #0f172a 60%, #020617 100%)", icon: "\u{1F319}", label: "Malam Hari (Istirahat Tanaman)", dark: true },
-      { min: 1440, grad: "linear-gradient(180deg, #020617 0%, #0b1329 100%)", icon: "\u{1F319}", label: "Malam Dini Hari", dark: true }
+      { min: 0,    top: [2, 6, 23],     mid: [6, 12, 33],    bot: [11, 19, 41],   icon: "\u{1F319}", label: "Malam Dini Hari", dark: true },
+      { min: 270,  top: [7, 14, 30],    mid: [13, 22, 45],   bot: [22, 32, 56],   icon: "\u{1F30C}", label: "Fajar Menjelang Subuh", dark: true },
+      { min: 315,  top: [15, 23, 42],   mid: [30, 27, 75],   bot: [49, 46, 129],  icon: "\u{1F30C}", label: "Fajar Subuh (Semburat Ungu)", dark: true },
+      { min: 340,  top: [30, 27, 75],   mid: [109, 40, 217], bot: [194, 65, 12],  icon: "\u{1F305}", label: "Fajar Rekah (Lembayung)", dark: true },
+      { min: 360,  top: [120, 53, 15],  mid: [217, 119, 6],  bot: [254, 215, 170],icon: "\u{1F305}", label: "Matahari Terbit (Golden Dawn)", dark: false },
+      { min: 390,  top: [254, 243, 199],mid: [254, 215, 170],bot: [236, 253, 245],icon: "\u{1F305}", label: "Pagi Keemasan (Golden Morning)", dark: false },
+      { min: 480,  top: [240, 253, 244],mid: [224, 242, 254],bot: [248, 250, 252],icon: "\u{2600}\uFE0F", label: "Pagi Segar (Fresh Garden)", dark: false },
+      { min: 720,  top: [248, 250, 252],mid: [241, 245, 249],bot: [226, 232, 240],icon: "\u{2600}\uFE0F", label: "Siang Hari (Matahari Terik)", dark: false },
+      { min: 930,  top: [255, 251, 235],mid: [254, 243, 199],bot: [254, 215, 170],icon: "\u{1F324}\uFE0F", label: "Sore Hari (Hangat Gading)", dark: false },
+      { min: 1035, top: [255, 247, 237],mid: [254, 215, 170],bot: [234, 88, 12],  icon: "\u{1F307}", label: "Senja Keemasan (Golden Hour)", dark: false },
+      { min: 1075, top: [46, 16, 101],  mid: [124, 45, 18],  bot: [154, 52, 18],  icon: "\u{1F307}", label: "Senja Lembayung (Sunset Glow)", dark: true },
+      { min: 1115, top: [30, 27, 75],   mid: [49, 16, 66],   bot: [15, 23, 42],   icon: "\u{1F306}", label: "Maghrib Menuju Isya", dark: true },
+      { min: 1170, top: [9, 13, 22],    mid: [15, 23, 42],   bot: [2, 6, 23],     icon: "\u{1F319}", label: "Malam Hari (Istirahat Tanaman)", dark: true },
+      { min: 1440, top: [2, 6, 23],     mid: [6, 12, 33],    bot: [11, 19, 41],   icon: "\u{1F319}", label: "Malam Dini Hari", dark: true }
     ];
 
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function lerpColor(c1, c2, t) {
+      const r = Math.round(lerp(c1[0], c2[0], t));
+      const g = Math.round(lerp(c1[1], c2[1], t));
+      const b = Math.round(lerp(c1[2], c2[2], t));
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
     function getSkyStateAtMinute(minute) {
-      const normalizedMin = Math.max(0, Math.min(1439, minute));
+      const normalizedMin = Math.max(0, Math.min(1439.9, minute));
       let idx = 0;
       for (let i = 0; i < skyTimeAnchors.length - 1; i++) {
         if (normalizedMin >= skyTimeAnchors[i].min && normalizedMin <= skyTimeAnchors[i + 1].min) {
@@ -4014,16 +4041,24 @@
       }
       const cur = skyTimeAnchors[idx];
       const next = skyTimeAnchors[idx + 1] || cur;
-      const progress = (normalizedMin - cur.min) / Math.max(1, (next.min - cur.min));
+      const span = Math.max(1, next.min - cur.min);
+      const t = (normalizedMin - cur.min) / span;
 
-      // Use cur if progress < 0.5, else transition closer to next
-      const selected = progress < 0.5 ? cur : next;
+      // Mathematical RGB linear interpolation per minute
+      const topColor = lerpColor(cur.top, next.top, t);
+      const midColor = lerpColor(cur.mid, next.mid, t);
+      const botColor = lerpColor(cur.bot, next.bot, t);
+
+      const smoothGradient = `linear-gradient(180deg, ${topColor} 0%, ${midColor} 55%, ${botColor} 100%)`;
+      const closest = t < 0.5 ? cur : next;
+      const isDark = (normalizedMin < 355 || normalizedMin >= 1070);
+
       return {
-        minute: normalizedMin,
-        gradient: selected.grad,
-        icon: selected.icon,
-        label: selected.label,
-        dark: selected.dark
+        minute: Math.floor(normalizedMin),
+        gradient: smoothGradient,
+        icon: closest.icon,
+        label: closest.label,
+        dark: isDark
       };
     }
 
@@ -4112,12 +4147,14 @@
     function onSkySliderInput(val) {
       skyIsSimulationMode = true;
       skySimulatedMinute = parseInt(val, 10);
+      document.body.style.transition = "background 0.05s linear, color 0.3s ease";
       updateCircadianSkyEngine();
     }
 
     function setSkyTimePreset(minute) {
       skyIsSimulationMode = true;
       skySimulatedMinute = minute;
+      document.body.style.transition = "background 1.5s ease-in-out, color 0.4s ease";
       const slider = document.getElementById("skyTimeSlider");
       if (slider) slider.value = minute;
       updateCircadianSkyEngine();
@@ -4125,6 +4162,7 @@
 
     function resetSkyToRealtime() {
       skyIsSimulationMode = false;
+      document.body.style.transition = "background 1.5s ease-in-out, color 0.4s ease";
       const slider = document.getElementById("skyTimeSlider");
       const now = new Date();
       if (slider) slider.value = now.getHours() * 60 + now.getMinutes();
@@ -4276,6 +4314,7 @@
           step="1" 
           value="1130" 
           oninput="onSkySliderInput(this.value)" 
+          onchange="document.body.style.transition = 'background 1.5s ease-in-out, color 0.4s ease'"
           class="w-full cursor-pointer accent-emerald-600"
         />
         <div class="grid grid-cols-4 text-[10px] text-slate-400 font-mono text-center pt-0.5">
