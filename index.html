@@ -368,6 +368,69 @@
       background-color: #334155 !important;
     }
 
+    /* 7b. Blue, Purple, Indigo Badges & Metrics in Dark Mode (Fix Screenshot KPI Badges) */
+    .theme-sky-dark .bg-blue-50,
+    .theme-sky-dark .bg-blue-50\/50,
+    .theme-sky-dark .bg-blue-50\/60,
+    .theme-sky-dark .bg-blue-50\/70,
+    .theme-sky-dark .bg-blue-50\/80,
+    .theme-sky-dark .bg-blue-50\/90,
+    .theme-sky-dark div[class*="bg-blue-50"] {
+      background-color: rgba(59, 130, 246, 0.15) !important;
+      border-color: rgba(59, 130, 246, 0.35) !important;
+      color: #93c5fd !important;
+    }
+
+    .theme-sky-dark .border-blue-200,
+    .theme-sky-dark .border-blue-200\/60 {
+      border-color: rgba(59, 130, 246, 0.35) !important;
+    }
+
+    .theme-sky-dark .text-blue-700,
+    .theme-sky-dark .text-blue-800,
+    .theme-sky-dark .text-blue-900 {
+      color: #93c5fd !important;
+    }
+
+    .theme-sky-dark .text-blue-600 {
+      color: #60a5fa !important;
+    }
+
+    .theme-sky-dark .bg-blue-100 {
+      background-color: rgba(59, 130, 246, 0.22) !important;
+      border-color: rgba(59, 130, 246, 0.4) !important;
+      color: #bfdbfe !important;
+    }
+
+    .theme-sky-dark .bg-purple-50,
+    .theme-sky-dark .bg-purple-50\/50,
+    .theme-sky-dark .bg-purple-50\/60,
+    .theme-sky-dark .bg-purple-50\/70,
+    .theme-sky-dark .bg-purple-50\/80,
+    .theme-sky-dark .bg-purple-50\/90,
+    .theme-sky-dark .bg-indigo-50,
+    .theme-sky-dark div[class*="bg-purple-50"] {
+      background-color: rgba(168, 85, 247, 0.15) !important;
+      border-color: rgba(168, 85, 247, 0.35) !important;
+      color: #d8b4fe !important;
+    }
+
+    .theme-sky-dark .border-purple-200,
+    .theme-sky-dark .border-indigo-200 {
+      border-color: rgba(168, 85, 247, 0.35) !important;
+    }
+
+    .theme-sky-dark .text-purple-700,
+    .theme-sky-dark .text-purple-800,
+    .theme-sky-dark .text-purple-900,
+    .theme-sky-dark .text-indigo-700 {
+      color: #d8b4fe !important;
+    }
+
+    .theme-sky-dark .text-purple-600 {
+      color: #c084fc !important;
+    }
+
     /* 8. Table & Form Controls */
     .theme-sky-dark .border-slate-200,
     .theme-sky-dark .border-slate-200\/80,
@@ -532,37 +595,37 @@
 
     <!-- 4 KPI SUMMARY CARDS -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm">
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm transition-all hover:shadow-md">
         <div class="flex items-center justify-between">
           <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">TOTAL WILAYAH</span>
-          <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-100 text-slate-700">BPS 2025</span>
+          <button type="button" onclick="switchTab('data')" title="Klik untuk membuka data tabel BPS 2025" class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-100 text-slate-700 hover:opacity-80 active:scale-95 transition cursor-pointer">BPS 2025</button>
         </div>
         <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1" id="kpiTotalDistricts">26</div>
         <p class="text-xs text-slate-500 mt-1">Kecamatan di Kab. Sumedang</p>
       </div>
 
-      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm">
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm transition-all hover:shadow-md">
         <div class="flex items-center justify-between">
           <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">TOTAL LUAS PANEN</span>
-          <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">20 Sayuran</span>
+          <button type="button" onclick="switchTab('suitability'); setTimeout(() => { const el = document.getElementById('cropCardsContainer'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);" title="Klik untuk melihat 20 komoditas sayuran" class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 hover:opacity-80 active:scale-95 transition cursor-pointer">20 Sayuran</button>
         </div>
         <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-1" id="kpiTotalHarvest">2.946 Ha</div>
         <p class="text-xs text-slate-500 mt-1" id="kpiTopClusterShare">Klaster Tertinggi: 1.900 Ha (64.5%)</p>
       </div>
 
-      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm">
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm transition-all hover:shadow-md">
         <div class="flex items-center justify-between">
           <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">JUMLAH KLASTER (K)</span>
-          <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-blue-50 text-blue-700 border border-blue-200">Elbow Optimal</span>
+          <button type="button" onclick="switchTab('kdd'); setTimeout(() => { const el = document.getElementById('kddSimulationCardContainer'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);" title="Klik untuk membuka grafik evaluasi titik Elbow" class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-blue-50 text-blue-700 border border-blue-200 hover:opacity-80 active:scale-95 transition cursor-pointer">Elbow Optimal</button>
         </div>
         <div class="text-2xl sm:text-3xl font-extrabold text-blue-600 mt-1" id="kpiClusterCount">k = 3</div>
         <p class="text-xs text-slate-500 mt-1" id="kpiSseValue">SSE Inertia: 1.6521</p>
       </div>
 
-      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm">
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm transition-all hover:shadow-md">
         <div class="flex items-center justify-between">
           <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">SILHOUETTE SCORE</span>
-          <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-purple-50 text-purple-700 border border-purple-200">Valid / Baik</span>
+          <button type="button" onclick="switchTab('kdd'); setTimeout(() => { const el = document.getElementById('silhouetteChartCanvas'); if (el) el.scrollIntoView({behavior:'smooth', block:'center'}); }, 100);" title="Klik untuk membuka grafik evaluasi Silhouette Score" class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-purple-50 text-purple-700 border border-purple-200 hover:opacity-80 active:scale-95 transition cursor-pointer">Valid / Baik</button>
         </div>
         <div class="text-2xl sm:text-3xl font-extrabold text-purple-600 mt-1" id="kpiSilhouette">0.4810</div>
         <p class="text-xs text-slate-500 mt-1">Evaluasi Kohesi &amp; Separasi</p>
