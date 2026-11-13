@@ -1860,16 +1860,14 @@
       }).sort((a, b) => b.score - a.score);
 
       const currentEval = rankedCrops.find(r => r.crop.id === crop.id) || rankedCrops[0];
-      const topAlt1 = rankedCrops[0];
-      const topAlt2 = rankedCrops[1];
 
-      renderSuitabilityDiagnosis(crop, currentEval, topAlt1, topAlt2);
+      renderSuitabilityDiagnosis(crop, currentEval, rankedCrops);
       renderRecommendationsTable(rankedCrops);
       renderCultivationGuide(crop, currentEval, fieldPh, fieldTemp, fieldElev, fieldWeather);
       renderSuitabilityMapMarkers();
     }
 
-    function renderSuitabilityDiagnosis(crop, evalRes, topAlt1, topAlt2) {
+    function renderSuitabilityDiagnosis(crop, evalRes, rankedCrops) {
       const container = document.getElementById("diagnosisCardContainer");
       let borderClass = "border-emerald-300";
       let badgeBg = "bg-emerald-500 text-white";
@@ -1900,6 +1898,45 @@
         </div>
       `;
 
+      // Smart Suggestion Logic (Filtered & Context-Aware)
+      const otherCrops = (rankedCrops || []).filter(r => r.crop.id !== crop.id);
+      const higherScoreCrops = otherCrops.filter(r => r.score > evalRes.score);
+      const topOther1 = otherCrops[0];
+      const topOther2 = otherCrops[1];
+
+      let suggestionBoxHtml = "";
+      if (evalRes.score < 80 && higherScoreCrops.length > 0) {
+        // Current crop is sub-optimal / risky AND there are strictly better crops
+        const alt1 = higherScoreCrops[0];
+        const alt2 = higherScoreCrops[1];
+        const alt2Str = (alt2 && alt2.score > evalRes.score)
+          ? ` dan <button onclick="selectCropAndScroll('${alt2.crop.id}')" class="font-bold underline text-amber-950 hover:text-emerald-700">${alt2.crop.name} (${alt2.score}%)</button>`
+          : "";
+        suggestionBoxHtml = `
+          <div class="mt-4 p-3 rounded-xl bg-amber-50/90 border border-amber-200 text-xs text-slate-800 leading-relaxed">
+            <strong class="text-amber-900">\u{1F4A1} Saran Pengganti Lebih Aman:</strong> Karena skor ${crop.name} (${evalRes.score}%) belum maksimal, alternatif tanaman dengan kecocokan lebih tinggi di lahan ini adalah 
+            <button onclick="selectCropAndScroll('${alt1.crop.id}')" class="font-bold underline text-amber-950 hover:text-emerald-700">${alt1.crop.name} (Kecocokan ${alt1.score}%)</button>${alt2Str}.
+          </div>
+        `;
+      } else if (evalRes.score >= 80 && topOther1) {
+        // Current crop is already optimal (>=80%)!
+        const alt2Str = topOther2
+          ? ` dan <button onclick="selectCropAndScroll('${topOther2.crop.id}')" class="font-bold underline text-emerald-800 hover:text-emerald-600">${topOther2.crop.name} (${topOther2.score}%)</button>`
+          : "";
+        suggestionBoxHtml = `
+          <div class="mt-4 p-3 rounded-xl bg-emerald-50/80 border border-emerald-200 text-xs text-slate-800 leading-relaxed">
+            <strong class="text-emerald-900">\u2713 Lahan Sangat Optimal:</strong> ${crop.name} sudah sangat cocok (${evalRes.score}%) dibudidayakan di titik ini. Komoditas pendamping lain yang sama unggulnya adalah 
+            <button onclick="selectCropAndScroll('${topOther1.crop.id}')" class="font-bold underline text-emerald-800 hover:text-emerald-600">${topOther1.crop.name} (${topOther1.score}%)</button>${alt2Str}.
+          </div>
+        `;
+      } else {
+        suggestionBoxHtml = `
+          <div class="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed">
+            <strong class="text-slate-900">\u2139 Status Lahan:</strong> Evaluasi agronomi selesai dihitung berdasarkan parameter ketinggian, suhu, pH, dan curah hujan.
+          </div>
+        `;
+      }
+
       container.innerHTML = `
         <div>
           <div class="flex items-start justify-between gap-3">
@@ -1927,11 +1964,7 @@
           </div>
         </div>
 
-        <div class="mt-4 p-3 rounded-xl bg-amber-50/90 border border-amber-200 text-xs text-slate-800 leading-relaxed">
-          <strong class="text-amber-900">\u{1F4A1} Saran Pengganti Lebih Aman:</strong> Agar hasil panen maksimal di titik lokasi ini, tanaman yang jauh lebih cocok adalah
-          <button onclick="selectCropAndScroll('${topAlt1.crop.id}')" class="font-bold underline text-emerald-800 hover:text-emerald-600">${topAlt1.crop.name} (Kecocokan ${topAlt1.score}%)</button> dan
-          <button onclick="selectCropAndScroll('${topAlt2.crop.id}')" class="font-bold underline text-emerald-800 hover:text-emerald-600">${topAlt2.crop.name} (${topAlt2.score}%)</button>.
-        </div>
+        ${suggestionBoxHtml}
       `;
     }
 
