@@ -60,6 +60,30 @@
       background: #cbd5e1;
       border-radius: 3px;
     }
+
+    /* Bento Cards for Recommended Crops */
+    .crop-bento-card {
+      background: linear-gradient(155deg, rgba(15, 36, 29, 0.95) 0%, rgba(9, 20, 16, 0.98) 100%);
+      border: 1px solid rgba(52, 211, 153, 0.22);
+      transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.24s ease, box-shadow 0.24s ease;
+    }
+    .crop-bento-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(52, 211, 153, 0.65);
+      box-shadow: 0 14px 28px -10px rgba(16, 185, 129, 0.3), 0 0 0 1px rgba(52, 211, 153, 0.25);
+    }
+    .crop-bento-card.active-selected {
+      border-color: #34d399;
+      box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.5), 0 14px 28px -8px rgba(16, 185, 129, 0.4);
+      background: linear-gradient(155deg, rgba(16, 48, 38, 0.98) 0%, rgba(10, 26, 20, 1) 100%);
+    }
+    .crop-card-orb {
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+    .crop-bento-card:hover .crop-card-orb {
+      transform: scale(1.18);
+      opacity: 0.95;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -394,32 +418,58 @@
         </div>
 
         <!-- RIGHT: TOP RECOMMENDED VEGETABLES FOR THIS LOCATION -->
-        <div class="lg:col-span-7 bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-          <div class="pb-3 border-b border-slate-100">
-            <h3 class="text-base font-bold text-slate-900">
-              <svg class="w-4 h-4 inline-block -mt-0.5 mr-1 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> Rekomendasi Tanaman Sayuran Terbaik untuk Titik Lokasi Spasial Ini
-            </h3>
-            <p class="text-xs text-slate-500 mt-0.5">
-              Klik tombol <strong>"Peta &amp; Cara Tanam"</strong> pada salah satu tanaman untuk melihat sebaran spasial kecocokannya di seluruh 26 kecamatan sekaligus membuka lembar kerja teknis budidayanya di bawah.
-            </p>
+        <div class="lg:col-span-7 bg-slate-900 text-white rounded-2xl p-5 border border-slate-800 shadow-sm flex flex-col justify-between">
+          <div class="pb-3 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                <span>Rekomendasi Tanaman Sayuran Terbaik Lokasi Ini</span>
+              </h3>
+              <p class="text-xs text-slate-400 mt-0.5">
+                Pilih kartu tanaman untuk mengunci sebaran peta spasial dan lembar kerja budidaya teknis.
+              </p>
+            </div>
+            <!-- View Mode Switcher: Cards vs Table -->
+            <div class="inline-flex items-center p-1 rounded-xl bg-slate-950/80 border border-slate-800 shrink-0 self-start sm:self-auto">
+              <button type="button" id="btnRecoViewCards" onclick="setRecoViewMode('cards')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 shadow-sm transition">
+                Kartu Bento
+              </button>
+              <button type="button" id="btnRecoViewTable" onclick="setRecoViewMode('table')" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                Tabel
+              </button>
+            </div>
           </div>
 
-          <div class="overflow-x-auto mt-3">
+          <!-- Cards Bento Grid View (Default) -->
+          <div id="recommendationCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+            <!-- Populated dynamically by renderRecommendationsTable() -->
+          </div>
+
+          <!-- Table View (Optional Toggle) -->
+          <div id="recommendationTableContainer" class="overflow-x-auto mt-4 hidden">
             <table class="w-full text-left border-collapse">
               <thead>
-                <tr class="border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase">
+                <tr class="border-b border-slate-800 text-[11px] font-bold text-slate-400 uppercase">
                   <th class="py-2.5 px-2">#</th>
                   <th class="py-2.5 px-2">Tanaman Sayuran</th>
-                  <th class="py-2.5 px-2">Syarat Tumbuh (pH, Suhu, mdpl)</th>
+                  <th class="py-2.5 px-2">Syarat Tumbuh</th>
                   <th class="py-2.5 px-2 text-center">Kecocokan</th>
-                  <th class="py-2.5 px-2">Status Rekomendasi</th>
+                  <th class="py-2.5 px-2">Status</th>
                   <th class="py-2.5 px-2 text-right">Peta &amp; Panduan</th>
                 </tr>
               </thead>
-              <tbody id="recommendationTableBody" class="divide-y divide-slate-100 text-xs">
+              <tbody id="recommendationTableBody" class="divide-y divide-slate-800 text-xs">
                 <!-- Populated by JS -->
               </tbody>
             </table>
+          </div>
+
+          <!-- Footer Toggle Count -->
+          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span id="recoCountLabel" class="text-slate-400 text-[11px]">Menampilkan 6 tanaman terbaik</span>
+            <button type="button" onclick="toggleRecoShowAll()" id="btnToggleRecoShowAll" class="px-3 py-1 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/15 text-emerald-300 border border-emerald-400/20 transition">
+              Lihat Semua 22 Tanaman
+            </button>
           </div>
         </div>
       </div>
@@ -1885,43 +1935,165 @@
       `;
     }
 
-    function renderRecommendationsTable(rankedCrops) {
-      const tbody = document.getElementById("recommendationTableBody");
-      tbody.innerHTML = rankedCrops.slice(0, 7).map((item, idx) => {
-        const c = item.crop;
-        const isSelected = c.id === activeCropId;
-        const badgeCls = item.score >= 80
-          ? "bg-emerald-100 text-emerald-800 border-emerald-300"
-          : item.score >= 62
-          ? "bg-amber-100 text-amber-800 border-amber-300"
-          : "bg-rose-100 text-rose-800 border-rose-300";
-        const statusTxt = item.score >= 80
-          ? "Sangat Direkomendasikan"
-          : item.score >= 62
-          ? "Cukup Sesuai (Adaptasi)"
-          : "Tidak Direkomendasikan";
+    let recoViewMode = "cards";
+    let recoShowAll = false;
+    let cachedRankedCrops = [];
 
-        return `
-          <tr class="${isSelected ? 'bg-emerald-50/60' : 'hover:bg-slate-50'} transition">
-            <td class="py-2.5 px-2 font-bold text-slate-700">#${idx + 1}</td>
-            <td class="py-2.5 px-2 font-bold text-slate-900">${c.name}${c.subName ? `<span class="block text-[10px] font-normal text-slate-400 mt-0.5">${c.subName}</span>` : ""}</td>
-            <td class="py-2.5 px-2 text-slate-600 font-mono-tech text-[11px]">
-              pH ${c.phMin}-${c.phMax} \u2022 ${c.tempMin}-${c.tempMax}\u00B0C \u2022 ${c.elevMin}-${c.elevMax}m
-            </td>
-            <td class="py-2.5 px-2 text-center">
-              <span class="px-2 py-0.5 rounded-full text-[11px] font-bold border ${badgeCls}">
-                ${item.score}%
-              </span>
-            </td>
-            <td class="py-2.5 px-2 font-medium text-slate-700">${statusTxt}</td>
-            <td class="py-2.5 px-2 text-right">
-              <button onclick="selectCropAndScroll('${c.id}')" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-emerald-700 text-white font-semibold text-[11px] transition">
-                Peta &amp; Cara Tanam
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join("");
+    function setRecoViewMode(mode) {
+      recoViewMode = mode;
+      const btnCards = document.getElementById("btnRecoViewCards");
+      const btnTable = document.getElementById("btnRecoViewTable");
+      const grid = document.getElementById("recommendationCardsGrid");
+      const tableWrap = document.getElementById("recommendationTableContainer");
+
+      if (mode === "cards") {
+        if (btnCards) btnCards.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 shadow-sm transition";
+        if (btnTable) btnTable.className = "px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition";
+        if (grid) grid.classList.remove("hidden");
+        if (tableWrap) tableWrap.classList.add("hidden");
+      } else {
+        if (btnCards) btnCards.className = "px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition";
+        if (btnTable) btnTable.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 shadow-sm transition";
+        if (grid) grid.classList.add("hidden");
+        if (tableWrap) tableWrap.classList.remove("hidden");
+      }
+    }
+
+    function toggleRecoShowAll() {
+      recoShowAll = !recoShowAll;
+      if (cachedRankedCrops.length) renderRecommendationsTable(cachedRankedCrops);
+    }
+
+    function getCropCategoryBadge(cropId) {
+      if (cropId.includes("cabai")) return { badge: "Hortikultura Unggulan", dot: "#f43f5e", ring: "rgba(244,63,94,0.22)" };
+      if (cropId.includes("kubis") || cropId.includes("wortel") || cropId.includes("kentang")) return { badge: "Zona Sejuk Tinggi", dot: "#38bdf8", ring: "rgba(56,189,248,0.22)" };
+      if (cropId.includes("tomat") || cropId.includes("bawang")) return { badge: "Komoditas Strategis", dot: "#fbbf24", ring: "rgba(251,191,36,0.22)" };
+      return { badge: "Sayuran Pekarangan", dot: "#34d399", ring: "rgba(52,211,153,0.22)" };
+    }
+
+    function renderRecommendationsTable(rankedCrops) {
+      cachedRankedCrops = rankedCrops;
+      const count = recoShowAll ? rankedCrops.length : 6;
+      const visibleList = rankedCrops.slice(0, count);
+
+      // 1. Render Modern Bento Cards (Default View)
+      const cardsGrid = document.getElementById("recommendationCardsGrid");
+      if (cardsGrid) {
+        cardsGrid.innerHTML = visibleList.map((item, idx) => {
+          const c = item.crop;
+          const isSelected = c.id === activeCropId;
+          const acc = getCropCategoryBadge(c.id);
+          const varNum = String(idx + 1).padStart(2, "0");
+
+          const scoreBadgeCls = item.score >= 80
+            ? "bg-emerald-500/20 text-emerald-300 border-emerald-400/30"
+            : item.score >= 62
+            ? "bg-amber-500/20 text-amber-300 border-amber-400/30"
+            : "bg-rose-500/20 text-rose-300 border-rose-400/30";
+
+          return `
+            <button type="button" onclick="selectCropAndScroll('${c.id}')"
+              class="crop-bento-card group text-left rounded-xl p-3.5 sm:p-4 relative overflow-hidden flex flex-col justify-between cursor-pointer ${isSelected ? 'active-selected' : ''}">
+              <div class="crop-card-orb pointer-events-none absolute -right-6 -top-6 w-24 h-24 rounded-full opacity-65"
+                   style="background: radial-gradient(circle, ${acc.ring} 0%, transparent 72%);"></div>
+              <div>
+                <div class="flex items-center justify-between gap-1.5 mb-2.5">
+                  <span class="font-mono-tech text-[10px] font-bold tracking-widest text-slate-400">VAR ${varNum}</span>
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-slate-200 border border-white/10">
+                    <span class="w-1.5 h-1.5 rounded-full" style="background:${acc.dot};"></span>
+                    ${acc.badge}
+                  </span>
+                </div>
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <h4 class="text-base font-extrabold text-white group-hover:text-emerald-300 transition leading-snug">
+                      ${c.name}
+                    </h4>
+                    <p class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${c.subName || 'Komoditas Hortikultura Sumedang'}</p>
+                  </div>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border font-mono-tech shrink-0 ${scoreBadgeCls}">
+                    ${item.score}%
+                  </span>
+                </div>
+              </div>
+
+              <div class="mt-3 pt-2.5 border-t border-white/10 grid grid-cols-3 gap-1 text-[10px]">
+                <div>
+                  <span class="block text-slate-400 text-[9px]">Elevasi</span>
+                  <span class="font-mono-tech font-bold text-slate-100">${c.elevMin}-${c.elevMax}m</span>
+                </div>
+                <div>
+                  <span class="block text-slate-400 text-[9px]">pH Ideal</span>
+                  <span class="font-mono-tech font-bold text-emerald-300">${c.phMin}-${c.phMax}</span>
+                </div>
+                <div>
+                  <span class="block text-slate-400 text-[9px]">Panen</span>
+                  <span class="font-mono-tech font-bold text-amber-300">${String(c.harvestDays).split(' ')[0]}</span>
+                </div>
+              </div>
+
+              <div class="mt-3 flex items-center justify-between text-[11px] font-bold text-emerald-400 group-hover:text-emerald-300">
+                <span class="text-[10px] text-slate-300 font-normal">Potensi ${c.yieldTonPerHa} Ton/Ha</span>
+                <span class="group-hover:translate-x-1 transition-transform">Peta &amp; Panduan &rarr;</span>
+              </div>
+            </button>
+          `;
+        }).join("");
+      }
+
+      // 2. Render Tabular View (Matches Image 2 with Dark Precision Theme)
+      const tbody = document.getElementById("recommendationTableBody");
+      if (tbody) {
+        tbody.innerHTML = visibleList.map((item, idx) => {
+          const c = item.crop;
+          const isSelected = c.id === activeCropId;
+          const badgeCls = item.score >= 80
+            ? "bg-emerald-500/20 text-emerald-300 border-emerald-400/30"
+            : item.score >= 62
+            ? "bg-amber-500/20 text-amber-300 border-amber-400/30"
+            : "bg-rose-500/20 text-rose-300 border-rose-400/30";
+          const statusTxt = item.score >= 80
+            ? "Sangat Direkomendasikan"
+            : item.score >= 62
+            ? "Cukup Sesuai (Adaptasi)"
+            : "Tidak Direkomendasikan";
+
+          return `
+            <tr class="${isSelected ? 'bg-emerald-950/60' : 'hover:bg-slate-800/60'} transition">
+              <td class="py-2.5 px-2 font-bold text-slate-400">#${idx + 1}</td>
+              <td class="py-2.5 px-2 font-bold text-white">${c.name}${c.subName ? `<span class="block text-[10px] font-normal text-slate-400 mt-0.5">${c.subName}</span>` : ""}</td>
+              <td class="py-2.5 px-2 text-slate-300 font-mono-tech text-[11px]">
+                pH ${c.phMin}-${c.phMax} \u2022 ${c.tempMin}-${c.tempMax}\u00B0C \u2022 ${c.elevMin}-${c.elevMax}m
+              </td>
+              <td class="py-2.5 px-2 text-center">
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-bold border ${badgeCls}">
+                  ${item.score}%
+                </span>
+              </td>
+              <td class="py-2.5 px-2 font-medium text-slate-300">${statusTxt}</td>
+              <td class="py-2.5 px-2 text-right">
+                <button onclick="selectCropAndScroll('${c.id}')" class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-[11px] transition">
+                  Peta &amp; Cara Tanam
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      // 3. Update Footer Status
+      const label = document.getElementById("recoCountLabel");
+      const toggleBtn = document.getElementById("btnToggleRecoShowAll");
+      if (label) {
+        label.textContent = recoShowAll
+          ? `Menampilkan seluruh ${rankedCrops.length} tanaman terurut`
+          : `Menampilkan ${count} tanaman terbaik untuk lokasi ini`;
+      }
+      if (toggleBtn) {
+        toggleBtn.textContent = recoShowAll
+          ? "Tampilkan 6 Terbaik"
+          : `Lihat Semua ${rankedCrops.length} Tanaman`;
+      }
     }
 
     // 9. CLEAN TECHNICAL WORKSHEET FOR CULTIVATION & SAPRODI CALCULATOR (NO AI SLOP!)
