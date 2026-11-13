@@ -6,10 +6,13 @@
   <title>SI-SPASIAL KLASTER & REKOMENDASI SAYURAN SUMEDANG | Ahmad Al Fauzi (230660121014)</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <!-- Google Fonts: Inter, JetBrains Mono & Cinzel Display -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- GSAP & ScrollTrigger for Hybrid Parallax Showcase -->
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <!-- Leaflet CSS & JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -60,12 +63,251 @@
       background: #cbd5e1;
       border-radius: 3px;
     }
+
+    /* === HYBRID CINEMATIC PARALLAX & SHOWCASE STYLES === */
+    html {
+      scroll-behavior: smooth;
+      overflow-x: clip;
+      max-width: 100%;
+    }
+    body {
+      overflow-x: clip;
+      max-width: 100%;
+    }
+    .font-display-serif {
+      font-family: 'Cinzel', Georgia, serif;
+    }
+    .hero-parallax-stage {
+      background:
+        radial-gradient(ellipse 75% 55% at 50% 42%, rgba(225, 29, 72, 0.16) 0%, rgba(16, 185, 129, 0.08) 42%, transparent 72%),
+        linear-gradient(180deg, #040b09 0%, #071612 46%, #0b221b 82%, #07110d 100%);
+    }
+    .hero-celestial-orb {
+      background: radial-gradient(circle at 42% 38%, rgba(253, 224, 71, 0.72) 0%, rgba(245, 158, 11, 0.75) 28%, rgba(190, 18, 60, 0.85) 68%, rgba(136, 19, 55, 0) 100%);
+      box-shadow:
+        0 0 85px rgba(225, 29, 72, 0.42),
+        0 0 150px rgba(245, 158, 11, 0.18);
+    }
+    .hero-title-glow {
+      text-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.72),
+        0 0 60px rgba(16, 185, 129, 0.22);
+    }
+    .px-layer {
+      will-change: transform;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes floatSlowY {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float-slow {
+      animation: floatSlowY 6.5s ease-in-out infinite;
+    }
+    .showcase-grid-bg {
+      background-color: #07110d;
+      background-image:
+        radial-gradient(circle at 18% 12%, rgba(16, 185, 129, 0.11) 0%, transparent 45%),
+        radial-gradient(circle at 82% 85%, rgba(225, 29, 72, 0.09) 0%, transparent 48%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+    }
+    .crop-gallery-card {
+      background: linear-gradient(155deg, rgba(15, 36, 29, 0.92) 0%, rgba(9, 20, 16, 0.96) 100%);
+      border: 1px solid rgba(52, 211, 153, 0.18);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, box-shadow 0.28s ease;
+    }
+    .crop-gallery-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(52, 211, 153, 0.65);
+      box-shadow: 0 18px 40px -12px rgba(16, 185, 129, 0.28), 0 0 0 1px rgba(52, 211, 153, 0.25);
+    }
+    .crop-gallery-card:hover .crop-card-orb {
+      transform: scale(1.18);
+      opacity: 0.95;
+    }
+    .crop-card-orb {
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- TOP HEADER (EXACT STYLE AS SCREENSHOT) -->
-  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
+  <!-- HYBRID LAYERED PARALLAX HERO SHOWCASE -->
+  <section id="cinematicHero" class="hero-parallax-stage relative w-full min-h-[680px] lg:h-[94vh] lg:max-h-[960px] overflow-hidden flex flex-col justify-between text-white select-none">
+    <!-- Ambient Particle Mist Canvas -->
+    <canvas id="heroMistCanvas" class="pointer-events-none absolute inset-0 w-full h-full z-20 opacity-85"></canvas>
+
+    <!-- Parallax Layer 1: Celestial Sunrise / Crimson Moon Orb -->
+    <div data-depth="0.06" class="px-layer pointer-events-none absolute inset-0 flex items-center justify-center z-0">
+      <div class="hero-celestial-orb animate-float-slow w-64 h-64 sm:w-96 sm:h-96 md:w-[440px] md:h-[440px] rounded-full -translate-y-10 sm:-translate-y-12 opacity-90"></div>
+    </div>
+
+    <!-- Parallax Layer 2: Distant Mountain Ridge (Gunung Tampomas & Manglayang) -->
+    <div data-depth="0.14" class="px-layer pointer-events-none absolute inset-x-0 bottom-0 h-[62%] sm:h-[68%] z-10 flex items-end">
+      <svg class="w-full h-full object-cover" viewBox="0 0 1440 520" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="mtnBack" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0f2920" stop-opacity="0.92"/>
+            <stop offset="100%" stop-color="#07130f" stop-opacity="1"/>
+          </linearGradient>
+          <linearGradient id="mtnMid" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#13382b" stop-opacity="0.96"/>
+            <stop offset="100%" stop-color="#081612" stop-opacity="1"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,340 Q180,260 340,295 T690,150 Q745,120 810,165 T1140,270 Q1310,220 1440,265 L1440,520 L0,520 Z" fill="url(#mtnBack)"/>
+        <path d="M0,390 Q240,320 460,360 T940,305 Q1200,290 1440,345 L1440,520 L0,520 Z" fill="url(#mtnMid)"/>
+      </svg>
+    </div>
+
+    <!-- Parallax Layer 3: Sumedang Terraced Vegetable Hills & Sundanese Saung Tani -->
+    <div data-depth="0.24" class="px-layer pointer-events-none absolute inset-x-0 bottom-0 h-[44%] sm:h-[48%] z-20 flex items-end">
+      <svg class="w-full h-full" viewBox="0 0 1440 360" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="terraceA" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#154735" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#081611" stop-opacity="1"/>
+          </linearGradient>
+          <linearGradient id="terraceB" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0c2b20" stop-opacity="0.98"/>
+            <stop offset="100%" stop-color="#050e0b" stop-opacity="1"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,180 C260,120 480,210 780,175 C1060,145 1260,115 1440,155 L1440,360 L0,360 Z" fill="url(#terraceA)"/>
+        <path d="M0,225 C310,185 520,255 860,215 C1120,185 1300,205 1440,220 L1440,360 L0,360 Z" fill="url(#terraceB)" opacity="0.92"/>
+        <!-- Contoured Highland Terrace Lines -->
+        <path d="M0,205 C290,155 540,235 840,198 C1100,166 1280,155 1440,185" fill="none" stroke="rgba(52,211,153,0.22)" stroke-width="1.5"/>
+        <path d="M0,252 C330,215 580,280 910,242 C1150,214 1310,235 1440,250" fill="none" stroke="rgba(52,211,153,0.16)" stroke-width="1.2"/>
+        <!-- Traditional Sundanese Saung Tani Silhouette (Right Highland Slope) -->
+        <g transform="translate(1070, 128)" opacity="0.92">
+          <polygon points="48,0 98,28 -2,28" fill="#071510" stroke="rgba(251,191,36,0.35)" stroke-width="1"/>
+          <rect x="12" y="28" width="72" height="34" fill="#06120e"/>
+          <rect x="4" y="60" width="88" height="7" fill="#091b14"/>
+          <rect x="35" y="37" width="22" height="16" rx="2" fill="#f59e0b" opacity="0.65"/>
+        </g>
+        <!-- Precision Weather Mast Silhouette (Left Ridge) -->
+        <g transform="translate(275, 118)" opacity="0.75">
+          <line x1="12" y1="0" x2="12" y2="54" stroke="#34d399" stroke-width="2"/>
+          <circle cx="12" cy="4" r="4" fill="#fbbf24"/>
+          <line x1="2" y1="18" x2="22" y2="18" stroke="#34d399" stroke-width="1.5"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Top Minimalist Glass Navigation Bar -->
+    <div class="relative z-30 max-w-7xl w-full mx-auto px-4 sm:px-6 pt-4 sm:pt-6 flex items-center justify-between gap-3">
+      <div class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-slate-950/60 backdrop-blur-md border border-emerald-400/25 shadow-lg">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-mono-tech text-[11px] sm:text-xs font-semibold tracking-wider text-emerald-200">
+          SI-SPASIAL UNSAP SUMEDANG
+        </span>
+      </div>
+      <div class="hidden sm:flex items-center gap-2 px-2 py-1.5 rounded-full bg-slate-950/55 backdrop-blur-md border border-white/15 text-xs font-semibold">
+        <a href="#commodityShowcase" class="px-3.5 py-1.5 rounded-full text-slate-200 hover:text-white hover:bg-white/10 transition">Komoditas Unggulan</a>
+        <a href="#webgisHeader" onclick="setTimeout(() => { if(suitabilityMap) suitabilityMap.invalidateSize(); }, 450);" class="px-4 py-1.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold shadow-sm transition">
+          Buka Peta WebGIS &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Parallax Layer 4: Center Editorial Hero Title & Dual CTAs -->
+    <div data-depth="0.18" class="px-layer relative z-30 w-full max-w-5xl mx-auto px-4 sm:px-6 text-center my-auto py-4 sm:py-8">
+      <p class="hero-stagger font-mono-tech text-[10px] sm:text-xs font-bold uppercase tracking-[0.14em] sm:tracking-[0.26em] text-amber-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] mb-2 sm:mb-3">
+        CHAPTER 01 &bull; SPATIAL AGRITECH &amp; PRECISION FARMING
+      </p>
+      <h2 class="hero-stagger font-display-serif hero-title-glow text-[2.35rem] sm:text-7xl lg:text-8xl font-extrabold tracking-[0.06em] sm:tracking-[0.1em] text-white leading-none">
+        SUMEDANG
+      </h2>
+      <p class="hero-stagger mt-3.5 sm:mt-5 w-full max-w-2xl mx-auto text-xs sm:text-base text-white/95 font-medium leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] bg-slate-950/35 sm:bg-slate-950/25 backdrop-blur-[2px] px-3.5 py-2.5 sm:px-5 sm:py-3 rounded-2xl border border-white/10">
+        Pemetaan Klaster Hortikultura <strong class="text-white font-bold">K-Means (26 Kecamatan BPS 2025)</strong>,
+        Analisis Kecocokan Lahan Agronomi <strong class="text-emerald-300 font-bold">Fuzzy DSS &amp; Zona Junghuhn</strong>, serta
+        Kalibrasi GPS Pekarangan &amp; Cuaca Satelit Real-Time.
+      </p>
+
+      <div class="hero-stagger mt-5 sm:mt-7 w-full flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="#webgisHeader" onclick="setTimeout(() => { if(suitabilityMap) suitabilityMap.invalidateSize(); }, 450);"
+           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm tracking-wide shadow-[0_10px_30px_rgba(16,185,129,0.4)] hover:-translate-y-0.5 transition">
+          <span>MULAI ANALISIS LAHAN &amp; PETA</span>
+          <span>&rarr;</span>
+        </a>
+        <a href="#commodityShowcase"
+           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-3.5 rounded-full bg-slate-950/60 hover:bg-slate-900/80 backdrop-blur-md text-white font-bold text-xs sm:text-sm border border-white/25 hover:border-emerald-300/50 transition">
+          <span>JELAJAHI KOMODITAS SAYURAN</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom Telemetry Strip & Foreground Vignette -->
+    <div class="relative z-30 max-w-7xl w-full mx-auto px-4 sm:px-6 pb-6 sm:pb-8">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 p-3 sm:p-4 rounded-2xl bg-slate-950/70 backdrop-blur-md border border-emerald-400/20 shadow-2xl">
+        <div class="flex items-center gap-3 px-2">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-400/35 flex items-center justify-center text-emerald-300 font-mono-tech font-bold text-sm shrink-0">26</div>
+          <div>
+            <p class="text-xs font-bold text-white">Kecamatan Resmi BPS 2025</p>
+            <p class="text-[11px] text-slate-300">Validasi kontras dataran rendah &amp; tinggi</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 px-2 border-t sm:border-t-0 sm:border-l border-white/10 pt-2 sm:pt-0 sm:pl-4">
+          <div class="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-400/35 flex items-center justify-center text-amber-300 font-mono-tech font-bold text-sm shrink-0">20+</div>
+          <div>
+            <p class="text-xs font-bold text-white">Katalog Komoditas &amp; SOP</p>
+            <p class="text-[11px] text-slate-300">Skoring pH, elevasi mdpl &amp; kalkulator Saprodi</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 px-2 border-t sm:border-t-0 sm:border-l border-white/10 pt-2 sm:pt-0 sm:pl-4">
+          <div class="w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-400/35 flex items-center justify-center text-rose-300 font-mono-tech font-bold text-sm shrink-0">LIVE</div>
+          <div>
+            <p class="text-xs font-bold text-white">GPS Pekarangan + Satelit</p>
+            <p class="text-[11px] text-slate-300">Sinkronisasi suhu &amp; kelembapan Open-Meteo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE COMMODITY SHOWCASE GALLERY (HYBRID CHAPTER 02) -->
+  <section id="commodityShowcase" class="showcase-grid-bg text-white py-14 sm:py-16 border-t border-emerald-500/15 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
+        <div>
+          <p class="font-mono-tech text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-400 mb-2">
+            CHAPTER 02 &bull; SUMEDANG HARVEST GALLERY
+          </p>
+          <h3 class="font-display-serif text-2xl sm:text-4xl font-bold text-white tracking-wide">
+            KATALOG KOMODITAS UNGGULAN
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-300 mt-1.5 max-w-2xl">
+            Pilih kartu sayuran di bawah untuk langsung melompat ke WebGIS, memeriksa kecocokan lahan mikro, dan menghitung kebutuhan bibit serta pupuk Saprodi.
+          </p>
+        </div>
+        <div id="showcaseFilterGroup" class="flex flex-wrap items-center gap-2">
+          <button type="button" onclick="filterShowcaseZone('all')" data-zone="all" class="showcase-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500 text-slate-950 transition">Semua</button>
+          <button type="button" onclick="filterShowcaseZone('high')" data-zone="high" class="showcase-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-slate-200 hover:bg-white/20 border border-white/15 transition">Dataran Tinggi (&ge;600 mdpl)</button>
+          <button type="button" onclick="filterShowcaseZone('fast')" data-zone="fast" class="showcase-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-slate-200 hover:bg-white/20 border border-white/15 transition">Panen Cepat (&le;45 HST)</button>
+        </div>
+      </div>
+
+      <!-- Dynamic Bento Showcase Grid -->
+      <div id="commodityShowcaseGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+
+      <!-- Smooth Transition Bar Into Core WebGIS Dashboard -->
+      <div class="mt-9 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-slate-300">
+          Menampilkan profil agronomi sinkron langsung dari mesin perhitungan <span class="font-mono-tech text-emerald-300 font-semibold">cropsCatalog</span> &amp; <span class="font-mono-tech text-emerald-300 font-semibold">BPS Sumedang 2025</span>.
+        </p>
+        <a href="#webgisHeader" onclick="setTimeout(() => { if(suitabilityMap) suitabilityMap.invalidateSize(); }, 450);"
+           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-emerald-500 hover:text-slate-950 text-white font-bold text-xs border border-emerald-400/30 transition">
+          <span>Lanjut ke Dashboard WebGIS Lengkap</span>
+          <span>&darr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP HEADER (CORE WEBGIS WORKSPACE) -->
+  <header id="webgisHeader" class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div class="flex items-start sm:items-center gap-3">
@@ -101,12 +343,15 @@
         <button onclick="switchTab('junghuhn')" id="tab-btn-junghuhn" class="tab-nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/50">
           <svg class="w-4 h-4 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h20"/><path d="M12 2v20"/><path d="m4.93 10.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 15.17 4.24 4.24"/><path d="m4.93 5.17 4.24 4.24"/></svg> Rekomendasi Junghuhn
         </button>
+        <a href="#cinematicHero" class="ml-auto px-3 py-1.5 rounded-lg text-xs font-semibold transition-all bg-emerald-950/70 text-emerald-300 hover:bg-emerald-900 hover:text-white border border-emerald-500/30">
+          &uarr; Cover Showcase
+        </a>
       </nav>
     </div>
   </header>
 
   <!-- MAIN CONTENT CONTAINER -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 space-y-5">
+  <main id="webgis-main" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 space-y-5">
 
     <!-- 4 KPI SUMMARY CARDS -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -2706,6 +2951,210 @@
       document.body.removeChild(link);
     }
 
+    // 11B. HYBRID CINEMATIC PARALLAX & COMMODITY SHOWCASE HELPERS
+    let showcaseActiveZone = "all";
+    let showcaseShowAll = false;
+
+    function getCropShowcaseAccent(cropId) {
+      if (cropId.includes("cabai")) return { badge: "Hortikultura Unggulan", dot: "#f43f5e", ring: "rgba(244,63,94,0.22)" };
+      if (cropId.includes("kubis") || cropId.includes("wortel") || cropId.includes("kentang")) return { badge: "Zona Sejuk Tinggi", dot: "#38bdf8", ring: "rgba(56,189,248,0.22)" };
+      if (cropId.includes("tomat") || cropId.includes("bawang")) return { badge: "Komoditas Strategis", dot: "#fbbf24", ring: "rgba(251,191,36,0.22)" };
+      return { badge: "Sayuran Pekarangan", dot: "#34d399", ring: "rgba(52,211,153,0.22)" };
+    }
+
+    function filterShowcaseZone(zone) {
+      showcaseActiveZone = zone;
+      document.querySelectorAll(".showcase-filter-btn").forEach(btn => {
+        const isActive = btn.getAttribute("data-zone") === zone;
+        btn.className = isActive
+          ? "showcase-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500 text-slate-950 transition"
+          : "showcase-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-slate-200 hover:bg-white/20 border border-white/15 transition";
+      });
+      renderCommodityShowcase();
+    }
+
+    function toggleShowcaseShowAll() {
+      showcaseShowAll = !showcaseShowAll;
+      renderCommodityShowcase();
+    }
+
+    function renderCommodityShowcase() {
+      const grid = document.getElementById("commodityShowcaseGrid");
+      if (!grid || typeof cropsCatalog === "undefined") return;
+
+      let filtered = cropsCatalog.filter(c => {
+        if (showcaseActiveZone === "high") return c.elevMin >= 600;
+        if (showcaseActiveZone === "fast") {
+          const m = String(c.harvestDays || "").match(/\d+/g);
+          const maxHst = m ? parseInt(m[m.length - 1], 10) : 99;
+          return maxHst <= 45;
+        }
+        return true;
+      });
+
+      const limitCount = 8;
+      const hasOverflow = showcaseActiveZone === "all" && !showcaseShowAll && filtered.length > limitCount;
+      const visibleList = hasOverflow ? filtered.slice(0, limitCount) : filtered;
+
+      grid.innerHTML = visibleList.map((c, idx) => {
+        const acc = getCropShowcaseAccent(c.id);
+        const chapterNum = String(idx + 1).padStart(2, "0");
+        return `
+          <button type="button" onclick="jumpToCropAnalysis('${c.id}')"
+            class="crop-gallery-card group text-left rounded-2xl p-4 sm:p-5 relative overflow-hidden flex flex-col justify-between cursor-pointer">
+            <div class="crop-card-orb pointer-events-none absolute -right-7 -top-7 w-28 h-28 rounded-full opacity-75"
+                 style="background: radial-gradient(circle, ${acc.ring} 0%, transparent 72%);"></div>
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="font-mono-tech text-[10px] font-bold tracking-widest text-slate-400">VAR ${chapterNum}</span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-slate-100 border border-white/10">
+                  <span class="w-1.5 h-1.5 rounded-full" style="background:${acc.dot};"></span>
+                  ${acc.badge}
+                </span>
+              </div>
+              <h4 class="text-base sm:text-lg font-extrabold text-white group-hover:text-emerald-300 transition leading-snug">
+                ${c.name}
+              </h4>
+              <p class="text-xs text-slate-400 mt-0.5 line-clamp-1">${c.subName || "Komoditas Hortikultura Sumedang"}</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/10 grid grid-cols-3 gap-2 text-[11px]">
+              <div>
+                <span class="block text-slate-400 text-[10px]">Elevasi</span>
+                <span class="font-mono-tech font-bold text-slate-100">${c.elevMin}-${c.elevMax}m</span>
+              </div>
+              <div>
+                <span class="block text-slate-400 text-[10px]">pH Ideal</span>
+                <span class="font-mono-tech font-bold text-emerald-300">${c.phMin}-${c.phMax}</span>
+              </div>
+              <div>
+                <span class="block text-slate-400 text-[10px]">Panen</span>
+                <span class="font-mono-tech font-bold text-amber-300">${String(c.harvestDays).split(" ")[0]}</span>
+              </div>
+            </div>
+            <div class="mt-3 flex items-center justify-between text-[11px] font-bold text-emerald-400 group-hover:text-emerald-300">
+              <span>Potensi ${c.yieldTonPerHa} Ton/Ha</span>
+              <span class="group-hover:translate-x-1 transition-transform">Analisis &rarr;</span>
+            </div>
+          </button>
+        `;
+      }).join("");
+
+      if (showcaseActiveZone === "all" && filtered.length > limitCount) {
+        const existingToggle = document.getElementById("showcaseToggleWrap");
+        const label = showcaseShowAll
+          ? `Tampilkan Ringkas (${limitCount} Kartu)`
+          : `Lihat Semua ${filtered.length} Komoditas Katalog`;
+        if (!existingToggle) {
+          grid.insertAdjacentHTML("afterend",
+            `<div id="showcaseToggleWrap" class="mt-5 text-center">
+              <button type="button" onclick="toggleShowcaseShowAll()" class="px-5 py-2 rounded-full text-xs font-bold bg-white/10 hover:bg-white/15 text-emerald-300 border border-emerald-400/25 transition">${label}</button>
+            </div>`
+          );
+        } else {
+          existingToggle.querySelector("button").textContent = label;
+        }
+      } else {
+        const existingToggle = document.getElementById("showcaseToggleWrap");
+        if (existingToggle) existingToggle.remove();
+      }
+    }
+
+    function jumpToCropAnalysis(cropId) {
+      const sel = document.getElementById("selectCrop");
+      if (sel) sel.value = cropId;
+      switchTab("suitability");
+      if (typeof evaluateCurrentLocation === "function") evaluateCurrentLocation();
+      const target = document.getElementById("webgisHeader") || document.getElementById("webgis-main");
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => { if (typeof suitabilityMap !== "undefined" && suitabilityMap) suitabilityMap.invalidateSize(); }, 450);
+    }
+
+    function initCinematicParallax() {
+      const hero = document.getElementById("cinematicHero");
+      if (!hero) return;
+
+      // Desktop subtle mouse parallax on layered scenery
+      const layers = hero.querySelectorAll(".px-layer[data-depth]");
+      if (window.matchMedia("(pointer: fine)").matches && layers.length) {
+        hero.addEventListener("mousemove", (e) => {
+          const rect = hero.getBoundingClientRect();
+          const nx = (e.clientX - rect.left) / rect.width - 0.5;
+          const ny = (e.clientY - rect.top) / rect.height - 0.5;
+          layers.forEach(layer => {
+            const depth = parseFloat(layer.getAttribute("data-depth")) || 0.1;
+            const tx = (-nx * depth * 56).toFixed(2);
+            const ty = (-ny * depth * 36).toFixed(2);
+            layer.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+          });
+        });
+        hero.addEventListener("mouseleave", () => {
+          layers.forEach(layer => { layer.style.transform = "translate3d(0px, 0px, 0)"; });
+        });
+      }
+
+      // Optional GSAP subtle slide entrance (always keeps opacity:1 for instant first paint)
+      if (typeof gsap !== "undefined") {
+        gsap.from("#cinematicHero .hero-stagger", {
+          y: 16,
+          duration: 0.65,
+          stagger: 0.08,
+          ease: "power3.out",
+          clearProps: "transform"
+        });
+      }
+
+      // Lightweight Canvas atmospheric fireflies / dawn particles (auto-pauses offscreen)
+      const canvas = document.getElementById("heroMistCanvas");
+      if (canvas && canvas.getContext) {
+        const ctx = canvas.getContext("2d");
+        let w = 0, h = 0, heroVisible = true;
+        const particles = Array.from({ length: 34 }, (_, i) => ({
+          x: Math.random(),
+          y: Math.random(),
+          r: 1.2 + Math.random() * 2.2,
+          vx: (Math.random() - 0.5) * 0.00035,
+          vy: -0.00025 - Math.random() * 0.00045,
+          alpha: 0.25 + Math.random() * 0.55,
+          warm: i % 3 === 0
+        }));
+
+        const resizeCanvas = () => {
+          w = canvas.width = hero.clientWidth;
+          h = canvas.height = hero.clientHeight;
+        };
+        resizeCanvas();
+        window.addEventListener("resize", resizeCanvas);
+
+        if ("IntersectionObserver" in window) {
+          const io = new IntersectionObserver((entries) => {
+            heroVisible = entries[0] ? entries[0].isIntersecting : true;
+          }, { threshold: 0.05 });
+          io.observe(hero);
+        }
+
+        const tick = () => {
+          if (heroVisible && w > 0 && h > 0) {
+            ctx.clearRect(0, 0, w, h);
+            for (const p of particles) {
+              p.x += p.vx;
+              p.y += p.vy;
+              if (p.y < -0.04) { p.y = 1.04; p.x = Math.random(); }
+              if (p.x < -0.04) p.x = 1.04;
+              if (p.x > 1.04) p.x = -0.04;
+              ctx.beginPath();
+              ctx.arc(p.x * w, p.y * h, p.r, 0, Math.PI * 2);
+              ctx.fillStyle = p.warm
+                ? `rgba(251, 191, 36, ${p.alpha})`
+                : `rgba(52, 211, 153, ${p.alpha * 0.85})`;
+              ctx.fill();
+            }
+          }
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    }
+
     // 12. INITIALIZE ON WINDOW LOAD
     window.onload = function () {
       // Populate District Select
@@ -2719,6 +3168,9 @@
       cropSelect.innerHTML = cropsCatalog.map(c =>
         `<option value="${c.id}" ${c.id === activeCropId ? 'selected' : ''}>${c.name}</option>`
       ).join("");
+
+      renderCommodityShowcase();
+      initCinematicParallax();
 
       kmeansResult = runKMeansEngine(currentK);
       updateTopKPIs();
