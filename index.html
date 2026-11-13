@@ -168,6 +168,67 @@
   <!-- MAIN CONTENT CONTAINER -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 space-y-5">
 
+    <!-- ============================================================= -->
+    <!-- QUICK FEATURE TOUR BAR: MENJAWAB TELAK SELURUH CATATAN REVISI -->
+    <!-- ============================================================= -->
+    <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-indigo-950 p-4 sm:p-5 rounded-2xl text-white shadow-lg border border-emerald-500/30">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 pb-3 border-b border-slate-800">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-400 text-slate-950 tracking-wider uppercase">
+              PANDUAN CEPAT DEMO SIDANG SKRIPSI
+            </span>
+            <span class="text-xs text-slate-300 font-semibold">Jalan Pintas 5 Fitur Penjawab Revisi Dosen</span>
+          </div>
+          <h2 class="text-sm sm:text-base font-extrabold text-white">
+            Klik tombol di bawah untuk mendemonstrasikan langsung fitur ke Penguji:
+          </h2>
+        </div>
+        <span class="text-[11px] text-emerald-400 font-mono font-semibold self-start md:self-auto">
+          FTI UNSAP 2026 &bull; Status: 100% Siap Uji
+        </span>
+      </div>
+
+      <!-- 5 Interactive Action Buttons -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 pt-3">
+        <!-- Fitur 1 -->
+        <button onclick="demoFeature1Disparitas()" class="p-2.5 rounded-xl bg-slate-800/90 hover:bg-emerald-600 border border-slate-700 hover:border-emerald-500 text-left transition group cursor-pointer">
+          <div class="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-0.5">&#128269; Fitur 1 &bull; BPS</div>
+          <div class="text-xs font-extrabold text-white group-hover:text-white">Detektor Lahan Tidur</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">Buahdua, Conggeang, Cibugel</div>
+        </button>
+
+        <!-- Fitur 2 -->
+        <button onclick="demoFeature2KddResearchGap()" class="p-2.5 rounded-xl bg-slate-800/90 hover:bg-emerald-600 border border-slate-700 hover:border-emerald-500 text-left transition group cursor-pointer">
+          <div class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider mb-0.5">&#128300; Fitur 2 &bull; KDD</div>
+          <div class="text-xs font-extrabold text-white group-hover:text-white">Uji Normalisasi Data</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">Raw Data vs Min-Max Scaling</div>
+        </button>
+
+        <!-- Fitur 3 -->
+        <button onclick="demoFeature3BpsZeroHa()" class="p-2.5 rounded-xl bg-slate-800/90 hover:bg-emerald-600 border border-slate-700 hover:border-emerald-500 text-left transition group cursor-pointer">
+          <div class="text-[10px] font-bold text-rose-400 uppercase tracking-wider mb-0.5">&#128202; Fitur 3 &bull; FAKTA</div>
+          <div class="text-xs font-extrabold text-white group-hover:text-white">Bukti Historis 0 Ha</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">Kubis di Tomo &amp; Cimalaka</div>
+        </button>
+
+        <!-- Fitur 4 -->
+        <button onclick="demoFeature4PrintPdf()" class="p-2.5 rounded-xl bg-slate-800/90 hover:bg-emerald-600 border border-slate-700 hover:border-emerald-500 text-left transition group cursor-pointer">
+          <div class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-0.5">&#128424;&#65039; Fitur 4 &bull; OUTPUT</div>
+          <div class="text-xs font-extrabold text-white group-hover:text-white">Cetak Dokumen PDF</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">Lembar Rekomendasi 1 Hal A4</div>
+        </button>
+
+        <!-- Fitur 5 -->
+        <button onclick="demoFeature5RabModal()" class="p-2.5 rounded-xl bg-slate-800/90 hover:bg-emerald-600 border border-slate-700 hover:border-emerald-500 text-left transition group cursor-pointer col-span-2 sm:col-span-1">
+          <div class="text-[10px] font-bold text-amber-300 uppercase tracking-wider mb-0.5">&#128176; Fitur 5 &bull; EKONOMI</div>
+          <div class="text-xs font-extrabold text-white group-hover:text-white">Kalkulator RAB &amp; Laba</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">Modal Polybag &amp; Bedengan</div>
+        </button>
+      </div>
+    </div>
+
+
     <!-- 4 KPI SUMMARY CARDS -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm">
@@ -678,7 +739,7 @@
         </div>
 
         <!-- Catatan Dosen No. 1: Detektor Disparitas Potensi vs Realisasi Lahan -->
-        <div class="mt-4 p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-300 text-xs text-slate-800 leading-relaxed flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div id="underutilizedLandBanner" class="mt-4 p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-300 text-xs text-slate-800 leading-relaxed flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div>
             <div class="flex items-center gap-1.5 font-bold text-amber-900 mb-0.5">
               <span>\u{1F50E} Indeks Disparitas Potensi vs. Realisasi Lahan (Underutilized Land Detector):</span>
@@ -1353,6 +1414,60 @@
       bawang_putih: "Tercatat 0 Ha panen Bawang Putih di seluruh dataran rendah dan menengah Sumedang. Tanaman memerlukan vernalisasi suhu dingin panjang (<15\u00B0C) untuk pembentukan siung.",
       tomat: "Tercatat penurunan hasil signifikan bila ditanam pada tanah masam dan kelembapan jenuh di dataran rendah basah yang memicu busuk buah antraknosa.",
       cabai_rawit: "Meskipun toleran, produktivitas cabai rawit terhambat di dataran sangat tinggi (>1.250 mdpl) akibat kerontokan bunga massal dan pematangan lambat."
+    };
+
+    // 2C. DATABASE PENGENDALIAN HAMA & PENYAKIT TERPADU (HPT) SPESIFIK KOMODITAS
+    const cropHptDatabase = {
+      kangkung: {
+        pests: "Ulat Grayak (Spodoptera litura) &amp; Karat Putih (Albugo ipomoeae-aquaticae)",
+        symptoms: "Daun berlubang tidak beraturan dan muncul bercak putih melepuh pada permukaan bawah daun.",
+        control: "Semprot biopestisida ekstrak daun nimba / air rendaman bawang putih per 5-7 hari. Atur jarak tanam agar sirkulasi udara lancar dan buang daun terinfeksi."
+      },
+      sawi: {
+        pests: "Ulat Daun Krop (Plutella xylostella) &amp; Busuk Basah Bakteri (Erwinia)",
+        symptoms: "Ulat memakan daun hingga tersisa epidermis transparan; batang dan daun membusuk berbau menyengat saat basah.",
+        control: "Pasang perangkap likat kuning (yellow trap). Gunakan mulsa jerami/plastik untuk mencegah cipratan tanah dan hindari penyiraman malam hari."
+      },
+      cabai_rawit: {
+        pests: "Hama Thrips, Tungau Merah, &amp; Antraknosa Buah (Patek / Colletotrichum)",
+        symptoms: "Daun keriting menggulung ke atas, bercak cokelat melekuk pada buah cabai matang.",
+        control: "Aplikasi fungisida kontak berbahan tembaga saat curah hujan tinggi. Perbanyak unsur Kalium &amp; Kalsium untuk mempertebal dinding sel buah."
+      },
+      cabai_keriting: {
+        pests: "Penyakit Patek (Antraknosa), Kutu Kebul (Bemisia tabaci), &amp; Layu Fusarium",
+        symptoms: "Tanaman layu mendadak saat siang terik, buah cabai membusuk kering berbintik hitam melingkar.",
+        control: "Sanitasi bedengan secara bersih, kocor Trichoderma harzianum pada lubang tanam sejak H-3 pra-tanam, serta rotasi tanaman non-solanaceae."
+      },
+      kubis: {
+        pests: "Ulat Tritip (Plutella), Ulat Krop (Crocidolomia), &amp; Akar Gada (Plasmodiophora)",
+        symptoms: "Krop berlubang dan berakar bengkak membulat seperti gada sehingga tanaman kerdil.",
+        control: "Wajib pengapuran dolomit hingga pH &ge; 6.5 untuk menekan spora akar gada. Gunakan agens hayati Bacillus thuringiensis (Bt) untuk ulat krop."
+      },
+      tomat: {
+        pests: "Busuk Daun (Phytophthora infestans) &amp; Ulat Penggerek Buah (Helicoverpa)",
+        symptoms: "Bercak cokelat kehitaman basah pada daun dan buah tomat berlubang membusuk.",
+        control: "Pangkas tunas air (wiwil) dan daun bawah yang menempel tanah. Pasang ajir bambu kokoh agar sirkulasi udara baik dan hindari genangan air."
+      },
+      ketimun: {
+        pests: "Embun Tepung (Downy Mildew) &amp; Kepik Buah / Kumbang Oteng-oteng",
+        symptoms: "Bercak kuning bersudut pada daun tua dan daun mengering terbakar; daun berlubang oleh kumbang.",
+        control: "Semprot fungisida nabati belerang atau rebusan sirih. Gunakan lanjaran bambu agar buah tidak menyentuh tanah basah."
+      },
+      bawang_merah: {
+        pests: "Ulat Bawang (Spodoptera exigua) &amp; Penyakit Moler / Layu Inul (Fusarium)",
+        symptoms: "Daun terpelintir terkulai layu menguning dan pangkal umbi membusuk basah.",
+        control: "Pasang lampu perangkap (light trap) di malam hari. Rendam benih umbi dalam larutan PGPR / Trichoderma sebelum tanam."
+      },
+      terung: {
+        pests: "Kutu Daun (Aphis), Lalat Buah (Bactrocera), &amp; Layu Bakteri",
+        symptoms: "Buah terung busuk belatung dan pucuk tanaman layu mendadak.",
+        control: "Pasang perangkap metil eugenol (petrogenol) untuk lalat buah. Musnahkan tanaman layu agar bakteri tidak menular melalui aliran air siraman."
+      },
+      bayam: {
+        pests: "Ulat Daun Bayam &amp; Penyakit Rebah Kecambah (Pythium / Rhizoctonia)",
+        symptoms: "Bibit muda rebah membusuk di pangkal batang setelah berkecambah.",
+        control: "Perbaiki drainase media tanam jangan sampai tergenang becek. Jemur tanah media tanam sebelum digunakan untuk sterilisasi alami."
+      }
     };
 
     // Helper currency formatter
@@ -2138,6 +2253,81 @@
             ${checkItem(evalRes.weatherOk, "Cuaca & Curah Hujan", evalRes.weatherReason)}
           </div>
 
+          <!-- KARTU METRIK AGRONOMI & KEMUDAHAN BUDIDAYA (MENGISI RUANG KOSONG) -->
+          <div class="mt-4 grid grid-cols-3 gap-2">
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
+              <span class="text-[10px] font-bold text-slate-500 uppercase block">Potensi Panen</span>
+              <span class="text-xs sm:text-sm font-extrabold text-slate-900 font-mono mt-0.5 block">&plusmn; ${crop.yieldTonPerHa} Ton/Ha</span>
+              <span class="text-[9px] text-slate-400 block">${crop.yieldKgPerPoly} kg/polybag</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
+              <span class="text-[10px] font-bold text-slate-500 uppercase block">Umur Panen</span>
+              <span class="text-xs sm:text-sm font-extrabold text-slate-900 font-mono mt-0.5 block">${crop.harvestDays.split(' ')[0]}</span>
+              <span class="text-[9px] text-slate-400 block">Siklus Cepat</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
+              <span class="text-[10px] font-bold text-slate-500 uppercase block">Kebutuhan Air</span>
+              <span class="text-xs sm:text-sm font-extrabold text-emerald-700 font-mono mt-0.5 block">Rutin Harian</span>
+              <span class="text-[9px] text-slate-400 block">Pagi &amp; Sore</span>
+            </div>
+          </div>
+
+          <!-- BAR PROGRESS INDIKATOR KELAYAKAN SPASIAL -->
+          <div class="mt-3.5 p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/90 space-y-2.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-slate-700 flex items-center gap-1.5">
+                <span>&#127777;&#65039; Kesesuaian Agroklimat Lokasi</span>
+              </span>
+              <span class="text-[11px] font-bold text-emerald-700 font-mono">${evalRes.score}% Optimal</span>
+            </div>
+            
+            <!-- Elevasi Bar -->
+            <div class="space-y-1">
+              <div class="flex justify-between text-[11px] text-slate-600">
+                <span>Elevasi Lahan: <strong>${Math.round(activeDistrict.elevMdpl)} mdpl</strong></span>
+                <span class="text-slate-400 font-mono text-[10px]">Rentang: ${crop.elevMin}-${crop.elevMax} mdpl</span>
+              </div>
+              <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: ${evalRes.elevOk ? '100%' : '35%'}"></div>
+              </div>
+            </div>
+
+            <!-- Suhu Bar -->
+            <div class="space-y-1">
+              <div class="flex justify-between text-[11px] text-slate-600">
+                <span>Suhu Udara: <strong>${activeDistrict.tempC.toFixed(1)}&deg;C</strong></span>
+                <span class="text-slate-400 font-mono text-[10px]">Rentang: ${crop.tempMin}-${crop.tempMax}&deg;C</span>
+              </div>
+              <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: ${evalRes.tempOk ? '100%' : '40%'}"></div>
+              </div>
+            </div>
+
+            <!-- pH Bar -->
+            <div class="space-y-1">
+              <div class="flex justify-between text-[11px] text-slate-600">
+                <span>pH Tanah: <strong>${activeDistrict.ph.toFixed(1)}</strong></span>
+                <span class="text-slate-400 font-mono text-[10px]">Rentang: ${crop.phMin}-${crop.phMax}</span>
+              </div>
+              <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: ${evalRes.phOk ? '100%' : '45%'}"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- KONTEKS WILAYAH SUMEDANG & KLIK PANDUAN CEPAT -->
+          <div class="mt-3.5 p-3 rounded-xl bg-slate-900 text-white border border-slate-800 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Tipologi Wilayah ${activeDistrict.name}</span>
+              <span class="text-xs font-semibold text-emerald-400 mt-0.5 block">
+                ${getClusterMeta(activeDistrict.cluster).name}
+              </span>
+            </div>
+            <button onclick="document.getElementById('cultivationWorksheetSection').scrollIntoView({behavior:'smooth'})" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+              <span>Buka RAB &amp; SOP &darr;</span>
+            </button>
+          </div>
+
           ${bpsFactHtml}
         </div>
 
@@ -2656,8 +2846,18 @@
                 </div>
               </div>
 
-              <div class="text-[10px] text-slate-400 text-center pt-1">
-                * Estimasi didasarkan pada harga eceran saprodi dan harga komoditas pasar sayur Kabupaten Sumedang 2026.
+              <!-- Realistis: Perspektif Eceran Pasar vs Borongan Petani -->
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 leading-relaxed space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-slate-800">&#128202; Analisis Ekonomi Riil Pasar Sumedang:</span>
+                  <span class="text-[10px] font-mono text-emerald-700 font-bold">Harga Eceran: ${formatRupiah(marketPriceKg)}/kg</span>
+                </div>
+                <p class="text-[10px] text-slate-500">
+                  ${cultivationMode === 'polybag' ? 
+                    `<strong>Skala Pekarangan Mandiri Pangan:</strong> Hasil panen (${estYieldPolyKg} kg) setara penghematan belanja sayur dapur keluarga sebesar <strong>${formatRupiah(grossRevenue)}</strong>. Wadah polybag dan media tanam merupakan aset investasi yang dapat digunakan kembali hingga <strong>3&ndash;4 kali siklus tanam</strong> berikutnya tanpa perlu membeli wadah baru.` :
+                    `<strong>Skala Komersial Lahan:</strong> Memperhitungkan biaya tenaga kerja cangkul bedengan lokal, pupuk kandang kotoran sapi/ayam, serta asumsi harga jual borongan petani (farmgate) sebesar <strong>${formatRupiah(marketPriceKg * 0.70)}/kg</strong> (70% dari harga eceran pasar).`
+                  }
+                </p>
               </div>
             </div>
 
@@ -2745,6 +2945,57 @@
               </div>
 
             </div>
+
+            <!-- ============================================================= -->
+            <!-- PANDUAN PENGENDALIAN HAMA & PENYAKIT (HPT) SPESIFIK KOMODITAS -->
+            <!-- ============================================================= -->
+            ${(() => {
+              const hpt = cropHptDatabase[crop.id] || {
+                pests: "Hama Pengisap Daun &amp; Busuk Batang/Akar",
+                symptoms: "Daun berbercak kuning kecokelatan dan pertumbuhan pucuk terhambat.",
+                control: "Gunakan perangkap kuning likat, semprot ekstrak daun nimba/bawang putih secara berkala, dan jaga sanitasi kebersihan media tanam."
+              };
+              return `
+                <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-200 text-xs text-slate-800 space-y-2.5">
+                  <div class="flex items-center justify-between border-b border-amber-200/70 pb-2">
+                    <div class="flex items-center gap-1.5">
+                      <span class="font-bold text-amber-900 uppercase tracking-wider text-[11px]">
+                        &#128030; Proteksi Tanaman &amp; SOP Pengendalian Hama (HPT)
+                      </span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-200 text-amber-900">
+                      Pengendalian Ramah Lingkungan
+                    </span>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-0.5">
+                    <div class="p-2.5 rounded-lg bg-white/80 border border-amber-100">
+                      <span class="font-bold text-rose-700 block text-[11px] mb-0.5">&#9888; Hama &amp; Gejala Utama:</span>
+                      <p class="text-[11px] text-slate-700 leading-relaxed">
+                        <strong>${hpt.pests}:</strong> ${hpt.symptoms}
+                      </p>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-white/80 border border-amber-100">
+                      <span class="font-bold text-emerald-700 block text-[11px] mb-0.5">&#10003; Solusi &amp; Tindakan Lapangan:</span>
+                      <p class="text-[11px] text-slate-700 leading-relaxed">
+                        ${hpt.control}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- KUNCI SUKSES PANEN & MUTU PASAR SUMEDANG -->
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-1.5">
+                  <div class="flex items-center gap-1.5 font-bold text-slate-900 text-[11px]">
+                    <span>&#128161; Kunci Sukses Panen &amp; Efisiensi Modal:</span>
+                  </div>
+                  <ul class="list-disc pl-4 space-y-1 text-[11px] text-slate-600 leading-relaxed">
+                    <li><strong>Waktu Panen:</strong> Lakukan pada pagi hari (06.30 - 08.30 WIB) atau sore hari sejuk (16.00 WIB) agar sayuran tetap renyah, segar, dan tidak mengalami layu dehidrasi di pasar.</li>
+                    <li><strong>Penyusutan Modal Polybag:</strong> Wadah polybag tebal dan campuran media tanam (tanah + pupuk kandang + sekam) dapat digunakan kembali untuk <strong>3 &ndash; 4 kali siklus tanam</strong>, sehingga biaya modal pada siklus tanam berikutnya turun hingga 65%!</li>
+                    <li><strong>Pasca Panen:</strong> Cuci akar sayuran dengan air mengalir bersih, tiriskan di tempat teduh berventilasi, dan ikat rapi per 250&ndash;300 gram sebelum didistribusikan.</li>
+                  </ul>
+                </div>
+              `;
+            })()}
 
             <!-- Footer Note -->
             <div class="p-3 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
@@ -3387,6 +3638,57 @@
     }
 
     // 12. INITIALIZE ON WINDOW LOAD
+    // DEMO SHORTCUT FUNCTIONS FOR QUICK TOUR BAR (MENJAWAB REVISI DOSEN)
+    function demoFeature1Disparitas() {
+      switchTab('data');
+      setTimeout(() => {
+        const banner = document.getElementById('underutilizedLandBanner');
+        if (banner) banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+
+    function demoFeature2KddResearchGap() {
+      switchTab('kdd');
+      setTimeout(() => {
+        const card = document.getElementById('kddSimulationCardContainer');
+        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+
+    function demoFeature3BpsZeroHa() {
+      switchTab('suitability');
+      // Set to Tomo (district id 9, low elevation 46 mdpl) and crop to Kubis (cold climate crop)
+      const selectDist = document.getElementById('selectDistrict');
+      if (selectDist) {
+        selectDist.value = "9";
+        onDistrictSelectChange();
+      }
+      const selectCrop = document.getElementById('selectCrop');
+      if (selectCrop) {
+        selectCrop.value = "kubis";
+        evaluateCurrentLocation();
+      }
+      setTimeout(() => {
+        const diagCard = document.getElementById('diagnosisCardContainer');
+        if (diagCard) diagCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 150);
+    }
+
+    function demoFeature4PrintPdf() {
+      switchTab('suitability');
+      const sheet = document.getElementById('cultivationWorksheetSection');
+      if (sheet) sheet.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => {
+        window.print();
+      }, 350);
+    }
+
+    function demoFeature5RabModal() {
+      switchTab('suitability');
+      const sheet = document.getElementById('cultivationWorksheetSection');
+      if (sheet) sheet.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     window.onload = function () {
       // Populate District Select
       const distSelect = document.getElementById("selectDistrict");
