@@ -468,6 +468,9 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
+  <!-- DYNAMIC REAL-TIME ATMOSPHERIC WEATHER FX CANVAS (RAIN, SUN, WIND, NIGHT STARS) -->
+  <canvas id="weatherFxCanvas" class="fixed inset-0 pointer-events-none z-[35] w-full h-full"></canvas>
+
   <!-- TOP HEADER (EXACT STYLE AS SCREENSHOT) -->
   <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5">
@@ -500,6 +503,12 @@
               <div id="skyPhaseLabel" class="text-[10px] text-slate-300 font-semibold leading-tight">Memuat Langit...</div>
             </div>
           </div>
+
+          <!-- Quick Weather Effect Switcher -->
+          <button type="button" onclick="cycleWeatherFxQuick()" id="hdrWeatherFxBadge" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-amber-500/50 text-amber-300 hover:text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Klik untuk ganti efek visual cuaca (Matahari, Hujan, Angin, Bintang)">
+            <span id="hdrFxIcon">&#9851;&#65039;</span>
+            <span id="hdrFxLabel" class="hidden sm:inline">Efek Cuaca</span>
+          </button>
 
           <!-- Simulation Button -->
           <button onclick="toggleSkySimulatorModal()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-emerald-500/50 text-slate-300 hover:text-white font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm" title="Simulasi Dinamika Waktu 24 Jam">
@@ -838,7 +847,7 @@
                   <label class="block text-xs font-semibold text-slate-700 mb-1">
                     Kondisi Cuaca:
                   </label>
-                  <select id="selectWeather" onchange="evaluateCurrentLocation()" class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <select id="selectWeather" onchange="evaluateCurrentLocation(); if (typeof updateWeatherFxUI === 'function') updateWeatherFxUI();" class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                     <option value="cerah_hangat">Cerah &amp; Hangat (Kemarau/Normal)</option>
                     <option value="sejuk_lembap">Sejuk &amp; Lembap (Hujan Normal)</option>
                     <option value="panas_kering">Panas Terik &amp; Kering</option>
@@ -2335,6 +2344,7 @@
 
           const selectWeather = document.getElementById("selectWeather");
           if (selectWeather) selectWeather.value = mappedWeather;
+          if (typeof updateWeatherFxUI === "function") updateWeatherFxUI();
 
           syncSliderLabels();
           evaluateCurrentLocation();
@@ -4186,6 +4196,11 @@
           ? `Mode: <strong class="text-amber-700">Simulasi Manual</strong>`
           : `Mode: <strong class="text-emerald-700">Real-time Otomatis</strong>`;
       }
+
+      // Keep atmospheric weather FX in sync
+      if (typeof updateWeatherFxUI === "function") {
+        updateWeatherFxUI();
+      }
     }
 
     function toggleSkySimulatorModal() {
@@ -4239,8 +4254,486 @@
       skyTimerInterval = setInterval(updateCircadianSkyEngine, 1000);
     }
 
-        window.onload = function () {
+    // =========================================================================
+    // REAL-TIME ATMOSPHERIC WEATHER FX ENGINE (RAIN, SUN, WIND, NIGHT STARS)
+    // =========================================================================
+    let weatherFxMode = "auto"; // "auto" | "sun" | "rain" | "wind" | "night" | "none"
+    let currentRenderedFx = "sun"; // "sun" | "rain" | "wind" | "night" | "none"
+    let fxCanvas = null;
+    let fxCtx = null;
+    let fxAnimId = null;
+    let fxWidth = 0;
+    let fxHeight = 0;
+    let fxTime = 0;
+
+    // Particle pools
+    const fxRainDrops = [];
+    const fxRainSplashes = [];
+    const fxSunMotes = [];
+    const fxWindLeaves = [];
+    const fxWindBreezes = [];
+    const fxNightStars = [];
+    const fxNightFireflies = [];
+
+    function initWeatherParticles() {
+      if (!fxWidth || !fxHeight) return;
+
+      // 1. Rain Drops (~75 drops)
+      fxRainDrops.length = 0;
+      const dropCount = Math.min(85, Math.max(40, Math.floor(fxWidth / 18)));
+      for (let i = 0; i < dropCount; i++) {
+        fxRainDrops.push({
+          x: Math.random() * fxWidth,
+          y: Math.random() * fxHeight,
+          len: 14 + Math.random() * 16,
+          speed: 16 + Math.random() * 10,
+          thickness: 1 + Math.random() * 1.2,
+          alpha: 0.22 + Math.random() * 0.35,
+          drift: 1.8 + Math.random() * 1.8
+        });
+      }
+      fxRainSplashes.length = 0;
+
+      // 2. Sun Motes (Floating Golden Dust Sparkles)
+      fxSunMotes.length = 0;
+      for (let i = 0; i < 22; i++) {
+        fxSunMotes.push({
+          x: Math.random() * fxWidth,
+          y: Math.random() * fxHeight,
+          r: 1.2 + Math.random() * 2.2,
+          speedY: 0.25 + Math.random() * 0.45,
+          driftX: (Math.random() - 0.5) * 0.35,
+          phase: Math.random() * Math.PI * 2,
+          baseAlpha: 0.2 + Math.random() * 0.4
+        });
+      }
+
+      // 3. Wind Streamlines & Fluttering Leaves
+      fxWindBreezes.length = 0;
+      for (let i = 0; i < 5; i++) {
+        fxWindBreezes.push({
+          x: Math.random() * fxWidth,
+          y: 70 + Math.random() * (fxHeight - 140),
+          len: 120 + Math.random() * 180,
+          speed: 5.5 + Math.random() * 4.5,
+          amp: 12 + Math.random() * 16,
+          freq: 0.008 + Math.random() * 0.006,
+          alpha: 0.12 + Math.random() * 0.18
+        });
+      }
+
+      fxWindLeaves.length = 0;
+      const leafColors = ["#10b981", "#059669", "#d97706", "#f59e0b", "#84cc16"];
+      for (let i = 0; i < 18; i++) {
+        fxWindLeaves.push({
+          x: Math.random() * fxWidth,
+          y: Math.random() * fxHeight,
+          size: 6 + Math.random() * 6,
+          speedX: 3.5 + Math.random() * 4,
+          speedY: 0.4 + Math.random() * 1.2,
+          rot: Math.random() * Math.PI * 2,
+          rotSpeed: 0.03 + Math.random() * 0.04,
+          swayFreq: 0.015 + Math.random() * 0.02,
+          color: leafColors[Math.floor(Math.random() * leafColors.length)],
+          alpha: 0.45 + Math.random() * 0.35
+        });
+      }
+
+      // 4. Night Stars & Fireflies
+      fxNightStars.length = 0;
+      for (let i = 0; i < 40; i++) {
+        fxNightStars.push({
+          x: Math.random() * fxWidth,
+          y: Math.random() * (fxHeight * 0.7),
+          r: 0.8 + Math.random() * 1.8,
+          baseAlpha: 0.2 + Math.random() * 0.55,
+          freq: 0.02 + Math.random() * 0.04,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+
+      fxNightFireflies.length = 0;
+      for (let i = 0; i < 12; i++) {
+        fxNightFireflies.push({
+          x: Math.random() * fxWidth,
+          y: 80 + Math.random() * (fxHeight - 160),
+          r: 2 + Math.random() * 2.2,
+          vx: (Math.random() - 0.5) * 0.7,
+          vy: (Math.random() - 0.5) * 0.7,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function drawRainFx(ctx, w, h) {
+      // 1. Rain Drops
+      ctx.beginPath();
+      for (let i = 0; i < fxRainDrops.length; i++) {
+        const d = fxRainDrops[i];
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x + d.drift, d.y + d.len);
+      }
+      ctx.strokeStyle = "rgba(186, 230, 253, 0.42)";
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      // Update positions
+      for (let i = 0; i < fxRainDrops.length; i++) {
+        const d = fxRainDrops[i];
+        d.x += d.drift;
+        d.y += d.speed;
+
+        if (d.y >= h - 25) {
+          if (Math.random() < 0.25 && fxRainSplashes.length < 25) {
+            fxRainSplashes.push({
+              x: d.x,
+              y: h - 12 + (Math.random() * 6 - 3),
+              r: 1.5,
+              maxR: 5 + Math.random() * 5,
+              alpha: 0.45
+            });
+          }
+          d.y = -20;
+          d.x = Math.random() * w;
+        }
+        if (d.x > w + 20) d.x = -10;
+      }
+
+      // 2. Splashes at bottom
+      for (let i = fxRainSplashes.length - 1; i >= 0; i--) {
+        const s = fxRainSplashes[i];
+        ctx.beginPath();
+        ctx.ellipse(s.x, s.y, s.r, s.r * 0.35, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(186, 230, 253, ${s.alpha})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        s.r += 0.45;
+        s.alpha -= 0.035;
+        if (s.alpha <= 0 || s.r >= s.maxR) {
+          fxRainSplashes.splice(i, 1);
+        }
+      }
+    }
+
+    function drawSunFx(ctx, w, h) {
+      const sunX = Math.min(w * 0.82, w - 80);
+      const sunY = 65;
+      const pulse = 1 + Math.sin(fxTime * 0.02) * 0.05;
+
+      // Sun Outer Aura (Large Soft Ambient Glow)
+      const gradOuter = ctx.createRadialGradient(sunX, sunY, 15, sunX, sunY, 260 * pulse);
+      gradOuter.addColorStop(0, "rgba(254, 240, 138, 0.30)");
+      gradOuter.addColorStop(0.35, "rgba(251, 191, 36, 0.15)");
+      gradOuter.addColorStop(1, "rgba(245, 158, 11, 0)");
+      ctx.fillStyle = gradOuter;
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, 260 * pulse, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Sun Core Glow
+      const gradCore = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 55 * pulse);
+      gradCore.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+      gradCore.addColorStop(0.45, "rgba(254, 240, 138, 0.8)");
+      gradCore.addColorStop(1, "rgba(251, 191, 36, 0)");
+      ctx.fillStyle = gradCore;
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, 55 * pulse, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Soft Diagonal Sunbeams (Crepuscular Rays)
+      const beamRot = Math.sin(fxTime * 0.008) * 0.08;
+      ctx.save();
+      ctx.translate(sunX, sunY);
+      ctx.rotate(beamRot);
+      ctx.fillStyle = "rgba(254, 240, 138, 0.06)";
+
+      // Beam 1
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(-w * 0.6, h * 0.85);
+      ctx.lineTo(-w * 0.45, h * 0.9);
+      ctx.closePath();
+      ctx.fill();
+
+      // Beam 2
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(-w * 0.25, h * 0.95);
+      ctx.lineTo(-w * 0.12, h);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+
+      // Floating Sun Motes / Dust Sparkles
+      for (let i = 0; i < fxSunMotes.length; i++) {
+        const m = fxSunMotes[i];
+        const alpha = m.baseAlpha + Math.sin(fxTime * 0.03 + m.phase) * 0.2;
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(254, 243, 199, ${Math.max(0.05, alpha)})`;
+        ctx.fill();
+
+        m.y -= m.speedY;
+        m.x += m.driftX + Math.sin(fxTime * 0.02 + m.phase) * 0.25;
+        if (m.y < -10) {
+          m.y = h + 10;
+          m.x = Math.random() * w;
+        }
+      }
+    }
+
+    function drawWindFx(ctx, w, h) {
+      // 1. Aerodynamic Breeze Streamlines
+      for (let i = 0; i < fxWindBreezes.length; i++) {
+        const b = fxWindBreezes[i];
+        ctx.beginPath();
+        ctx.moveTo(b.x, b.y);
+        ctx.bezierCurveTo(
+          b.x + b.len * 0.33, b.y + Math.sin(b.x * b.freq) * b.amp,
+          b.x + b.len * 0.66, b.y - Math.sin(b.x * b.freq) * b.amp,
+          b.x + b.len, b.y
+        );
+        ctx.strokeStyle = `rgba(226, 232, 240, ${b.alpha})`;
+        ctx.lineWidth = 1.3;
+        ctx.stroke();
+
+        b.x += b.speed;
+        if (b.x > w + 50) {
+          b.x = -b.len - 30;
+          b.y = 70 + Math.random() * (h - 140);
+        }
+      }
+
+      // 2. Fluttering Leaves
+      for (let i = 0; i < fxWindLeaves.length; i++) {
+        const l = fxWindLeaves[i];
+        ctx.save();
+        ctx.translate(l.x, l.y);
+        ctx.rotate(l.rot);
+
+        // Stylized Leaf Path
+        ctx.beginPath();
+        ctx.ellipse(0, 0, l.size, l.size * 0.45, 0, 0, Math.PI * 2);
+        ctx.fillStyle = l.color;
+        ctx.globalAlpha = l.alpha;
+        ctx.fill();
+
+        // Leaf spine vein
+        ctx.beginPath();
+        ctx.moveTo(-l.size * 0.8, 0);
+        ctx.lineTo(l.size * 0.8, 0);
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+
+        ctx.restore();
+
+        // Update movement
+        l.x += l.speedX;
+        l.y += Math.sin(l.x * l.swayFreq) * 1.6 + l.speedY;
+        l.rot += l.rotSpeed;
+
+        if (l.x > w + 25) {
+          l.x = -25;
+          l.y = Math.random() * h;
+        }
+        if (l.y > h + 20) {
+          l.y = -20;
+          l.x = Math.random() * w;
+        }
+      }
+    }
+
+    function drawNightStarsFx(ctx, w, h) {
+      // 1. Twinkling Stars
+      for (let i = 0; i < fxNightStars.length; i++) {
+        const s = fxNightStars[i];
+        const alpha = Math.max(0.1, s.baseAlpha + Math.sin(fxTime * s.freq + s.phase) * 0.35);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(248, 250, 252, ${alpha})`;
+        ctx.fill();
+      }
+
+      // 2. Fireflies (Glowing Bio-luminescent motes)
+      for (let i = 0; i < fxNightFireflies.length; i++) {
+        const f = fxNightFireflies[i];
+        const pulse = 0.4 + Math.sin(fxTime * 0.04 + f.phase) * 0.4;
+
+        // Glow halo
+        const halo = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 4.5);
+        halo.addColorStop(0, `rgba(163, 230, 53, ${pulse * 0.7})`);
+        halo.addColorStop(1, "rgba(163, 230, 53, 0)");
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r * 4.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Core
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r * 0.9, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(254, 252, 232, ${pulse})`;
+        ctx.fill();
+
+        // Wander
+        f.x += f.vx + (Math.random() - 0.5) * 0.4;
+        f.y += f.vy + (Math.random() - 0.5) * 0.4;
+
+        if (f.x < 10) f.vx = Math.abs(f.vx);
+        if (f.x > w - 10) f.vx = -Math.abs(f.vx);
+        if (f.y < 50) f.vy = Math.abs(f.vy);
+        if (f.y > h - 50) f.vy = -Math.abs(f.vy);
+      }
+    }
+
+    function determineAutoFxType() {
+      const weatherSelect = document.getElementById("selectWeather");
+      const chosenWeather = weatherSelect ? weatherSelect.value : "cerah_hangat";
+
+      // 1. If rainy weather
+      if (chosenWeather === "hujan_tinggi" || chosenWeather === "sejuk_lembap") {
+        return "rain";
+      }
+
+      // 2. If satellite weather shows high wind speed
+      if (typeof currentLiveWeather !== "undefined" && currentLiveWeather && currentLiveWeather.wind_speed_10m >= 13) {
+        return "wind";
+      }
+
+      // 3. Time-of-day based determination
+      const now = new Date();
+      const currentMin = skyIsSimulationMode ? skySimulatedMinute : (now.getHours() * 60 + now.getMinutes());
+
+      // Nighttime (before 05:30 or after 18:30)
+      if (currentMin < 330 || currentMin >= 1110) {
+        return "night";
+      }
+
+      // Daytime: Sunny or Breezy
+      if (chosenWeather === "panas_kering" || chosenWeather === "cerah_hangat") {
+        return "sun";
+      }
+      return "sun";
+    }
+
+    function setWeatherFxMode(mode) {
+      weatherFxMode = mode;
+      updateWeatherFxUI();
+    }
+
+    function cycleWeatherFxQuick() {
+      const order = ["auto", "sun", "rain", "wind", "night", "none"];
+      let curIdx = order.indexOf(weatherFxMode);
+      if (curIdx === -1) curIdx = 0;
+      const nextIdx = (curIdx + 1) % order.length;
+      setWeatherFxMode(order[nextIdx]);
+    }
+
+    function updateWeatherFxUI() {
+      let active = (weatherFxMode === "auto") ? determineAutoFxType() : weatherFxMode;
+      currentRenderedFx = active;
+
+      // Update Header Button
+      const hdrIcon = document.getElementById("hdrFxIcon");
+      const hdrLabel = document.getElementById("hdrFxLabel");
+      const fxIcons = {
+        auto: "\u267B\uFE0F",
+        sun: "\u2600\uFE0F",
+        rain: "\u{1F327}\uFE0F",
+        wind: "\u{1F343}",
+        night: "\u2728",
+        none: "\u{1F6AB}"
+      };
+      const fxLabels = {
+        auto: "Auto",
+        sun: "Matahari",
+        rain: "Hujan",
+        wind: "Angin",
+        night: "Bintang",
+        none: "Off"
+      };
+
+      if (hdrIcon) {
+        hdrIcon.innerHTML = weatherFxMode === "auto" 
+          ? `\u267B\uFE0F ${fxIcons[active] || ""}` 
+          : (fxIcons[weatherFxMode] || "\u2600\uFE0F");
+      }
+      if (hdrLabel) {
+        hdrLabel.textContent = weatherFxMode === "auto" 
+          ? `Auto: ${fxLabels[active] || "Cuaca"}` 
+          : (fxLabels[weatherFxMode] || "Efek Cuaca");
+      }
+
+      // Update Modal Buttons
+      const modes = ["auto", "sun", "rain", "wind", "night", "none"];
+      modes.forEach(m => {
+        const btn = document.getElementById("fxBtn-" + m);
+        if (btn) {
+          if (m === weatherFxMode) {
+            btn.className = "weather-fx-btn py-1.5 px-1.5 rounded-lg text-[10px] font-bold transition border border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer shadow-sm";
+          } else {
+            btn.className = "weather-fx-btn py-1.5 px-1.5 rounded-lg text-[10px] font-bold transition border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer";
+          }
+        }
+      });
+
+      const badge = document.getElementById("fxCurrentModeBadge");
+      if (badge) {
+        badge.textContent = weatherFxMode === "auto" 
+          ? `Auto Satelit (${fxLabels[active]})` 
+          : fxLabels[weatherFxMode];
+      }
+    }
+
+    function renderWeatherFxLoop() {
+      fxTime++;
+      if (fxCtx && fxWidth && fxHeight) {
+        fxCtx.clearRect(0, 0, fxWidth, fxHeight);
+
+        // Keep active type synced if in auto mode
+        if (weatherFxMode === "auto") {
+          currentRenderedFx = determineAutoFxType();
+        } else {
+          currentRenderedFx = weatherFxMode;
+        }
+
+        if (currentRenderedFx === "rain") {
+          drawRainFx(fxCtx, fxWidth, fxHeight);
+        } else if (currentRenderedFx === "sun") {
+          drawSunFx(fxCtx, fxWidth, fxHeight);
+        } else if (currentRenderedFx === "wind") {
+          drawWindFx(fxCtx, fxWidth, fxHeight);
+        } else if (currentRenderedFx === "night") {
+          drawNightStarsFx(fxCtx, fxWidth, fxHeight);
+        }
+      }
+      fxAnimId = requestAnimationFrame(renderWeatherFxLoop);
+    }
+
+    function initWeatherFxEngine() {
+      fxCanvas = document.getElementById("weatherFxCanvas");
+      if (!fxCanvas) return;
+      fxCtx = fxCanvas.getContext("2d");
+
+      function handleResize() {
+        fxWidth = fxCanvas.width = window.innerWidth;
+        fxHeight = fxCanvas.height = window.innerHeight;
+        initWeatherParticles();
+      }
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
+      updateWeatherFxUI();
+
+      if (fxAnimId) cancelAnimationFrame(fxAnimId);
+      fxAnimId = requestAnimationFrame(renderWeatherFxLoop);
+    }
+
+    window.onload = function () {
       initCircadianSkyEngine();
+      initWeatherFxEngine();
       // Populate District Select
       const distSelect = document.getElementById("selectDistrict");
       distSelect.innerHTML = districtsData.map(d =>
@@ -4403,6 +4896,34 @@
           </button>
           <button onclick="setSkyTimePreset(1065)" class="py-1.5 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-[11px] font-semibold text-slate-800 transition">
             &#127751; 17:45 Senja
+          </button>
+        </div>
+      </div>
+
+      <!-- Atmospheric & Weather FX Controls -->
+      <div class="space-y-1.5 pt-2 border-t border-slate-200">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold text-slate-700 block">Efek Atmosfer &amp; Cuaca Dinamis:</span>
+          <span id="fxCurrentModeBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Auto Satelit</span>
+        </div>
+        <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
+          <button type="button" onclick="setWeatherFxMode('auto')" id="fxBtn-auto" class="weather-fx-btn py-1.5 px-1.5 rounded-lg text-[10px] font-bold transition border border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer shadow-sm">
+            &#9851;&#65039; Auto
+          </button>
+          <button type="button" onclick="setWeatherFxMode('sun')" id="fxBtn-sun" class="weather-fx-btn py-1.5 px-1.5 rounded-lg text-[10px] font-bold transition border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 cursor-pointer">
+            &#9728;&#65039; Matahari
+          </button>
+          <button type="button" onclick="setWeatherFxMode('rain')" id="fxBtn-rain" class="weather-fx-btn py-1.5 px-1.5 rounded-lg text-[10px] font-bold transition border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 cursor-pointer">
+            &#127783;&#65039; Hujan
+          </button>
+          <button type="button" onclick="setWeatherFxMode('wind')" id="fxBtn-wind" class="weather-fx-btn py-1.5 px-1.5 rounded-lg text-[10px] font-bold transition border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 cursor-pointer">
+            &#127811; Angin
+          </button>
+          <button type="button" onclick="setWeatherFxMode('night')" id="fxBtn-night" class="weather-fx-btn py-1.5 px-1.5 rounded-lg text-[10px] font-bold transition border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 cursor-pointer">
+            &#10024; Bintang
+          </button>
+          <button type="button" onclick="setWeatherFxMode('none')" id="fxBtn-none" class="weather-fx-btn py-1.5 px-1.5 rounded-lg text-[10px] font-bold transition border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-500 cursor-pointer">
+            &#10060; Off
           </button>
         </div>
       </div>
