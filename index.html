@@ -120,6 +120,98 @@
     .print-official-header {
       display: none;
     }
+
+    /* ------------------------------------------------------------------------- */
+    /* CIRCADIAN 1,440-MINUTE REAL-TIME SKY ENGINE STYLING                       */
+    /* ------------------------------------------------------------------------- */
+    body {
+      transition: background 1.5s ease-in-out, color 0.4s ease;
+      min-height: 100vh;
+    }
+
+    /* Smooth transitions for all themeable cards */
+    .bg-white, .bg-slate-50, .bg-slate-900, header, main, footer {
+      transition: background-color 0.8s ease, border-color 0.8s ease, color 0.4s ease;
+    }
+
+    /* Dark Mode Theme Class (Applied automatically during night / twilight) */
+    .theme-sky-dark {
+      color: #f8fafc;
+    }
+
+    .theme-sky-dark .bg-white {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      border-color: #1e293b !important;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .theme-sky-dark .text-slate-900 {
+      color: #f8fafc !important;
+    }
+
+    .theme-sky-dark .text-slate-800 {
+      color: #f1f5f9 !important;
+    }
+
+    .theme-sky-dark .text-slate-700 {
+      color: #e2e8f0 !important;
+    }
+
+    .theme-sky-dark .text-slate-600 {
+      color: #cbd5e1 !important;
+    }
+
+    .theme-sky-dark .text-slate-500 {
+      color: #94a3b8 !important;
+    }
+
+    .theme-sky-dark .bg-slate-50, 
+    .theme-sky-dark .bg-slate-50\/60,
+    .theme-sky-dark .bg-slate-50\/70,
+    .theme-sky-dark .bg-slate-50\/80,
+    .theme-sky-dark .bg-slate-50\/90 {
+      background-color: #162033 !important;
+      border-color: #1e293b !important;
+    }
+
+    .theme-sky-dark .bg-slate-100 {
+      background-color: #1e293b !important;
+      color: #e2e8f0 !important;
+    }
+
+    .theme-sky-dark .border-slate-200,
+    .theme-sky-dark .border-slate-200\/80,
+    .theme-sky-dark .border-slate-200\/90,
+    .theme-sky-dark .border-slate-100,
+    .theme-sky-dark .border-slate-50 {
+      border-color: #1e293b !important;
+    }
+
+    .theme-sky-dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]),
+    .theme-sky-dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+      border-color: #1e293b !important;
+    }
+
+    .theme-sky-dark .hover\:bg-slate-50:hover,
+    .theme-sky-dark .hover\:bg-slate-100\/70:hover {
+      background-color: #1e293b !important;
+    }
+
+    .theme-sky-dark table thead.bg-slate-50 {
+      background-color: #1e293b !important;
+      color: #cbd5e1 !important;
+      border-color: #334155 !important;
+    }
+
+    .theme-sky-dark input[type="text"],
+    .theme-sky-dark input[type="number"],
+    .theme-sky-dark select {
+      background-color: #1e293b !important;
+      color: #f8fafc !important;
+      border-color: #334155 !important;
+    }
+
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -141,6 +233,26 @@
               Ahmad Al Fauzi (230660121014) &bull; Program Studi Informatika FTI Universitas Sebelas April (UNSAP)
             </p>
           </div>
+        </div>
+
+        <!-- REAL-TIME 1,440-MINUTE CIRCADIAN SKY BADGE & SIMULATOR -->
+        <div class="flex items-center gap-2 shrink-0 self-start md:self-auto">
+          <!-- Sky Live Clock Badge -->
+          <div class="px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700/80 shadow-sm flex items-center gap-2">
+            <span id="skyClockIcon" class="text-base select-none">&#127749;</span>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span id="skyLiveClock" class="font-mono text-xs font-bold text-amber-300">--:--:-- WIB</span>
+                <span id="skyLiveDot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              </div>
+              <div id="skyPhaseLabel" class="text-[10px] text-slate-300 font-semibold leading-tight">Memuat Langit...</div>
+            </div>
+          </div>
+
+          <!-- Simulation Button -->
+          <button onclick="toggleSkySimulatorModal()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-emerald-500/50 text-slate-300 hover:text-white font-bold text-xs transition flex items-center gap-1 cursor-pointer shadow-sm" title="Uji Simulasi Langit 24 Jam (Demo Sidang)">
+            <span>&#9881;&#65039; Simulasi 24 Jam</span>
+          </button>
         </div>
       </div>
 
@@ -3689,7 +3801,167 @@
       if (sheet) sheet.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    window.onload = function () {
+
+    // =========================================================================
+    // CIRCADIAN 1,440-MINUTE REAL-TIME SKY DYNAMIC ENGINE
+    // =========================================================================
+    let skyIsSimulationMode = false;
+    let skySimulatedMinute = 0;
+    let skyTimerInterval = null;
+
+    // 10 Key Sky Anchors throughout 24 hours (1,440 minutes)
+    const skyTimeAnchors = [
+      { min: 0,    grad: "linear-gradient(180deg, #020617 0%, #0b1329 100%)", icon: "\u{1F319}", label: "Malam Dini Hari", dark: true },
+      { min: 270,  grad: "linear-gradient(180deg, #070e1e 0%, #162038 100%)", icon: "\u{1F30C}", label: "Fajar Menjelang Subuh", dark: true },
+      { min: 330,  grad: "linear-gradient(180deg, #1e1b4b 0%, #4c1d95 60%, #9a3412 100%)", icon: "\u{1F305}", label: "Fajar Subuh (Semburat Lembayung)", dark: true },
+      { min: 375,  grad: "linear-gradient(180deg, #fef3c7 0%, #fed7aa 50%, #ecfdf5 100%)", icon: "\u{1F305}", label: "Matahari Terbit (Golden Morning)", dark: false },
+      { min: 480,  grad: "linear-gradient(180deg, #f0fdf4 0%, #e0f2fe 50%, #f8fafc 100%)", icon: "\u{2600}\uFE0F", label: "Pagi Segar (Fresh Garden)", dark: false },
+      { min: 720,  grad: "linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)", icon: "\u{2600}\uFE0F", label: "Siang Hari (Matahari Terik)", dark: false },
+      { min: 930,  grad: "linear-gradient(180deg, #fffbeb 0%, #fef3c7 50%, #fed7aa 100%)", icon: "\u{1F324}\uFE0F", label: "Sore Hari (Hangat Gading)", dark: false },
+      { min: 1035, grad: "linear-gradient(180deg, #fff7ed 0%, #fed7aa 50%, #ea580c 100%)", icon: "\u{1F307}", label: "Senja Keemasan (Golden Hour)", dark: false },
+      { min: 1075, grad: "linear-gradient(180deg, #2e1065 0%, #7c2d12 50%, #9a3412 100%)", icon: "\u{1F307}", label: "Senja Lembayung (Sunset Glow)", dark: true },
+      { min: 1115, grad: "linear-gradient(180deg, #1e1b4b 0%, #311042 60%, #0f172a 100%)", icon: "\u{1F306}", label: "Maghrib Menuju Isya", dark: true },
+      { min: 1170, grad: "linear-gradient(180deg, #090d16 0%, #0f172a 60%, #020617 100%)", icon: "\u{1F319}", label: "Malam Hari (Istirahat Tanaman)", dark: true },
+      { min: 1440, grad: "linear-gradient(180deg, #020617 0%, #0b1329 100%)", icon: "\u{1F319}", label: "Malam Dini Hari", dark: true }
+    ];
+
+    function getSkyStateAtMinute(minute) {
+      const normalizedMin = Math.max(0, Math.min(1439, minute));
+      let idx = 0;
+      for (let i = 0; i < skyTimeAnchors.length - 1; i++) {
+        if (normalizedMin >= skyTimeAnchors[i].min && normalizedMin <= skyTimeAnchors[i + 1].min) {
+          idx = i;
+          break;
+        }
+      }
+      const cur = skyTimeAnchors[idx];
+      const next = skyTimeAnchors[idx + 1] || cur;
+      const progress = (normalizedMin - cur.min) / Math.max(1, (next.min - cur.min));
+
+      // Use cur if progress < 0.5, else transition closer to next
+      const selected = progress < 0.5 ? cur : next;
+      return {
+        minute: normalizedMin,
+        gradient: selected.grad,
+        icon: selected.icon,
+        label: selected.label,
+        dark: selected.dark
+      };
+    }
+
+    function updateCircadianSkyEngine() {
+      const now = new Date();
+      let currentMinute = 0;
+      let timeString = "";
+
+      if (skyIsSimulationMode) {
+        currentMinute = skySimulatedMinute;
+        const h = Math.floor(currentMinute / 60);
+        const m = Math.floor(currentMinute % 60);
+        const s = now.getSeconds();
+        timeString = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')} WIB`;
+      } else {
+        currentMinute = now.getHours() * 60 + now.getMinutes();
+        timeString = now.toLocaleTimeString('id-ID', { hour12: false }) + " WIB";
+      }
+
+      const sky = getSkyStateAtMinute(currentMinute);
+
+      // 1. Update Body Background Gradient (Smooth Sky Shift)
+      document.body.style.background = sky.gradient;
+
+      // 2. Toggle Theme Class for Cards & Text Harmony
+      if (sky.dark) {
+        document.body.classList.add("theme-sky-dark");
+      } else {
+        document.body.classList.remove("theme-sky-dark");
+      }
+
+      // 3. Update Header Badges
+      const elIcon = document.getElementById("skyClockIcon");
+      const elClock = document.getElementById("skyLiveClock");
+      const elLabel = document.getElementById("skyPhaseLabel");
+      const elDot = document.getElementById("skyLiveDot");
+
+      if (elIcon) elIcon.innerHTML = sky.icon;
+      if (elClock) elClock.textContent = timeString;
+      if (elLabel) elLabel.textContent = sky.label;
+      if (elDot) {
+        elDot.className = skyIsSimulationMode 
+          ? "w-1.5 h-1.5 rounded-full bg-amber-400" 
+          : "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse";
+      }
+
+      // 4. Update Modal Elements if open
+      const modalTime = document.getElementById("modalSimTimeDisplay");
+      const modalPhase = document.getElementById("modalSimPhaseDisplay");
+      const modalSliderLabel = document.getElementById("modalSliderValLabel");
+      const statusLabel = document.getElementById("skyAutoStatusLabel");
+
+      if (modalTime) {
+        const h = Math.floor(currentMinute / 60);
+        const m = Math.floor(currentMinute % 60);
+        modalTime.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')} WIB`;
+      }
+      if (modalPhase) modalPhase.innerHTML = `${sky.icon} ${sky.label}`;
+      if (modalSliderLabel) modalSliderLabel.textContent = `${Math.round(currentMinute)} / 1440 Menit`;
+      if (statusLabel) {
+        statusLabel.innerHTML = skyIsSimulationMode 
+          ? `Mode: <strong class="text-amber-700">Simulasi Manual</strong>`
+          : `Mode: <strong class="text-emerald-700">Real-time Otomatis</strong>`;
+      }
+    }
+
+    function toggleSkySimulatorModal() {
+      const modal = document.getElementById("modalSkySimulator");
+      if (!modal) return;
+      const isHidden = modal.classList.contains("hidden");
+      if (isHidden) {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        // Sync slider with current time
+        const now = new Date();
+        const curMin = skyIsSimulationMode ? skySimulatedMinute : (now.getHours() * 60 + now.getMinutes());
+        const slider = document.getElementById("skyTimeSlider");
+        if (slider) slider.value = curMin;
+      } else {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+      updateCircadianSkyEngine();
+    }
+
+    function onSkySliderInput(val) {
+      skyIsSimulationMode = true;
+      skySimulatedMinute = parseInt(val, 10);
+      updateCircadianSkyEngine();
+    }
+
+    function setSkyTimePreset(minute) {
+      skyIsSimulationMode = true;
+      skySimulatedMinute = minute;
+      const slider = document.getElementById("skyTimeSlider");
+      if (slider) slider.value = minute;
+      updateCircadianSkyEngine();
+    }
+
+    function resetSkyToRealtime() {
+      skyIsSimulationMode = false;
+      const slider = document.getElementById("skyTimeSlider");
+      const now = new Date();
+      if (slider) slider.value = now.getHours() * 60 + now.getMinutes();
+      updateCircadianSkyEngine();
+    }
+
+    // Start Realtime Live Watcher (Tick every second for smooth live clock and sky updates)
+    function initCircadianSkyEngine() {
+      updateCircadianSkyEngine();
+      if (skyTimerInterval) clearInterval(skyTimerInterval);
+      skyTimerInterval = setInterval(updateCircadianSkyEngine, 1000);
+    }
+
+        window.onload = function () {
+      initCircadianSkyEngine();
       // Populate District Select
       const distSelect = document.getElementById("selectDistrict");
       distSelect.innerHTML = districtsData.map(d =>
@@ -3781,6 +4053,92 @@
     </div>
     <div id="appGlobalToastText" class="text-xs font-medium leading-relaxed">
       Notifikasi sistem
+    </div>
+  </div>
+
+
+  <!-- MODAL SIMULATOR LANGIT 1,440 MENIT (REAL-TIME CIRCADIAN) -->
+  <div id="modalSkySimulator" class="fixed inset-0 z-[99999] bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-2xl border border-slate-200 space-y-4 transform transition-all">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">&#127749;</span>
+          <div>
+            <h3 class="text-sm sm:text-base font-extrabold text-slate-900">
+              Simulasi Siklus Langit 24 Jam (1.440 Menit)
+            </h3>
+            <p class="text-[11px] text-slate-500">
+              Pergeseran warna atmosfer real-time mengikuti perjalanan matahari Sumedang
+            </p>
+          </div>
+        </div>
+        <button onclick="toggleSkySimulatorModal()" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold cursor-pointer">
+          &#2715;
+        </button>
+      </div>
+
+      <!-- Time Display & Phase Pill in Modal -->
+      <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-1">
+        <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Waktu Simulasi Terpilih</div>
+        <div id="modalSimTimeDisplay" class="text-2xl sm:text-3xl font-black font-mono text-slate-900">18:50 WIB</div>
+        <div id="modalSimPhaseDisplay" class="text-xs font-bold text-amber-700">Senja Lembayung (Sunset Sky)</div>
+      </div>
+
+      <!-- 24-Hour Slider -->
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-xs font-semibold text-slate-700">
+          <span>Geser Waktu (00:00 s.d. 23:59):</span>
+          <span id="modalSliderValLabel" class="font-mono text-emerald-700 font-bold">1130 / 1440 Menit</span>
+        </div>
+        <input 
+          type="range" 
+          id="skyTimeSlider" 
+          min="0" 
+          max="1439" 
+          step="1" 
+          value="1130" 
+          oninput="onSkySliderInput(this.value)" 
+          class="w-full cursor-pointer accent-emerald-600"
+        />
+        <div class="grid grid-cols-4 text-[10px] text-slate-400 font-mono text-center pt-0.5">
+          <span>00:00 (Malam)</span>
+          <span>06:00 (Pagi)</span>
+          <span>12:00 (Siang)</span>
+          <span>18:00 (Senja)</span>
+        </div>
+      </div>
+
+      <!-- Quick Preset Buttons -->
+      <div class="space-y-1.5 pt-1">
+        <span class="text-[11px] font-bold text-slate-700 block">Pilihan Cepat Waktu:</span>
+        <div class="grid grid-cols-4 gap-1.5">
+          <button onclick="setSkyTimePreset(345)" class="py-1.5 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-[11px] font-semibold text-slate-800 transition">
+            &#127749; 05:45 Subuh
+          </button>
+          <button onclick="setSkyTimePreset(450)" class="py-1.5 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-[11px] font-semibold text-slate-800 transition">
+            &#9728;&#65039; 07:30 Pagi
+          </button>
+          <button onclick="setSkyTimePreset(720)" class="py-1.5 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-[11px] font-semibold text-slate-800 transition">
+            &#9728;&#65039; 12:00 Siang
+          </button>
+          <button onclick="setSkyTimePreset(1065)" class="py-1.5 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-[11px] font-semibold text-slate-800 transition">
+            &#127751; 17:45 Senja
+          </button>
+        </div>
+      </div>
+
+      <!-- Reset to Realtime Auto -->
+      <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+        <span id="skyAutoStatusLabel" class="text-xs text-slate-500 font-medium">Mode: <strong>Real-time Otomatis</strong></span>
+        <div class="flex items-center gap-2">
+          <button onclick="resetSkyToRealtime()" id="btnResetSkyAuto" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition flex items-center gap-1 cursor-pointer">
+            <span>&#9851;&#65039; Kembali ke Jam Nyata</span>
+          </button>
+          <button onclick="toggleSkySimulatorModal()" class="px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs cursor-pointer">
+            Tutup
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
